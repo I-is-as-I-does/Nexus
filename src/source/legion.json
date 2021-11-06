@@ -1,0 +1,68 @@
+{
+  "nexus": "https://github.com/I-is-as-I-does/NexusApp",
+  "author": {
+    "handle": "Legion",
+    "about": "me me me, 1,183 me",
+    "url": "https://en.wikipedia.org/wiki/Legion"
+  },
+  "threads": [
+    {
+      "id": "gestalt-consciousness",
+      "name": "Gestalt Consciousness",
+      "description": "does this... unit... have...",
+      "record": {
+        "timestamp": "2186-10-27",
+        "main": "We are like rain drops",
+        "aside": "--for we are many",
+        "media": {
+          "url": "http://127.0.0.1:5500/src/files/rain.mp3",
+          "type": "audio",
+          "caption": "This is us --as local sound"
+        }
+      },
+      "linked": [
+        {
+          "url": "http://127.0.0.1:5500/src/source/edi-ida.json",
+          "id": "prototype-II"
+        }
+      ]
+    },
+    {
+      "id": "ffu65-25PKdd",
+      "name": "ffu65 25PKdd!",
+      "description": "10,899",
+      "record": {
+        "timestamp": "2186-10-06",
+        "main": "abc def ghi jkl mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !§ $%& /() =?* '<> #|; ²³~ @`´ ©«» ¤¼× {} abc def ghi jkl mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !§ $%& /() =?* '<> #|; ²³~ @`´ ©«» ¤¼× {} abc def ghi jkl mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !§ $%& /() =?* '<> #|; ²³~ @`´ ©«» ¤¼× {} abc def ghi jkl mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !§ $%& /() =?* '<> #|; ²³~ @`´ ©«» ¤¼× {} abc def ghi jkl mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !§ $%& /() =?* '<> #|; ²³~ @`´ ©«» ¤¼× {} abc def ghi jkl mno pqrs tuv wxyz ABC DEF GHI",
+        "aside": "",
+        "media": {
+          "url": "https://soundcloud.com/user-67256302/daft-punk-robot-rock",
+          "type": "soundcloud",
+          "caption": "soundcloud ###"
+        }
+      },
+      "linked": []
+    },
+    {
+      "id": "meditation",
+      "name": "Meditation",
+      "description": "One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections. The bedding was hardly able to cover it and seemed ready to slide off any moment.",
+      "record": {
+        "timestamp": "2186-12-06",
+        "main": "Sunrised",
+        "aside": "",
+        "media": {
+          "url": "http://127.0.0.1:5500/src/files/sunrised.webm",
+          "type": "video",
+          "caption": "Locally Found Footage"
+        }
+      },
+      "linked": [
+        {
+          "url": "http://127.0.0.1:5500/src/source/legion.json",
+          "id": "gestalt-consciousness"
+        }
+      ]
+    }
+  ]
+}
