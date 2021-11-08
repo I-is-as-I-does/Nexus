@@ -1,8 +1,8 @@
 import { copyToClipboard } from "../lib/Jack/Trades/Stock.js";
 import { timedFadeToggle, easeOut, easeIn } from "../lib/Valva/Valva.js";
 import { blockWrap } from "./NxMeta.js";
-import NxNimrod from "../NxNimrod.js";
-import NxThalamus from "../NxThalamus.js";
+import NxTranslate from "../NxTranslate.js";
+import NxViewer from "./../NxViewer.js";
 import { defaultIO } from "../NxConstants.js";
 
 export function sourceBlock(dataSrc, threadId) {
@@ -26,7 +26,7 @@ export function toolTip(className, text) {
   tooltip.textContent = text;
   tooltip.style.opacity = 0;
   tooltip.hidden = true;
-  NxNimrod.registerTranslElm(tooltip, text);
+  NxTranslate.registerTranslElm(tooltip, text);
   return tooltip;
 }
 
@@ -78,7 +78,7 @@ export function textAreaElm(content, eventCallback) {
   snpInp.spellcheck = false;
   snpInp.textContent = content;
 
-  NxThalamus.registerUpdateEvt(function (e) {
+  NxViewer.registerUpdateEvt(function (e) {
     var nwcode = eventCallback(e);
     snpInp.textContent = nwcode;
   });
@@ -143,9 +143,9 @@ export function embedContent(dataSrc, threadId) {
     '" data-id="' +
     threadId +
     '" data-style="' +
-    NxThalamus.themeCssUrl +
+    NxViewer.themeCssUrl +
     '" data-lang="' +
-    NxNimrod.lang +
+    NxTranslate.lang +
     '" data-embed="' +
     dfltOpts.embed +
     '" data-history="' +

@@ -1,3 +1,4 @@
+import { defaultReaderBlocks } from "./elm/NxMeta";
 import {  opts } from "./NxHost";
 import { resolveOrigin } from "./NxInstance";
 import { getThreadData, registerThreadVisit } from "./NxMemory";
@@ -120,7 +121,7 @@ export function build(){
         rf.id = opts.id;
         dt.all = data;
         dt.thread = getThreadData(data, opts.id);
-    
+        container.append(defaultReaderBlocks(rf.src, rf.id));
       
         if (opts.history) {
             registerBrowserEvent();

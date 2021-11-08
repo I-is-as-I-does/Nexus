@@ -1,4 +1,4 @@
-import NxNimrod from "../NxNimrod.js";
+import NxTranslate from "../NxTranslate.js";
 import { appUrl } from "../NxConstants.js";
 import { blockWrap } from "./NxMeta.js";
 import { splitFlap } from "../lib/Valva/Valva.js";
@@ -23,26 +23,26 @@ export function langDropDown() {
   var langTgg = document.createElement("SPAN");
   langTgg.classList.add("nx-lang-list-toggle");
 
-  langTgg.textContent = NxNimrod.lang;
+  langTgg.textContent = NxTranslate.lang;
 
   var langDrp = document.createElement("UL");
   langDrp.classList.add("nx-lang-list");
 
-  NxNimrod.availableLangs.forEach((lang) => {
+  NxTranslate.availableLangs.forEach((lang) => {
     var li = document.createElement("LI");
     li.textContent = lang;
-    if (lang == NxNimrod.lang) {
+    if (lang == NxTranslate.lang) {
       li.classList.add(selectedClass);
     }
     li.addEventListener("click", () => {
       var nlang = li.textContent;
-      if (nlang != NxNimrod.lang) {
+      if (nlang != NxTranslate.lang) {
         var prev = langDrp.querySelector("." + selectedClass);
         prev.classList.remove(selectedClass);
         li.classList.add(selectedClass);
 
         splitFlap(langTgg, nlang, 50);
-        NxNimrod.setUserSelectedLang(nlang);
+        NxTranslate.setUserSelectedLang(nlang);
       }
       langDrp.style.display = "none";
     });
@@ -70,15 +70,15 @@ export function langSelect() {
   var langSlct = document.createElement("SELECT");
   langSlct.classList.add("nx-lang-switch");
 
-  NxNimrod.availableLangs.forEach((lang) => {
+  NxTranslate.availableLangs.forEach((lang) => {
     var opt = document.createElement("OPTION");
     opt.textContent = lang;
-    if (lang == NxNimrod.lang) {
+    if (lang == NxTranslate.lang) {
       opt.selected = true;
     }
     langSlct.append(opt);
   });
 
-  langSlct.addEventListener("change", (e) => NxNimrod.langSelectEvent(e));
+  langSlct.addEventListener("change", (e) => NxTranslate.langSelectEvent(e));
   return langSlct;
 }

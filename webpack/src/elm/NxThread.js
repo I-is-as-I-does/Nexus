@@ -1,6 +1,6 @@
 import { isNonEmptyStr } from "../lib/Jack/Trades/Check.js";
 import { insertDiversion, replaceDiversion } from "../lib/Valva/Valva.js";
-import NxThalamus from "../NxThalamus.js";
+import NxViewer from "./../NxViewer.js";
 import { authorIndexLink, authorUrl, threadName, viewLink } from "./NxIdent.js";
 import { mediaElm } from "./NxMedia.js";
 import { blockWrap } from "./NxMeta.js";
@@ -8,15 +8,15 @@ import { blockWrap } from "./NxMeta.js";
 export function threadBlock(dataSrc, threadId) {
   var thread = null;
   if (threadId != "/") {
-    thread = NxThalamus.threadData(dataSrc, threadId);
+    thread = NxViewer.threadData(dataSrc, threadId);
   }
   var headerElms = [threadName(dataSrc, threadId, true)];
 
   var descrp = descriptionElm(thread);
   var record = threadRecord(thread);
 
-  NxThalamus.registerUpdateEvt(function (e) {
-    var nthread = NxThalamus.threadData(e.dataSrc, e.threadId);
+  NxViewer.registerUpdateEvt(function (e) {
+    var nthread = NxViewer.threadData(e.dataSrc, e.threadId);
     var nrecord = threadRecord(nthread);
     var ndescrp = threadTextElm(nthread, ["description"]);
     replaceDiversion(descrp.firstChild, ndescrp);
@@ -30,7 +30,7 @@ export function linkedBlock(dataSrc, threadId) {
   var wrap = document.createElement("DIV");
   wrap.append(...linkedItems(dataSrc, threadId));
 
-  NxThalamus.registerUpdateEvt(function (e) {
+  NxViewer.registerUpdateEvt(function (e) {
     var nlinkedElm = linkedItems(e.dataSrc, e.threadId);
     Array.from(wrap.children).forEach((list, ind) => {
       replaceDiversion(list, nlinkedElm[ind]);
@@ -42,7 +42,7 @@ export function linkedBlock(dataSrc, threadId) {
 export function linkedItems(dataSrc, threadId) {
   var linked = [];
   if (threadId != "/") {
-    linked = NxThalamus.threadData(dataSrc, threadId).linked;
+    linked = NxViewer.threadData(dataSrc, threadId).linked;
   }
 
   var records = document.createElement("UL");
@@ -53,9 +53,9 @@ export function linkedItems(dataSrc, threadId) {
   if (linked.length) {
     var doneIndexes = [];
     linked.forEach((item) => {
-      NxThalamus.loadData(item.url).then(() => {
+      NxViewer.loadData(item.url).then(() => {
         if (item.id != "/") {
-          item.id = NxThalamus.resolveThreadId(item.url, item.id);
+          item.id = NxViewer.resolveThreadId(item.url, item.id);
         }
         var linkedAuthor = [
           authorIndexLink(item.url, false),
@@ -73,7 +73,7 @@ export function linkedItems(dataSrc, threadId) {
         } else {
           var li = document.createElement("LI");
           li.append(...linkedAuthor);
-          li.append(threadRecord(NxThalamus.threadData(item.url, item.id)));
+          li.append(threadRecord(NxViewer.threadData(item.url, item.id)));
           insertDiversion(records, li, false, false, 200);
         }
       });
@@ -108,7 +108,7 @@ export function recordBody(thread) {
 export function dateElm(thread) {
   var datediv = document.createElement("DIV");
   datediv.classList.add("nx-record-meta");
-  var rdate = threadTextElm(thread, ["record", "timestamp"]).substr(0,10);
+  var rdate = threadTextElm(thread, ["record", "timestamp"]).substr(0, 10);
   datediv.append(rdate);
   return datediv;
 }

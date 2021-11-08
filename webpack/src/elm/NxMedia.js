@@ -1,5 +1,5 @@
 import { conciseUrl, oembedHtml, oembedLink } from "../lib/Jack/Trades/Web.js";
-import NxThalamus from "../NxThalamus.js";
+import NxViewer from "./../NxViewer.js";
 import {
   easeOut,
   insertDiversion,
@@ -25,7 +25,7 @@ export function threadMediaWrap(thread) {
     mediaPromise(mediaWrap, thread.record.media.type, thread.record.media.url);
   }
 
-  NxThalamus.registerUpdateEvt(function (e) {
+  NxViewer.registerUpdateEvt(function (e) {
     mediaWrapUpdate(mediaWrap, e.dataSrc, e.threadId);
   });
 
@@ -46,7 +46,7 @@ export function mediaWrapUpdate(mediaWrap, dataSrc, threadId) {
       );
     }
   } else {
-    var threadMedia = NxThalamus.threadData(dataSrc, threadId).record.media;
+    var threadMedia = NxViewer.threadData(dataSrc, threadId).record.media;
     if (threadMedia.type) {
       mediaPromise(mediaWrap, threadMedia.type, threadMedia.url, prev);
     }
@@ -80,7 +80,7 @@ export function mediaPromise(mediaWrap, type, url, prev = null) {
         callback(wrap);
       })
       .catch((err) => {
-        NxThalamus.logEvent(err);
+        NxViewer.logEvent(err);
         callback(brokenMediaElm(url));
       });
   }

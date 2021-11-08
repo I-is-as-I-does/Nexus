@@ -1,4 +1,4 @@
-import NxNimrod from "../NxNimrod.js";
+import NxTranslate from "../NxTranslate.js";
 import { historyBlock } from "./NxHistory.js";
 import { sourceBlock } from "./NxSource.js";
 
@@ -42,8 +42,8 @@ export function errorElm(text) {
   sp1.textContent = "—/ — ";
   var sp2 = document.createElement("SPAN");
   var text = "Nexus not found";
-  sp2.textContent = NxNimrod.get(text);
-  NxNimrod.registerTranslElm(sp2, text);
+  sp2.textContent = NxTranslate.get(text);
+  NxTranslate.registerTranslElm(sp2, text);
   p.append(sp1, sp2);
   return p;
 }
@@ -73,8 +73,8 @@ export function blockWrap(
 export function landmarkElm(name) {
   var lndmrk = document.createElement("SPAN");
   lndmrk.classList.add("nx-landmark", "nx-landmark-" + name);
-  lndmrk.textContent = NxNimrod.get(name);
-  NxNimrod.registerTranslElm(lndmrk, name);
+  lndmrk.textContent = NxTranslate.get(name);
+  NxTranslate.registerTranslElm(lndmrk, name);
   return lndmrk;
 }
 

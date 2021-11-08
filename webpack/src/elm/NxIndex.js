@@ -3,7 +3,7 @@ import {
   insertDiversion,
   replaceDiversion,
 } from "../lib/Valva/Valva.js";
-import NxThalamus from "../NxThalamus.js";
+import NxViewer from "./../NxViewer.js";
 import { authorHandle, authorUrl, viewLink } from "./NxIdent.js";
 import { blockWrap } from "./NxMeta.js";
 
@@ -18,7 +18,7 @@ export function about(dataSrc) {
   dv.classList.add("nx-about-author");
 
   dv.append(aboutParagraph(dataSrc));
-  NxThalamus.registerUpdateEvt(function (e) {
+  NxViewer.registerUpdateEvt(function (e) {
     replaceDiversion(dv.firstChild, aboutParagraph(e.dataSrc));
   }, true);
   return dv;
@@ -26,18 +26,18 @@ export function about(dataSrc) {
 
 export function aboutParagraph(dataSrc) {
   var ab = document.createElement("P");
-  ab.textContent = NxThalamus.srcData(dataSrc).author.about;
+  ab.textContent = NxViewer.srcData(dataSrc).author.about;
   return ab;
 }
 export function indexList(dataSrc) {
   var ul = document.createElement("UL");
-  var items = Object.keys(NxThalamus.srcData(dataSrc).map);
+  var items = Object.keys(NxViewer.srcData(dataSrc).map);
   if (items.length) {
     for (var i = 0; i < items.length; i++) {
       ul.append(indexLi(dataSrc, items[i]));
     }
   }
-  NxThalamus.registerUpdateEvt(function (e) {
+  NxViewer.registerUpdateEvt(function (e) {
     changeThreadsList(ul, e);
   }, true);
   return ul;
@@ -52,7 +52,7 @@ export function indexLi(dataSrc, itm) {
 export function changeThreadsList(ul, e) {
   var childr = ul.childNodes;
 
-  var nw = Object.keys(NxThalamus.srcData(e.dataSrc).map);
+  var nw = Object.keys(NxViewer.srcData(e.dataSrc).map);
   var nwlen = nw.length;
   var chlen = childr.length;
   var count = 0;

@@ -1,5 +1,5 @@
 import { easeIn, easeOut, insertDiversion } from "../lib/Valva/Valva.js";
-import NxThalamus from "../NxThalamus.js";
+import NxViewer from "./../NxViewer.js";
 import { blockWrap } from "./NxMeta.js";
 import { authorIndexLink, authorUrl, historyViewLink } from "./NxIdent.js";
 
@@ -103,13 +103,13 @@ export function historyListElm(dataSrc, threadId) {
   dv.classList.add("nx-history-drawer");
   dv.append(historyList);
   dv.style.display = "none";
-  NxThalamus.registerUpdateEvt(function (e) {
+  NxViewer.registerUpdateEvt(function (e) {
     historyEvent(e);
   });
   return dv;
 }
 
-export function autoScroll(){
+export function autoScroll() {
   historyList.scrollIntoView({
     block: "end",
     behavior: "smooth",
@@ -117,7 +117,7 @@ export function autoScroll(){
 }
 
 export function historyEvent(e) {
-  if (!NxThalamus.isHistoryEvent) {
+  if (!NxViewer.isHistoryEvent) {
     if (historyCount > historyMax) {
       historyList.children[1].remove();
       historyCount--;

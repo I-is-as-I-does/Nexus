@@ -1,5 +1,5 @@
 (function () {
-      import("./../NxThalamus.js").then((module)=> { 
-         module.default.autoloadReader();
+      import("./../NxViewer.js").then((module)=> { 
+         module.build();
         });
 })();
