@@ -1,18 +1,10 @@
 
-import { isNonEmptyStr } from "./lib/Jack/Trades/Check.js";
-import { isValidHttpUrl } from "./lib/Jack/Trades/Web.js";
-import { defaultCssUrl, defaultSelector } from "./NxConstants.js";
-import { isValidId } from "./NxStamper.js";
+import { isNonEmptyStr } from "../lib/Jack/Trades/Check.js";
+import { isValidHttpUrl } from "../lib/Jack/Trades/Web.js";
+import { defaultOpts, defaultSelector } from "../valid/NxConstants.js";
+import { isValidId } from "../valid/NxStamper.js";
 
-var opts = {
-  src:null,
-  id:'/',
-  style:defaultCssUrl,
-  lang:"en",
-  embed:true,
-  history:false,
-  log:false
-};
+var opts = defaultOpts;
 
 var container = null;
 

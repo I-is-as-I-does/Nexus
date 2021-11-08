@@ -1,8 +1,17 @@
 //@todo: change to cdn
 export const defaultSelector = '#Nexus';
-export const defaultCssUrl = "./assets/css/NexusI.css";
-export const defaultIO = "./assets/js/io/NxReaderIO.js";
-export const appUrl = "https://github.com/I-is-as-I-does/NexusApp";
+export const defaultOpts = {
+  src:null,
+  id:'/',
+  style:"https://cdn.jsdelivr.net/gh/I-is-as-I-does/Nexus-Prototype@0.2.0/cdn/NexusI.css",
+  lang:"en",
+  embed:true,
+  history:false,
+  log:false
+};
+export const defaultIO = "https://cdn.jsdelivr.net/gh/I-is-as-I-does/Nexus-Prototype@0.2.0/cdn/ViewerIO.js";
+export const appUrl = "https://github.com/I-is-as-I-does/Nexus-Prototype";
+export const historyMax = 100;
 export const charMinMax = {
   handle: [3, 30],
   about: [0, 400],

@@ -1,130 +1,130 @@
 import { isNonEmptyStr } from "../lib/Jack/Trades/Check.js";
 import { insertDiversion, replaceDiversion } from "../lib/Valva/Valva.js";
-import NxViewer from "./../NxViewer.js";
-import { authorIndexLink, authorUrl, threadName, viewLink } from "./NxIdent.js";
+import { resolveState } from "../prc/NxInstance.js";
+import{ registerUpdateEvt } from "../prc/NxViewer.js";
+import { authorIndexLink, authorUrl,  threadNameElm,  viewLink } from "./NxIdent.js";
 import { mediaElm } from "./NxMedia.js";
-import { blockWrap } from "./NxMeta.js";
+import { blockWrap, getElm } from "./NxMeta.js";
 
-export function threadBlock(dataSrc, threadId) {
-  var thread = null;
-  if (threadId != "/") {
-    thread = NxViewer.threadData(dataSrc, threadId);
+var linkedWrap;
+var descrpElm;
+var recordElm;
+
+function updateThreadBlocks(state){
+  var newThreadData = resolveThreadData(state);
+
+  var newRecord = threadRecord(newThreadData);
+  var newDescrpTxt = threadTextElm(newThreadData, ["description"]);
+  replaceDiversion(descrpElm.firstChild, newDescrpTxt);
+  replaceDiversion(recordElm.firstChild, newRecord);
+
+  var newLinkedElm = linkedItems(newThreadData);
+  Array.from(linkedWrap.childNodes).forEach((list, ind) => {
+    replaceDiversion(list, newLinkedElm[ind]);
+  });
+
+}
+
+function setDescriptionElm(threadData){
+  descrpElm = getElm('DIV', "nx-thread-description");
+  descrpElm.append(threadTextElm(threadData, ["description"]));
+}
+
+function resolveThreadData(state) {
+  var threadData = null;
+  if (state.threadId != "/") {
+    threadData = state.srcData.threads[state.threadIndex];
   }
-  var headerElms = [threadName(dataSrc, threadId, true)];
-
-  var descrp = descriptionElm(thread);
-  var record = threadRecord(thread);
-
-  NxViewer.registerUpdateEvt(function (e) {
-    var nthread = NxViewer.threadData(e.dataSrc, e.threadId);
-    var nrecord = threadRecord(nthread);
-    var ndescrp = threadTextElm(nthread, ["description"]);
-    replaceDiversion(descrp.firstChild, ndescrp);
-    replaceDiversion(descrp.nextElementSibling, nrecord);
-  });
-
-  return blockWrap("local", headerElms, [descrp, record], true);
+  return threadData;
+}
+function distantThreadBlock(threadData) {
+  linkedWrap = getElm("DIV");
+  linkedWrap.append(...linkedItems(threadData));
+ return blockWrap("distant", null, [linkedWrap], true);
 }
 
-export function linkedBlock(dataSrc, threadId) {
-  var wrap = document.createElement("DIV");
-  wrap.append(...linkedItems(dataSrc, threadId));
+function localThreadBlock(state, threadData) {
+  var headerElm = threadNameElm(state, true);
+  setDescriptionElm(threadData);
+  setRecordElm(threadData);
 
-  NxViewer.registerUpdateEvt(function (e) {
-    var nlinkedElm = linkedItems(e.dataSrc, e.threadId);
-    Array.from(wrap.children).forEach((list, ind) => {
-      replaceDiversion(list, nlinkedElm[ind]);
-    });
-  });
-  return blockWrap("distant", null, [wrap], true);
+  return blockWrap("local", [headerElm], [descrpElm, recordElm], true);
 }
 
-export function linkedItems(dataSrc, threadId) {
+function setRecordElm(threadData){
+  recordElm = getElm('DIV', "nx-local-record");
+  recordElm.append(threadRecord(threadData));
+}
+
+function linkedItems(threadData) {
   var linked = [];
-  if (threadId != "/") {
-    linked = NxViewer.threadData(dataSrc, threadId).linked;
+  if (threadData != null) {
+    linked = threadData.linked;
   }
 
-  var records = document.createElement("UL");
-  records.classList.add("nx-distant-records");
-  var indexes = document.createElement("UL");
-  indexes.classList.add("nx-distant-indexes");
+  var records = getElm("UL", "nx-distant-records");
+  var indexes =getElm("UL", "nx-distant-indexes");
 
   if (linked.length) {
     var doneIndexes = [];
     linked.forEach((item) => {
-      NxViewer.loadData(item.url).then(() => {
-        if (item.id != "/") {
-          item.id = NxViewer.resolveThreadId(item.url, item.id);
-        }
+      resolveState(item.url, item.id).then((distantState) => {
+        
+
         var linkedAuthor = [
-          authorIndexLink(item.url, false),
-          authorUrl(item.url, false),
-          viewLink(item.url, item.id, false),
+          authorIndexLink(distantState, false),
+          authorUrl(distantState, false),
+          viewLink(distantState, false),
         ];
 
-        if (item.id == "/") {
-          if (!doneIndexes.includes(item.id)) {
-            doneIndexes.push(item.id);
-            var li = document.createElement("LI");
+        if (distantState.threadId == "/") {
+          if (!doneIndexes.includes(distantState.threadId )) {
+            doneIndexes.push(distantState.threadId );
+            var li = getElm("LI");
             li.append(...linkedAuthor);
             insertDiversion(indexes, li, false, false, 200);
           }
         } else {
-          var li = document.createElement("LI");
+          var li = getElm("LI");
           li.append(...linkedAuthor);
-          li.append(threadRecord(NxViewer.threadData(item.url, item.id)));
+          li.append(threadRecord(resolveThreadData(distantState)));
           insertDiversion(records, li, false, false, 200);
         }
       });
     });
   } else {
-    var li = document.createElement("LI");
+    var li = getElm("LI");
     li.textContent = "...";
     records.append(li);
   }
   return [records, indexes];
 }
 
-export function threadRecord(thread) {
-  var dv = document.createElement("DIV");
-  dv.classList.add("nx-record");
-
-  dv.append(dateElm(thread), recordBody(thread), mediaElm(thread));
-
+function threadRecord(threadData) {
+  var dv = getElm("DIV","nx-record" );
+  dv.append(dateElm(threadData), recordBody(threadData), mediaElm(threadData));
   return dv;
 }
 
-export function recordBody(thread) {
-  var bodydiv = document.createElement("DIV");
-  bodydiv.classList.add("nx-record-body");
+function recordBody(threadData) {
+  var bodydiv = getElm("DIV", "nx-record-body");
   bodydiv.append(
-    threadTextElm(thread, ["record", "main"]),
-    threadTextElm(thread, ["record", "aside"])
+    threadTextElm(threadData, ["record", "main"]),
+    threadTextElm(threadData, ["record", "aside"])
   );
   return bodydiv;
 }
 
-export function dateElm(thread) {
-  var datediv = document.createElement("DIV");
-  datediv.classList.add("nx-record-meta");
-  var rdate = threadTextElm(thread, ["record", "timestamp"]).substr(0, 10);
+function dateElm(threadData) {
+  var datediv = getElm("DIV", "nx-record-meta");
+  var rdate = threadTextElm(threadData, ["record", "timestamp"]);
   datediv.append(rdate);
   return datediv;
 }
 
-export function descriptionElm(thread) {
-  var dv = document.createElement("DIV");
-  dv.classList.add("nx-thread-description");
-  var p = threadTextElm(thread, ["description"]);
-  dv.append(p);
-
-  return dv;
-}
-
-export function threadFieldText(thread, ref = []) {
-  if (thread) {
-    var data = thread;
+function threadFieldText(threadData, ref = []) {
+  if (threadData) {
+    var data = Object.assign({},threadData);
     for (var r = 0; r < ref.length; r++) {
       data = data[ref[r]];
     }
@@ -135,10 +135,21 @@ export function threadFieldText(thread, ref = []) {
   return "";
 }
 
-export function threadTextElm(thread, ref) {
-  var p = document.createElement("P");
-  p.classList.add("nx-" + ref.join("-"));
-  p.textContent = threadFieldText(thread, ref);
-
+export function threadTextElm(threadData, ref) {
+  var p = getElm("P", "nx-" + ref.join("-"));
+  p.textContent = threadFieldText(threadData, ref);
   return p;
+}
+
+
+export function threadBlocks(state) {
+ 
+  var threadData = resolveThreadData(state);
+  var blocks = [localThreadBlock(state,threadData), distantThreadBlock(threadData)];
+
+  registerUpdateEvt(function (newState) {
+    updateThreadBlocks(newState);
+  });
+
+  return blocks;
 }

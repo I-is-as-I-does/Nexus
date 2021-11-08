@@ -1,59 +1,31 @@
-import { conciseUrl, oembedHtml, oembedLink } from "../lib/Jack/Trades/Web.js";
-import NxViewer from "./../NxViewer.js";
+import { conciseUrl, oembedIframe, oembedLink } from "../lib/Jack/Trades/Web.js";
 import {
-  easeOut,
   insertDiversion,
   replaceDiversion,
 } from "../lib/Valva/Valva.js";
 import { threadTextElm } from "./NxThread.js";
+import { logEvent } from "../prc/NxInstance.js";
+import { getElm } from "./NxMeta.js";
 
-export function mediaElm(thread) {
-  var mediadiv = document.createElement("DIV");
-  mediadiv.classList.add("nx-record-media");
-  mediadiv.append(threadMediaWrap(thread), threadMediaCaption(thread));
+var mediaWrap;
 
-  return mediadiv;
+
+function threadMediaCaption(threadData) {
+  return threadTextElm(threadData, ["record", "media", "caption"]);
 }
 
-export function threadMediaCaption(thread) {
-  return threadTextElm(thread, ["record", "media", "caption"]);
-}
-
-export function threadMediaWrap(thread) {
-  var mediaWrap = document.createElement("DIV");
-  if (thread && thread.record.media.type) {
-    mediaPromise(mediaWrap, thread.record.media.type, thread.record.media.url);
-  }
-
-  NxViewer.registerUpdateEvt(function (e) {
-    mediaWrapUpdate(mediaWrap, e.dataSrc, e.threadId);
-  });
-
-  return mediaWrap;
-}
-
-export function mediaWrapUpdate(mediaWrap, dataSrc, threadId) {
-  var prev = mediaWrap.firstChild;
-  if (threadId == "/") {
-    if (prev) {
-      mediaWrap.className = "";
-      easeOut(
-        prev,
-        function () {
-          mediaWrap.removeChild(prev);
-        },
-        200
-      );
-    }
-  } else {
-    var threadMedia = NxViewer.threadData(dataSrc, threadId).record.media;
-    if (threadMedia.type) {
-      mediaPromise(mediaWrap, threadMedia.type, threadMedia.url, prev);
-    }
+function setThreadMedia(threadData) {
+ 
+  if (threadData && threadData.record.media.type) {
+    mediaPromise(
+      threadData.record.media.type,
+      threadData.record.media.url
+    );
   }
 }
 
-export function mediaPromise(mediaWrap, type, url, prev = null) {
+
+function mediaPromise(type, url, prev = null) {
   var map = {
     page: pageElm,
     image: imageElm,
@@ -73,48 +45,43 @@ export function mediaPromise(mediaWrap, type, url, prev = null) {
   if (map.hasOwnProperty(type)) {
     callback(map[type](url));
   } else {
-    oembedHtml(oembedLink(url, type, 360))
-      .then((html) => {
-        var wrap = document.createElement("DIV");
-        wrap.insertAdjacentHTML("afterbegin", html);
-        callback(wrap);
+    oembedIframe(oembedLink(url, type, 360))
+      .then((iframe) => {
+        callback(iframe);
       })
       .catch((err) => {
-        NxViewer.logEvent(err);
+        logEvent(err);
         callback(brokenMediaElm(url));
       });
   }
 }
 
-export function brokenMediaElm(url) {
-  var dv = document.createElement("DIV");
-  dv.classList.add("nx-boken-media");
+function brokenMediaElm(url) {
+  var dv = getElm("DIV", "nx-boken-media");
   dv.append(threadMediaLink(url));
   return dv;
 }
 
-export function threadMediaLink(url) {
-  var a = document.createElement("A");
-  a.classList.add("nx-external-link");
+function threadMediaLink(url) {
+  var a = getElm("A", "nx-external-link");
   a.target = "_blank";
   a.href = url;
   a.textContent = conciseUrl(url, true);
   return a;
 }
 
-export function pageElm(url) {
-  var elm = document.createElement("A");
-  elm.classList.add("nx-external-link");
+function pageElm(url) {
+  var elm = getElm("A", "nx-external-link");
   elm.href = url;
   elm.target = "_blank";
   elm.textContent = conciseUrl(url, true);
   return elm;
 }
 
-export function videoElm(url) {
-  var elm = document.createElement("VIDEO");
+function videoElm(url) {
+  var elm = getElm("VIDEO");
   elm.setAttribute("controls", true);
-  var source = document.createElement("SOURCE");
+  var source = getElm("SOURCE");
   source.src = url;
   elm.append(source);
   source.onerror = () => {
@@ -123,8 +90,8 @@ export function videoElm(url) {
   return elm;
 }
 
-export function audioElm(url) {
-  var elm = document.createElement("AUDIO");
+function audioElm(url) {
+  var elm = getElm("AUDIO");
   elm.setAttribute("controls", true);
   elm.src = url;
   elm.onerror = () => {
@@ -133,11 +100,20 @@ export function audioElm(url) {
   return elm;
 }
 
-export function imageElm(url) {
-  var elm = document.createElement("IMG");
+function imageElm(url) {
+  var elm = getElm("IMG");
   elm.src = url;
   elm.onerror = () => {
     replaceDiversion(elm, brokenMediaElm(url));
   };
   return elm;
+}
+
+export function mediaElm(threadData) {
+  var mediadiv = getElm("DIV", "nx-record-media");
+  mediaWrap = getElm("DIV");
+  setThreadMedia(threadData);
+  mediadiv.append(mediaWrap, threadMediaCaption(threadData));
+
+  return mediadiv;
 }

@@ -6,32 +6,45 @@ const license = 'Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license';
 
 module.exports = {
     mode: 'production',
-  entry: './src/io/NxReaderIO.js',
-  output: {
-    filename: 'js/NexusIO.js',
-    path: path.resolve(__dirname, 'dist/'),
-  },
-  optimization: {
-   splitChunks: {
+    entry: {
+   //   NxTransl:'./src/transl/NxCommons.js',
+      NxViewerIO:'./src/io/NxViewerIO.js',
+      NxEditorIO: {
+        import: './src/io/NxEditorIO.js',
+        dependOn: 'NxViewerIO',
+      }
+    },
+    output: {
+      path: path.resolve(__dirname, 'dist'),
+      filename: 'js/[name].js',
+    },
+    optimization: {
+  /*   splitChunks: {
+
+        chunks: 'all',
+        name: 'Nx',
      cacheGroups: {
-       vendor: {
-         test: /[\\/]lib[\\/]/,
-         name: 'lib',
-         chunks: 'all'
-       }
-     }
-   }
-  },
-  module: {
-    rules: [
-      {
-        test: /\.css$/i,
-        use: [MiniCssExtractPlugin.loader, "css-loader"],
+      vendor: {
+        test: /[\\/]lib[\\/]/,
+        name(module) {
+          const packageName = module.context.match(/[\\/]lib[\\/](.*?)([\\/]|$)/)[1];
+          return `ssitu.${packageName}`;
+        },
       },
-    ]
+    },
+  },*/
+    },
+  module: {
+  //  rules: [
+  //    {
+   //     test: /\.css$/i,
+   //     use: [MiniCssExtractPlugin.loader, "css-loader"],
+   //   },
+   // ]
   },
   plugins: [
-    new MiniCssExtractPlugin({filename:"css/main.css"}),
+   new webpack.optimize.ModuleConcatenationPlugin(),
+   // new MiniCssExtractPlugin({filename:"css/main.css"}),
     new webpack.BannerPlugin({
       banner: license,
     })

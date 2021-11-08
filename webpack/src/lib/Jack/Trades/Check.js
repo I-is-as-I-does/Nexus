@@ -14,6 +14,9 @@ export function isElement(Obj) {
   return Obj instanceof Element;
 }
 export function isEmpty(it){
-  return !it || (typeof it == 'object' && !Object.keys(it).length) || !it.length;
+  if(typeof it == 'object'){
+    return !Object.keys(it).length
+  }
+  return !it || !it.length;
  }
  

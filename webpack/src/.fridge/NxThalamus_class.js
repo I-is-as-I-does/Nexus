@@ -33,15 +33,14 @@ class NxThalamus {
     this.loadedCss = {};
 
     this.current = {
-      dataSrc: null,
+      dataUrl: null,
       threadId: null,
     };
     this.origin = {
-      dataSrc: null,
+      dataUrl: null,
       threadId: null,
     };
 
-    
     this.originLang = "en";
 
     this.isHistoryEvent = false;
@@ -50,7 +49,7 @@ class NxThalamus {
     this.updateRunning = false;
     this.bufferTime = 800;
 
- //   this.doneLoadingEvt = new CustomEvent("Done");
+    //   this.doneLoadingEvt = new CustomEvent("Done");
 
     this.visitStore = {};
     this.dataStore = {};
@@ -61,8 +60,8 @@ class NxThalamus {
     this.#setStorageAvailability(this.sesStore);
 
     window.onpopstate = function (event) {
-      if (event.state && event.state.dataSrc && event.state.threadId) {
-        this.triggerUpdate(event.state.dataSrc, event.state.threadId);
+      if (event.state && event.state.dataUrl && event.state.threadId) {
+        this.triggerUpdate(event.state.dataUrl, event.state.threadId);
       }
     }.bind(this);
   }
@@ -72,22 +71,22 @@ class NxThalamus {
       store.setItem("available", 5000);
     }
   }
-  #registerData(dataSrc, data) {
-    this.dataStore[dataSrc] = data;
-    this.#setStoreItem(this.sesStore, dataSrc, data);
+  #registerData(dataUrl, data) {
+    this.dataStore[dataUrl] = data;
+    this.#setStoreItem(this.sesStore, dataUrl, data);
   }
 
-  threadDate(dataSrc, threadId) {
-    var data = this.threadData(dataSrc, threadId);
+  threadDate(dataUrl, threadId) {
+    var data = this.threadData(dataUrl, threadId);
     if (data) {
       return new Date(data.record.timestamp);
     }
     return null;
   }
 
-  threadLastSeenDate(dataSrc, threadId) {
+  threadLastSeenDate(dataUrl, threadId) {
     var timestamp;
-    var key = dataSrc + "#" + threadId;
+    var key = dataUrl + "#" + threadId;
     if (this.visitStore.hasOwnProperty(key)) {
       timestamp = this.visitStore[key];
     } else if (this.locStore) {
@@ -99,13 +98,13 @@ class NxThalamus {
     return null;
   }
 
-  isThreadRecordUnseen(dataSrc, threadId) {
-    var lastVisit = this.threadLastSeenDate(dataSrc, threadId);
+  isThreadRecordUnseen(dataUrl, threadId) {
+    var lastVisit = this.threadLastSeenDate(dataUrl, threadId);
 
     if (!lastVisit) {
       return true;
     }
-    var threadDate = this.threadDate(dataSrc, threadId);
+    var threadDate = this.threadDate(dataUrl, threadId);
     if (threadDate && lastVisit != threadDate) {
       return false;
     }
@@ -135,7 +134,7 @@ class NxThalamus {
 
   #setOpts() {
     if (isValidHttpUrl(this.container.dataset.src)) {
-      this.origin.dataSrc = this.container.dataset.src;
+      this.origin.dataUrl = this.container.dataset.src;
       if (isValidId(this.container.dataset.id)) {
         this.origin.threadId = this.container.dataset.id;
       }
@@ -203,8 +202,8 @@ class NxThalamus {
     }
   }
 
-  loadData(dataSrc) {
-    var data = this.srcData(dataSrc);
+  loadData(dataUrl) {
+    var data = this.srcData(dataUrl);
     if (data) {
       if (Number.isInteger(data)) {
         return Promise.reject(data);
@@ -212,7 +211,7 @@ class NxThalamus {
       return Promise.resolve(200);
     }
 
-    return loadJson(dataSrc)
+    return loadJson(dataUrl)
       .then((data) => {
         data = validMap(data);
         if (data) {
@@ -222,7 +221,7 @@ class NxThalamus {
           });
 
           data.author.miniUrl = miniUrl(data.author.url);
-          this.#registerData(dataSrc, data);
+          this.#registerData(dataUrl, data);
           return 200;
         }
         this.logEvent("NxThalamus: invalid data");
@@ -233,14 +232,14 @@ class NxThalamus {
         if (err !== 400) {
           err = 404;
         }
-        this.#registerData(dataSrc, err);
+        this.#registerData(dataUrl, err);
         throw err;
       });
   }
 
   #resolveInstanceData() {
-    if (!this.current.dataSrc) {
-      if (!this.origin.dataSrc) {
+    if (!this.current.dataUrl) {
+      if (!this.origin.dataUrl) {
         return false;
       }
       this.current = this.origin;
@@ -252,7 +251,7 @@ class NxThalamus {
     this.initPage(
       function () {
         this.metaElm.append(
-          defaultReaderBlocks(this.current.dataSrc, this.current.threadId)
+          defaultReaderBlocks(this.current.dataUrl, this.current.threadId)
         );
       }.bind(this),
       null,
@@ -265,10 +264,10 @@ class NxThalamus {
     if (this.#setContainer(container) && this.#resolveInstanceData()) {
       NxNimrod.setDefaultLang(this.originLang);
       prom = this.loadStyle(this.themeCssUrl)
-        .then(() => this.loadData(this.current.dataSrc))
+        .then(() => this.loadData(this.current.dataUrl))
         .then(() => {
           this.current.threadId = this.resolveThreadId(
-            this.current.dataSrc,
+            this.current.dataUrl,
             this.current.threadId
           );
           return successCallback();
@@ -289,12 +288,12 @@ class NxThalamus {
       if (this.loadedCss[this.themeCssUrl] === 404) {
         text = "Nexus theme not found";
       } else if (
-        this.current.dataSrc &&
-        this.srcData(this.current.dataSrc) === 404
+        this.current.dataUrl &&
+        this.srcData(this.current.dataUrl) === 404
       ) {
         text = "Nexus not found";
       }
-      this.current.dataSrc = null;
+      this.current.dataUrl = null;
       this.current.threadId = null;
       insertDiversion(this.metaElm, errorElm(text), false, true, 200);
     }
@@ -310,10 +309,10 @@ class NxThalamus {
     }
   }
 
-  #registerThreadVisit(dataSrc, threadId) {
-    var key = dataSrc + "#" + threadId;
+  #registerThreadVisit(dataUrl, threadId) {
+    var key = dataUrl + "#" + threadId;
     if (!this.visitStore.hasOwnProperty(key)) {
-      var time = this.threadDate(dataSrc, threadId);
+      var time = this.threadDate(dataUrl, threadId);
       if (time) {
         this.visitStore[key] = time;
         this.#setStoreItem(this.locStore, key, time);
@@ -337,22 +336,22 @@ class NxThalamus {
     }
   }
 
-  triggerUpdate(dataSrc, threadId, isHistoryEvent = false) {
+  triggerUpdate(dataUrl, threadId, isHistoryEvent = false) {
     if (!this.updateRunning) {
-      var srcChanged = dataSrc != this.current.dataSrc;
+      var srcChanged = dataUrl != this.current.dataUrl;
       if (srcChanged || threadId != this.current.threadId) {
         this.updateRunning = true;
 
         this.isHistoryEvent = isHistoryEvent;
         if (!isHistoryEvent) {
           this.#registerThreadVisit(
-            this.current.dataSrc,
+            this.current.dataUrl,
             this.current.threadId
           );
           this.#addHistoryState();
         }
 
-        this.current.dataSrc = dataSrc;
+        this.current.dataUrl = dataUrl;
         this.current.threadId = threadId;
 
         var ks = ["onChange"];
@@ -386,12 +385,12 @@ class NxThalamus {
     this.updateStore[k].push(callback);
   }
 
-  srcData(dataSrc) {
-    if (this.dataStore.hasOwnProperty(dataSrc)) {
-      return this.dataStore[dataSrc];
+  srcData(dataUrl) {
+    if (this.dataStore.hasOwnProperty(dataUrl)) {
+      return this.dataStore[dataUrl];
     }
     if (this.sesStore) {
-      var data = this.sesStore.getItem(dataSrc);
+      var data = this.sesStore.getItem(dataUrl);
       if (data) {
         return JSON.parse(data);
       }
@@ -399,9 +398,9 @@ class NxThalamus {
     return false;
   }
 
-  threadData(dataSrc, threadId) {
+  threadData(dataUrl, threadId) {
     if (threadId && threadId != "/") {
-      var data = this.srcData(dataSrc);
+      var data = this.srcData(dataUrl);
       if (data && data.map.hasOwnProperty(threadId)) {
         return data.threads[data.map[threadId]];
       }
@@ -409,8 +408,8 @@ class NxThalamus {
     return null;
   }
 
-  resolveThreadId(dataSrc, threadId) {
-    if (this.threadData(dataSrc, threadId)) {
+  resolveThreadId(dataUrl, threadId) {
+    if (this.threadData(dataUrl, threadId)) {
       return threadId;
     }
     return "/";

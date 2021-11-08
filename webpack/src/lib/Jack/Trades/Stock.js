@@ -2,12 +2,14 @@ export function getLocalStorage() {
   if (isStorageAvailable("localStorage")) {
     return localStorage;
   }
+  return null;
 }
 
 export function getSessionStorage() {
   if (isStorageAvailable("sessionStorage")) {
     return sessionStorage;
   }
+  return null;
 }
 
 export function sizeInBytes(s) {

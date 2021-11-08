@@ -1,36 +1,32 @@
 import { copyToClipboard } from "../lib/Jack/Trades/Stock.js";
 import { timedFadeToggle, easeOut, easeIn } from "../lib/Valva/Valva.js";
-import { blockWrap } from "./NxMeta.js";
-import NxTranslate from "../NxTranslate.js";
-import NxViewer from "./../NxViewer.js";
-import { defaultIO } from "../NxConstants.js";
+import { blockWrap, getElm } from "./NxMeta.js";
+import { getLang } from "../prc/NxTranslate.js";
+import { registerTranslElm, registerUpdateEvt } from "../prc/NxViewer.js";
+import { defaultIO, defaultOpts } from "../valid/NxConstants.js";
 
-export function sourceBlock(dataSrc, threadId) {
-  return blockWrap("source", null, snippetsBundle(dataSrc, threadId), false);
-}
+var drawerElm = null;
 
-export function actionLink(action, text) {
-  var lk = document.createElement("A");
-  lk.classList.add("nx-source-" + action);
+function actionLink(action, text) {
+  var lk = getElm("A","nx-source-" + action);
   lk.textContent = text;
   return lk;
 }
 
-export function jsonContent(dataSrc, threadId) {
-  return '{"url": "' + dataSrc + '", "threadId": "' + threadId + '"}';
+function jsonContent(state) {
+  return '{"url": "' + state.dataUrl + '", "threadId": "' + state.threadId + '"}';
 }
 
-export function toolTip(className, text) {
-  var tooltip = document.createElement("SPAN");
-  tooltip.classList.add(className);
+function toolTip(className, text) {
+  var tooltip = getElm("SPAN",className);
   tooltip.textContent = text;
   tooltip.style.opacity = 0;
   tooltip.hidden = true;
-  NxTranslate.registerTranslElm(tooltip, text);
+  registerTranslElm(tooltip, text);
   return tooltip;
 }
 
-export function toggleLink(drawerElm) {
+function toggleLink() {
   var text = "</>";
   var altText = "< />";
   var lk = actionLink("snippets", text);
@@ -55,52 +51,34 @@ export function toggleLink(drawerElm) {
   return lk;
 }
 
-export function snippetsBundle(dataSrc, threadId) {
-  var srcDrawer = document.createElement("DIV");
-  srcDrawer.classList.add("nx-source-drawer");
-  srcDrawer.append(
-    jsonSnippet(dataSrc, threadId),
-    embedSnippet(dataSrc, threadId)
+function snippetsBundle(state) {
+  drawerElm = getElm("DIV","nx-source-drawer");
+  drawerElm.append(
+    jsonSnippet(state),
+    embedSnippet(state)
   );
-  srcDrawer.style.display = "none";
+  drawerElm.style.display = "none";
 
-  var tgg = document.createElement("DIV");
-  tgg.classList.add("nx-source-toggle");
+  var tgg = getElm("DIV", "nx-source-toggle");
 
-  var snippetLink = toggleLink(srcDrawer);
+  var snippetLink = toggleLink();
   tgg.append(snippetLink);
 
-  return [tgg, srcDrawer];
+  return [tgg, drawerElm];
 }
 
-export function textAreaElm(content, eventCallback) {
-  var snpInp = document.createElement("TEXTAREA");
+function textAreaElm(state, callback) {
+  var snpInp = getElm("TEXTAREA");
   snpInp.spellcheck = false;
-  snpInp.textContent = content;
+  snpInp.textContent = callback(state);
 
-  NxViewer.registerUpdateEvt(function (e) {
-    var nwcode = eventCallback(e);
-    snpInp.textContent = nwcode;
+  registerUpdateEvt(function (newState) {
+    snpInp.textContent = callback(newState);
   });
   return snpInp;
 }
 
-export function jsonArea(dataSrc, threadId) {
-  var snpInp = textAreaElm(jsonContent(dataSrc, threadId), function (e) {
-    return jsonContent(e.dataSrc, e.threadId);
-  });
-  return snpInp;
-}
-
-export function embedArea(dataSrc, threadId) {
-  var snpInp = textAreaElm(embedContent(dataSrc, threadId, true), function (e) {
-    return embedContent(e.dataSrc, e.threadId, snpInp.dataset.embed);
-  });
-  snpInp.dataset.embed = true;
-  return snpInp;
-}
-
-export function copyLink(snpElm) {
+function copyLink(snpElm) {
   var copyLk = actionLink("copy", "⧉");
   var copyTooltip = toolTip("nx-source-copy-tooltip", "copied");
   copyLk.append(copyTooltip);
@@ -113,45 +91,40 @@ export function copyLink(snpElm) {
   return copyLk;
 }
 
-export function snippetElm(name, elms) {
-  var snp = document.createElement("DIV");
-  snp.classList.add("nx-" + name + "-snippet");
-  elms.push(copyLink(elms[0]));
-  snp.append(...elms);
-
+function snippetElm(name, elm) {
+  var snp = getElm("DIV","nx-" + name + "-snippet");
+  snp.append(elm, copyLink(elm));
   return snp;
 }
 
-export function jsonSnippet(dataSrc, threadId) {
-  return snippetElm("json", [jsonArea(dataSrc, threadId)]);
+function jsonSnippet(state) {
+  return snippetElm("json", textAreaElm(state, jsonContent));
 }
 
-export function embedSnippet(dataSrc, threadId) {
-  var embedInput = embedArea(dataSrc, threadId);
-  return snippetElm("embed", [embedInput]);
+function embedSnippet(state) {
+  return snippetElm("embed", textAreaElm(state, embedContent));
 }
 
-export const dfltOpts = {
-  embed: true,
-  history: false,
-};
-
-export function embedContent(dataSrc, threadId) {
+function embedContent(state) {
   return (
     '<div id="Nexus" data-src="' +
-    dataSrc +
+    state.dataUrl +
     '" data-id="' +
-    threadId +
+    state.threadId +
     '" data-style="' +
-    NxViewer.themeCssUrl +
+    defaultOpts.style +
     '" data-lang="' +
-    NxTranslate.lang +
+    getLang() +
     '" data-embed="' +
-    dfltOpts.embed +
+    defaultOpts.embed +
     '" data-history="' +
-    dfltOpts.history +
+    defaultOpts.history +
     '"></div>\r\n<script src="' +
     defaultIO +
     '"></script>'
   );
+}
+
+export function sourceBlock(state) {
+  return blockWrap("source", null, snippetsBundle(state), false);
 }

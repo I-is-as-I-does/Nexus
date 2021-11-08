@@ -1,16 +1,16 @@
-import NxTranslate from "../NxTranslate.js";
-import { appUrl } from "../NxConstants.js";
-import { blockWrap } from "./NxMeta.js";
+import { getAvailableLangs, getLang } from "../prc/NxTranslate.js";
+import { appUrl } from "../valid/NxConstants.js";
+import { blockWrap, getElm } from "./NxMeta.js";
 import { splitFlap } from "../lib/Valva/Valva.js";
+import { triggerTranslate } from "../prc/NxViewer.js";
 
 export function appBlock() {
   return blockWrap("app", null, [appLink(), langDropDown()], false);
 }
 
 export function appLink() {
-  var link = document.createElement("A");
+  var link = getElm("A","nx-app-link nx-external-link");
   link.target = "_blank";
-  link.classList.add("nx-app-link", "nx-external-link");
   link.href = appUrl;
   link.title = "Nexus";
   link.textContent = "Nexus";
@@ -20,29 +20,25 @@ export function appLink() {
 export function langDropDown() {
   var selectedClass = "nx-selected-lang";
 
-  var langTgg = document.createElement("SPAN");
-  langTgg.classList.add("nx-lang-list-toggle");
+  var langTgg = getElm("SPAN", "nx-lang-list-toggle");
+  langTgg.textContent = getLang();
 
-  langTgg.textContent = NxTranslate.lang;
-
-  var langDrp = document.createElement("UL");
-  langDrp.classList.add("nx-lang-list");
-
-  NxTranslate.availableLangs.forEach((lang) => {
-    var li = document.createElement("LI");
+  var langDrp = getElm("UL", "nx-lang-list");
+  getAvailableLangs().forEach((lang) => {
+    var li = getElm("LI");
     li.textContent = lang;
-    if (lang == NxTranslate.lang) {
+    if (lang == langTgg.textContent) {
       li.classList.add(selectedClass);
     }
     li.addEventListener("click", () => {
       var nlang = li.textContent;
-      if (nlang != NxTranslate.lang) {
+      if (nlang != getLang()) {
         var prev = langDrp.querySelector("." + selectedClass);
         prev.classList.remove(selectedClass);
         li.classList.add(selectedClass);
 
         splitFlap(langTgg, nlang, 50);
-        NxTranslate.setUserSelectedLang(nlang);
+        triggerTranslate(nlang);
       }
       langDrp.style.display = "none";
     });
@@ -51,8 +47,7 @@ export function langDropDown() {
   });
   langDrp.style.display = "none";
 
-  var swtch = document.createElement("DIV");
-  swtch.classList.add("nx-lang-switch");
+  var swtch = getElm("DIV", "nx-lang-switch");
   swtch.append(langTgg, langDrp);
 
   langTgg.addEventListener("click", () => {
@@ -66,19 +61,3 @@ export function langDropDown() {
   return swtch;
 }
 
-export function langSelect() {
-  var langSlct = document.createElement("SELECT");
-  langSlct.classList.add("nx-lang-switch");
-
-  NxTranslate.availableLangs.forEach((lang) => {
-    var opt = document.createElement("OPTION");
-    opt.textContent = lang;
-    if (lang == NxTranslate.lang) {
-      opt.selected = true;
-    }
-    langSlct.append(opt);
-  });
-
-  langSlct.addEventListener("change", (e) => NxTranslate.langSelectEvent(e));
-  return langSlct;
-}

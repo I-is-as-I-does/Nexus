@@ -1,144 +1,136 @@
 import { splitFlap } from "../lib/Valva/Valva.js";
-import NxViewer from "././../NxViewer.js";
+import { isThreadRecordUnseen } from "../prc/NxMemory.js";
+import { getCurrentState, registerUpdateEvt, triggerUpdate } from "../prc/NxViewer.js";
+import { getElm } from "./NxMeta.js";
 
-export function authorHandle(dataSrc, update = false) {
-  var hnd = document.createElement("SPAN");
-  hnd.classList.add("nx-handle");
-  hnd.textContent = NxViewer.srcData(dataSrc).author.handle;
-  if (update) {
-    NxViewer.registerUpdateEvt(function (e) {
-      splitFlap(hnd, NxViewer.srcData(e.dataSrc).author.handle, 20);
-    }, true);
-  }
-  return hnd;
-}
 
-export function authorUrl(dataSrc, update = false) {
-  var authorData = NxViewer.srcData(dataSrc).author;
 
-  var authorlk = document.createElement("A");
-  authorlk.classList.add("nx-author-url", "nx-external-link");
-  authorlk.target = "_blank";
-  authorlk.href = authorData.url;
 
-  var urlBrck = [];
-  ["[", "]"].forEach((bracket) => {
-    var brsp = document.createElement("SPAN");
-    brsp.classList.add("nx-author-url-brackets");
-    brsp.textContent = bracket;
-    urlBrck.push(brsp);
-  });
-  var urlsp = document.createElement("SPAN");
-  urlsp.textContent = authorData.miniUrl;
-
-  authorlk.append(urlBrck[0], urlsp, urlBrck[1]);
-
-  if (update) {
-    NxViewer.registerUpdateEvt(function (e) {
-      var nwAuthorData = NxViewer.srcData(e.dataSrc).author;
-      authorlk.href = nwAuthorData.url;
-      splitFlap(urlsp, nwAuthorData.miniUrl, 20);
-    }, true);
-  }
-  return authorlk;
-}
-
-export function threadName(dataSrc, threadId, update = false) {
-  var sp = document.createElement("SPAN");
-  sp.classList.add("nx-thread-name");
-  var name = "/";
-  if (threadId != "/") {
-    name = NxViewer.threadData(dataSrc, threadId).name;
-  }
-  sp.textContent = name;
-  if (update) {
-    NxViewer.registerUpdateEvt(function (e) {
-      var nThreadName = "/";
-      if (e.threadId != "/") {
-        nThreadName = NxViewer.threadData(e.dataSrc, e.threadId).name;
-      }
-
-      splitFlap(sp, nThreadName, 15);
-    });
-  }
-
-  return sp;
-}
-
-export function unseenTag() {
-  var sp = document.createElement("SPAN");
-  sp.classList.add("nx-new-tag");
-  return sp;
-}
-export function toggleUnseen(viewlk, dataSrc, threadId) {
+function toggleUnseen(viewlk, state) {
   if (viewlk.classList.contains("nx-on-display")) {
     viewlk.classList.remove("nx-unseen");
     viewlk.lastChild.textContent = "";
-  } else if (NxViewer.isThreadRecordUnseen(dataSrc, threadId)) {
+  } else if (isThreadRecordUnseen(state)) {
     viewlk.classList.add("nx-unseen");
     viewlk.lastChild.textContent = "*";
   }
 }
 
-export function toggleStatus(viewlk, dataSrc, threadId) {
-  toggleOnDisplay(viewlk, dataSrc, threadId);
-  toggleUnseen(viewlk, dataSrc, threadId);
-}
+function toggleOnDisplay(viewlk, dataUrl, threadId, state) {
 
-export function toggleOnDisplay(viewlk, dataSrc, threadId) {
-  if (
-    dataSrc == NxViewer.current.dataSrc &&
-    threadId == NxViewer.current.threadId
-  ) {
+  if (dataUrl == state.dataUrl && threadId == state.threadId) {
     viewlk.classList.add("nx-on-display");
   } else {
     viewlk.classList.remove("nx-on-display");
   }
 }
 
-export function historyViewLink(dataSrc, threadId) {
-  var viewlk = baseViewLink(dataSrc, threadId, false);
-
-  toggleOnDisplay(viewlk, dataSrc, threadId);
-  NxViewer.registerUpdateEvt(function () {
-    toggleOnDisplay(viewlk, dataSrc, threadId);
-  });
-
-  viewlk.addEventListener("click", () => {
-    NxViewer.triggerUpdate(dataSrc, threadId, true);
-  });
-  return viewlk;
+function resolveThreadName(state){
+  var threadName = '/';
+  if(state.threadId != '/'){
+    threadName = state.srcData.threads[state.threadIndex].name;
+  }
+  return threadName;
 }
-export function baseViewLink(dataSrc, threadId, update) {
-  var viewlk = document.createElement("A");
-  viewlk.classList.add("nx-view-link");
-  viewlk.append(threadName(dataSrc, threadId, update));
+
+export function baseViewLink(state, update = false) {
+  var viewlk = getElm("A", "nx-view-link");
+  viewlk.append(threadNameElm(state, update));
   return viewlk;
 }
 
-export function viewLink(dataSrc, threadId, update = false) {
-  var viewlk = baseViewLink(dataSrc, threadId, update);
-  if (threadId != "/") {
-    viewlk.append(unseenTag());
-    toggleStatus(viewlk, dataSrc, threadId);
-    NxViewer.registerUpdateEvt(function () {
-      toggleStatus(viewlk, dataSrc, threadId);
+export function setToggleOnDisplay(viewlk, dataUrl, threadId){
+  toggleOnDisplay(viewlk, dataUrl, threadId, getCurrentState());
+  registerUpdateEvt(function (state) {
+    toggleOnDisplay(viewlk, dataUrl, threadId, state);
+  });
+
+}
+
+export function authorHandle(state, update = false) {
+  var hnd = getElm("SPAN", "nx-handle");
+  hnd.textContent = state.srcData.author.handle;
+  if (update) {
+    registerUpdateEvt(function (newState) {
+      splitFlap(hnd, newState.srcData.author.handle, 20);
+    }, true);
+  }
+  return hnd;
+}
+
+export function authorUrl(state, update = false) {
+  var authorlk = getElm("A", "nx-author-url nx-external-link");
+  authorlk.target = "_blank";
+  authorlk.href = state.srcData.author.url;
+
+  var urlBrck = [];
+  ["[", "]"].forEach((bracket) => {
+    var brsp = getElm("SPAN", "nx-author-url-brackets");
+    brsp.textContent = bracket;
+    urlBrck.push(brsp);
+  });
+  var urlsp = getElm("SPAN");
+  urlsp.textContent = state.srcData.author.miniUrl;
+
+  authorlk.append(urlBrck[0], urlsp, urlBrck[1]);
+
+  if (update) {
+    registerUpdateEvt(function (newState) {
+      authorlk.href = newState.srcData.author.url;
+      splitFlap(urlsp, newState.srcData.author.miniUrl, 20);
+    }, true);
+  }
+  return authorlk;
+}
+
+
+export function threadNameElm(state, update = false) {
+  var sp = getElm("SPAN", "nx-thread-name");
+  sp.textContent = resolveThreadName(state);
+  if (update) {
+    registerUpdateEvt(function (newState) {
+      var newThreadName = resolveThreadName(newState);
+      splitFlap(sp, newThreadName, 15);
     });
   }
 
+  return sp;
+}
+
+export function setToggleUnseen(viewlk, state){
+  viewlk.append(getElm("SPAN", "nx-new-tag"));
+  toggleUnseen(viewlk, state);
+  registerUpdateEvt(function () {
+    toggleUnseen(viewlk, state);
+  });
+}
+
+
+export function viewLink(state, update = false) {
+  var viewlk = baseViewLink(state, update);
+  if (state.threadId != "/") {
+    setToggleOnDisplay(viewlk, state.dataUrl, state.threadId);
+    setToggleUnseen(viewlk, state);
+  }
+
   viewlk.addEventListener("click", () => {
-    NxViewer.triggerUpdate(dataSrc, threadId);
+    triggerUpdate(state);
   });
   return viewlk;
 }
 
-export function authorIndexLink(dataSrc, update = false) {
-  var auth = document.createElement("A");
-  auth.classList.add("nx-author-link");
-  auth.append(authorHandle(dataSrc, update));
+export function authorIndexLink(state, update = false) {
+  var auth = getElm("A", "nx-author-link");
+  auth.append(authorHandle(state, update));
 
+  var newState = {
+    dataUrl: state.dataUrl,
+    srcData: state.srcData,
+    threadId: "/",
+    threadIndex: -1
+  }
   auth.addEventListener("click", function () {
-    NxViewer.triggerUpdate(dataSrc, "/");
+    triggerUpdate(newState, "/");
   });
 
   return auth;

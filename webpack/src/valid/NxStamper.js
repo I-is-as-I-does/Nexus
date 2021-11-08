@@ -1,6 +1,6 @@
-import { isEmpty, isNonEmptyStr } from "./lib/Jack/Trades/Check.js";
-import { isValidHttpUrl } from "./lib/Jack/Trades/Web.js";
-import { charCut } from "./lib/Jack/Trades/Help.js";
+import { isEmpty, isNonEmptyStr, seemsLikeValidDate } from "../lib/Jack/Trades/Check.js";
+import { isValidHttpUrl } from "../lib/Jack/Trades/Web.js";
+import { charCut } from "../lib/Jack/Trades/Help.js";
 import {
   typesMap,
   idPattern,
@@ -119,7 +119,7 @@ export function validMedia(mediaObj) {
 export function isValidTimestamp(timestamp) {
   if (
     hasValidType(timestamp, "timestamp", true) &&
-    timestamp.match(timestampPattern)
+    (timestamp.match(timestampPattern) || seemsLikeValidDate(timestamp))
   ) {
     return true;
   }
@@ -187,6 +187,7 @@ export function hasValidLength(item, catg) {
 }
 
 export function isValidId(id) {
+
   if (hasValidType(id, "id", true) && id.match(idPattern)) {
     return true;
   }
@@ -203,9 +204,11 @@ export function isValidUrl(url) {
 }
 
 export function isValidLinkItm(link) {
+
+ 
   if (
     hasValidType(link, "linked.item", true) &&
-    isValidUrl(url) &&
+    isValidUrl(link.url) &&
     isValidId(link.id)
   ) {
     return true;
@@ -215,32 +218,39 @@ export function isValidLinkItm(link) {
 }
 
 export function validLinks(linked) {
-  var items = linked.slice(0, itmLimits("linked")[1]);
-  var map = [];
-  for (var i = 0; i < items.length; i++) {
-    if (isValidLinkItm(items[i])) {
-      var concat = items[i].url + " " + items[i].id;
-      if (!map.includes(concat)) {
-        map.push(concat);
+  linked = linked.slice(0, itmLimits("linked")[1]);
+
+  var done = [];
+  for (var i = 0; i < linked.length; i++) {
+    if (isValidLinkItm(linked[i])) {
+      var concat = linked[i].url + " " + linked[i].id;
+    
+      if (!done.includes(concat)) {
+        done.push(concat);
         continue;
+
       }
       logErr("Duplicate linked thread", concat);
     }
-    items.splice(i, 1);
+    linked.splice(i, 1);
   }
-  if (items.length) {
-    items.sort((a, b) => (a.url < b.url ? 1 : -1));
+
+  if (linked.length) {
+    linked.sort((a, b) => (a.url < b.url ? 1 : -1));
   }
-  return items;
+
+  return linked;
 }
 
 export function validThread(thread) {
   if (hasValidType(thread, "threads.item", true) && isValidId(thread.id)) {
     thread.record = validRecord(thread.record);
-    if (thread.record) {
+
+    if (thread.record != null) {
       thread.name = validLenghtStr(thread.name, "name");
       thread.description = validLenghtStr(thread.description, "description");
       thread.linked = validLinks(thread.linked);
+
       return thread;
     }
   }
@@ -250,16 +260,22 @@ export function validThread(thread) {
 export function validThreads(threads) {
   if (hasValidType(threads, "threads", true)) {
     var ids = [];
+
     threads = threads.slice(0, itmLimits("threads")[1]);
+
     for (var i = 0; i < threads.length; i++) {
       threads[i] = validThread(threads[i]);
-      if (threads[i] && !ids.includes(threads[i].id)) {
-        ids.push(threads[i].id);
-        continue;
+
+      if (threads[i] != null) {
+        if (!ids.includes(threads[i].id)) {
+          ids.push(threads[i].id);
+          continue;
+        }
+        logErr("Duplicate thread id", threads[i].id);
       }
-      logErr("Duplicate thread id", threads[i].id);
       threads.splice(i, 1);
     }
+
     if (threads.length) {
       return threads;
     }
@@ -284,6 +300,7 @@ export function validMap(data) {
     data.author = validAuthor(data.author);
     if (data.author) {
       data.threads = validThreads(data.threads);
+
       if (data.threads.length) {
         return data;
       }

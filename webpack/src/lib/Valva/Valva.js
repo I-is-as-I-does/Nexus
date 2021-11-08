@@ -270,6 +270,13 @@ export function insertDiversion(
   };
   return mutationPromise(parent, child, placeAction, placeCallback);
 }
+export function heightBasedDisplay(elm, preHeight, newHeight, callback = null){
+  if (preHeight === newHeight) {
+    fadeIn(elm, callback);
+  } else {
+    easeIn(elm, 200, callback);
+  }
+}
 export function replaceDiversion(oldElm, newElm, callback = null) {
   newElm.style.opacity = 0;
 
@@ -280,11 +287,7 @@ export function replaceDiversion(oldElm, newElm, callback = null) {
   };
   var placeCallback = function () {
     var newh = newElm.offsetHeight;
-    if (newh === preh) {
-      fadeIn(newElm, callback);
-    } else {
-      easeIn(newElm, 200, callback);
-    }
+    heightBasedDisplay(newElm, preh, newh, callback);
   };
   var transcallback = function () {
     mutationPromise(parent, newElm, placeAction, placeCallback);

@@ -1,51 +1,23 @@
 import { easeIn, easeOut, insertDiversion } from "../lib/Valva/Valva.js";
-import NxViewer from "./../NxViewer.js";
-import { blockWrap } from "./NxMeta.js";
-import { authorIndexLink, authorUrl, historyViewLink } from "./NxIdent.js";
+import { registerUpdateEvt, triggerUpdate } from "../prc/NxViewer.js";
+import { blockWrap, getElm } from "./NxMeta.js";
+import { authorIndexLink, authorUrl, baseViewLink, setToggleOnDisplay } from "./NxIdent.js";
+import { historyMax } from "../valid/NxConstants.js";
 
-export var historyList = null;
-
-export var historyCount = 1;
-export var historyPosition = 1;
-export var historyNavArrow = {
+var isHistoryEvent =false;
+var historyList = null;
+var historyElm = null;
+var historyCount = 1;
+var historyPosition = 1;
+var historyNavArrow = {
   "<": null,
   ">": null,
 };
 
-export const historyMax = 10;
-
-export function historyBlock(dataSrc, threadId) {
-  var historyElm = historyListElm(dataSrc, threadId);
-  return blockWrap(
-    "history",
-    null,
-    [historyNav(historyElm), historyElm],
-    false
-  );
-}
-
-export var appendObserver;
-export function newAppendObserver() {
-  var appendCallback = function (mutationsList) {
-    for (var mutation of mutationsList) {
-      if (mutation.type == "childList") {
-        historyList.scrollIntoView({
-          block: "end",
-          behavior: "smooth",
-        });
-        return;
-      }
-    }
-  };
-  return new MutationObserver(appendCallback);
-}
-
-export function historyNav(historyElm) {
-  var wrp = document.createElement("DIV");
-  wrp.classList.add("nx-history-nav");
+function historyNav() {
+  var wrp = getElm("DIV", "nx-history-nav");
   Object.keys(historyNavArrow).forEach((arrw) => {
-    historyNavArrow[arrw] = document.createElement("A");
-    historyNavArrow[arrw].classList.add("nx-nav-end");
+    historyNavArrow[arrw] = getElm("A", "nx-nav-end");
     historyNavArrow[arrw].textContent = arrw;
     historyNavArrow[arrw].addEventListener("click", function () {
       if (!historyNavArrow[arrw].classList.contains("nx-nav-end")) {
@@ -67,14 +39,13 @@ export function historyNav(historyElm) {
   });
   wrp.append(
     historyNavArrow["<"],
-    historyToggleElm(historyElm),
+    historyToggleElm(),
     historyNavArrow[">"]
   );
   return wrp;
 }
-export function historyToggleElm(historyElm) {
-  var tggl = document.createElement("A");
-  tggl.classList.add("nx-history-toggle");
+function historyToggleElm() {
+  var tggl = getElm("A", "nx-history-toggle");
   tggl.textContent = "≚";
   tggl.addEventListener("click", () => {
     if (tggl.textContent == "≙") {
@@ -91,39 +62,37 @@ export function historyToggleElm(historyElm) {
   return tggl;
 }
 
-export function historyListElm(dataSrc, threadId) {
-  historyList = document.createElement("UL");
-  historyList.classList.add("nx-history-list");
-  var first = document.createElement("LI");
+function setHistoryListElm(state) {
+  historyList = getElm("UL", "nx-history-list");
+  var first = getElm("LI");
   first.textContent = "...";
   historyList.append(first);
-  historyList.append(historyItm(dataSrc, threadId));
+  historyList.append(historyItm(state));
 
-  var dv = document.createElement("DIV");
-  dv.classList.add("nx-history-drawer");
-  dv.append(historyList);
-  dv.style.display = "none";
-  NxViewer.registerUpdateEvt(function (e) {
-    historyEvent(e);
+  historyElm = getElm("DIV", "nx-history-drawer");
+  historyElm.append(historyList);
+  historyElm.style.display = "none";
+  registerUpdateEvt(function (newState) {
+    historyEvent(newState);
   });
-  return dv;
+  return historyElm;
 }
 
-export function autoScroll() {
+function autoScroll() {
   historyList.scrollIntoView({
     block: "end",
     behavior: "smooth",
   });
 }
 
-export function historyEvent(e) {
-  if (!NxViewer.isHistoryEvent) {
+function historyEvent(state) {
+  if (!isHistoryEvent) {
     if (historyCount > historyMax) {
       historyList.children[1].remove();
       historyCount--;
     }
     historyPosition = historyCount;
-    var itm = historyItm(e.dataSrc, e.threadId);
+    var itm = historyItm(state);
 
     insertDiversion(historyList, itm, false, true, 200, function () {
       autoScroll();
@@ -133,7 +102,7 @@ export function historyEvent(e) {
   }
 }
 
-export function toggleNavEnd() {
+function toggleNavEnd() {
   if (historyPosition > 1) {
     historyNavArrow["<"].classList.remove("nx-nav-end");
   } else {
@@ -146,13 +115,34 @@ export function toggleNavEnd() {
   }
 }
 
-export function historyItm(dataSrc, threadId) {
+function historyItm(state) {
   historyCount++;
   var itm = document.createElement("LI");
   itm.append(
-    authorIndexLink(dataSrc, false),
-    authorUrl(dataSrc, false),
-    historyViewLink(dataSrc, threadId, false)
+    authorIndexLink(state, false),
+    authorUrl(state, false),
+    historyViewLink(state, false)
   );
   return itm;
+}
+
+function historyViewLink(state) {
+  var viewlk = baseViewLink(state, false);
+  setToggleOnDisplay(viewlk, state.dataUrl, state.threadId);
+
+  viewlk.addEventListener("click", () => {
+    isHistoryEvent = true;
+    triggerUpdate(state, true);
+  });
+  return viewlk;
+}
+
+export function historyBlock(state) {
+  setHistoryListElm(state);
+  return blockWrap(
+    "history",
+    null,
+    [historyNav(), historyElm],
+    false
+  );
 }

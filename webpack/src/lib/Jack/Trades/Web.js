@@ -25,7 +25,10 @@ export function isValidHttpUrl(string) {
 }
 
 export function loadJson(url) {
-  return fetch(url).then((response) => response.json());
+  return fetch(url,{
+    method: 'GET',
+    credentials: 'include'
+  }).then((response) => response.json());
 }
 
 export function oembedLink(url, provider, maxwidth = null, maxheight = null) {
@@ -49,13 +52,25 @@ export function oembedLink(url, provider, maxwidth = null, maxheight = null) {
   return false;
 }
 
-export function oembedHtml(oembedLink) {
+export function oembedIframe(oembedLink){
+  //@doc: rebuilding iframe elm for super safe dom insertion
   return loadJson(oembedLink).then((response) => {
     if (response && response.hasOwnProperty("html")) {
-      return response.html;
+      var url = response.html.split('src="')[1].split('"')[0];
+      var iframe = document.createElement('IFRAME');
+      iframe.width = response.width;
+      iframe.height = response.height;
+      iframe.frameborder = "no";
+      iframe.scrolling="no";
+      iframe.allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+      iframe.allowfullscreen = true;
+      iframe.title = response.title;
+      iframe.src = url;
+      return iframe;
     }
     throw "invalid oembed response";
   });
+ 
 }
 
 export function pathBasename(path) {
@@ -124,7 +139,6 @@ export function loadPagePreviewImg(url, useCache = true) {
         url +
         "&screenshot=true"
     ).then((response) => {
-      console.log(response);
       if (
         response.lighthouseResult &&
         response.lighthouseResult.audits &&

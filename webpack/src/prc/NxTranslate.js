@@ -1,6 +1,6 @@
-import { getLocalStorage } from "./lib/Jack/Trades/Stock.js";
-import { isNonEmptyObj, isNonEmptyStr } from "./lib/Jack/Trades/Check.js";
-import NxCommons from "./transl/NxCommons.js";
+import { getLocalStorage } from "../lib/Jack/Trades/Stock.js";
+import { isNonEmptyObj, isNonEmptyStr } from "../lib/Jack/Trades/Check.js";
+import NxCommons from "../transl/NxCommons.js";
 
 const storage = getLocalStorage();
 var txts = {};
@@ -72,6 +72,10 @@ export function setOriginLang(lang){
   if(!storedLang){
     setUserSelectedLang(lang);
   }
+}
+
+export function getAvailableLangs(){
+  return availableLangs;
 }
 
 export function getLang() {

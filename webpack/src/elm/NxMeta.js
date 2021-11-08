@@ -1,51 +1,30 @@
-import NxTranslate from "../NxTranslate.js";
 import { historyBlock } from "./NxHistory.js";
 import { sourceBlock } from "./NxSource.js";
 
-import { splitFlap } from "../lib/Valva/Valva.js";
 import { appBlock } from "./NxApp.js";
-import { linkedBlock, threadBlock } from "./NxThread.js";
+import { threadBlocks } from "./NxThread.js";
 import { indexBlock } from "./NxIndex.js";
+import { getTxt } from "../prc/NxTranslate.js";
+import { registerTranslElm } from "../prc/NxViewer.js";
 
-export function wholeWrap(contents) {
-  var wrap = document.createElement("DIV");
-  wrap.classList.add("nx-instance");
+export function getElm(tag, classList) {
+  var elm = document.createElement(tag);
+  if (classList) {
+    elm.className = classList;
+  }
+  return elm;
+}
 
-  wrap.append(...contents);
+export function instanceWrap(headerElms, mainElms, footerElms) {
+  var wrap = getElm("DIV", "nx-instance");
+  var header = getElm("HEADER");
+  header.append(...headerElms);
+  var main = getElm("MAIN");
+  main.append(...mainElms);
+  var footer = getElm("FOOTER");
+  footer.append(...footerElms);
+  wrap.append(header, main, footer);
   return wrap;
-}
-
-export function loader() {
-  var texts = ["|", "|..."];
-  var dv = document.createElement("DIV");
-  dv.classList.add("nx-loader");
-  dv.textContent = texts[0];
-  var idx = 1;
-  var intr = setInterval(function () {
-    splitFlap(dv, texts[idx], 100);
-    if (idx === 1) {
-      idx = 0;
-    } else {
-      idx++;
-    }
-  }, 400);
-  dv.addEventListener("Done", function () {
-    clearInterval(intr);
-  });
-  return dv;
-}
-
-export function errorElm(text) {
-  var p = document.createElement("P");
-  p.classList.add("nx-error");
-  var sp1 = document.createElement("SPAN");
-  sp1.textContent = "—/ — ";
-  var sp2 = document.createElement("SPAN");
-  var text = "Nexus not found";
-  sp2.textContent = NxTranslate.get(text);
-  NxTranslate.registerTranslElm(sp2, text);
-  p.append(sp1, sp2);
-  return p;
 }
 
 export function blockWrap(
@@ -54,13 +33,12 @@ export function blockWrap(
   contentElms = null,
   landmark = false
 ) {
-  var dv = document.createElement("SECTION");
-  dv.classList.add("nx-" + blockName, "nx-block");
+  var dv = getElm("SECTION", "nx-" + blockName + "  nx-block");
   if (landmark) {
     dv.append(landmarkElm(blockName));
   }
   if (headerElms) {
-    var header = document.createElement("HEADER");
+    var header = getElm("HEADER");
     header.append(...headerElms);
     dv.append(header);
   }
@@ -71,43 +49,21 @@ export function blockWrap(
 }
 
 export function landmarkElm(name) {
-  var lndmrk = document.createElement("SPAN");
-  lndmrk.classList.add("nx-landmark", "nx-landmark-" + name);
-  lndmrk.textContent = NxTranslate.get(name);
-  NxTranslate.registerTranslElm(lndmrk, name);
+  var lndmrk = getElm("SPAN", "nx-landmark nx-landmark-" + name);
+  lndmrk.textContent = getTxt(name);
+  registerTranslElm(lndmrk, name);
   return lndmrk;
 }
 
-export function defaultReaderBlocks(dataSrc, threadId) {
-  var contents = [
-    headerElm([appBlock(), historyBlock(dataSrc, threadId)]),
-    mainElm([
-      divElm([indexBlock(dataSrc)]),
-      divElm([threadBlock(dataSrc, threadId), linkedBlock(dataSrc, threadId)]),
-    ]),
-    footerElm([sourceBlock(dataSrc, threadId)]),
-  ];
+export function viewerBlocks(state) {
 
-  return wholeWrap(contents);
-}
+   var indexPart = getElm("DIV");
+   indexPart.append(indexBlock(state));
+   var threadPart = getElm("DIV");
+   threadPart.append(...threadBlocks(state));
 
-export function mainElm(contents) {
-  var main = document.createElement("MAIN");
-  main.append(...contents);
-  return main;
-}
-export function divElm(contents) {
-  var div = document.createElement("DIV");
-  div.append(...contents);
-  return div;
-}
-export function footerElm(contents) {
-  var footer = document.createElement("FOOTER");
-  footer.append(...contents);
-  return footer;
-}
-export function headerElm(contents) {
-  var header = document.createElement("HEADER");
-  header.append(...contents);
-  return header;
+  return instanceWrap([appBlock(), historyBlock(state)], [
+    indexPart,
+    threadPart
+    ], [sourceBlock(state)]);
 }

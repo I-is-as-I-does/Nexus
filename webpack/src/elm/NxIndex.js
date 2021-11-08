@@ -3,57 +3,63 @@ import {
   insertDiversion,
   replaceDiversion,
 } from "../lib/Valva/Valva.js";
-import NxViewer from "./../NxViewer.js";
+import { registerUpdateEvt } from "../prc/NxViewer.js";
 import { authorHandle, authorUrl, viewLink } from "./NxIdent.js";
-import { blockWrap } from "./NxMeta.js";
+import { blockWrap, getElm } from "./NxMeta.js";
 
-export function indexBlock(dataSrc) {
-  var headerElms = [authorHandle(dataSrc, true), authorUrl(dataSrc, true)];
-  var contentElms = [about(dataSrc), indexList(dataSrc)];
-  return blockWrap("index", headerElms, contentElms, true);
-}
 
-export function about(dataSrc) {
-  var dv = document.createElement("DIV");
-  dv.classList.add("nx-about-author");
+var indexList = null;
 
-  dv.append(aboutParagraph(dataSrc));
-  NxViewer.registerUpdateEvt(function (e) {
-    replaceDiversion(dv.firstChild, aboutParagraph(e.dataSrc));
+function aboutElm(state){
+  var ab = getElm("DIV", "nx-about-author");
+
+ab.append(aboutParagraph(state));
+  registerUpdateEvt(function (newState) {
+    replaceDiversion(
+      ab.firstChild,
+      aboutParagraph(newState)
+    );
   }, true);
-  return dv;
-}
-
-export function aboutParagraph(dataSrc) {
-  var ab = document.createElement("P");
-  ab.textContent = NxViewer.srcData(dataSrc).author.about;
   return ab;
 }
-export function indexList(dataSrc) {
-  var ul = document.createElement("UL");
-  var items = Object.keys(NxViewer.srcData(dataSrc).map);
-  if (items.length) {
-    for (var i = 0; i < items.length; i++) {
-      ul.append(indexLi(dataSrc, items[i]));
-    }
-  }
-  NxViewer.registerUpdateEvt(function (e) {
-    changeThreadsList(ul, e);
-  }, true);
-  return ul;
+
+function aboutParagraph(state) {
+  var p = getElm("P");
+p.textContent = state.srcData.author.about;
+return p;
 }
 
-export function indexLi(dataSrc, itm) {
-  var li = document.createElement("LI");
-  li.append(viewLink(dataSrc, itm, false));
+function setIndexList(state) {
+  indexList = getElm("UL");
+  var items = state.srcData.index;
+
+  if (items.length) {
+
+    for (var i = 0; i < items.length; i++) {
+      indexList.append(indexLi(state, items[i], i));
+    }
+  }
+  registerUpdateEvt(function (newState) {
+    changeThreadsList(newState);
+  }, true);
+}
+
+function indexLi(state, id, index) {
+  var altState = Object.assign({}, state);
+
+  altState.threadId = id;
+  altState.threadIndex = index;
+
+  var li = getElm("LI");
+  li.append(viewLink(altState, false));
   return li;
 }
 
-export function changeThreadsList(ul, e) {
-  var childr = ul.childNodes;
+function changeThreadsList(state) {
+  var childr = indexList.childNodes;
 
-  var nw = Object.keys(NxViewer.srcData(e.dataSrc).map);
-  var nwlen = nw.length;
+  var items = state.srcData.index;
+  var nwlen = items.length;
   var chlen = childr.length;
   var count = 0;
   if (chlen) {
@@ -64,7 +70,7 @@ export function changeThreadsList(ul, e) {
     };
     for (var x = 0; x < chlen; x++) {
       if (nwlen > x) {
-        var nlink = indexLi(e.dataSrc, nw[x]);
+        var nlink = indexLi(state, items[x], x);
         replaceDiversion(childr[x], nlink);
         count++;
       } else {
@@ -74,7 +80,26 @@ export function changeThreadsList(ul, e) {
   }
   if (count < nwlen) {
     for (var y = count; y < nwlen; y++) {
-      insertDiversion(ul, indexLi(e.dataSrc, nw[y]), false, true, 200);
+      insertDiversion(
+        indexList,
+        indexLi(state, items[y], y),
+        false,
+        true,
+        200
+      );
     }
   }
+}
+
+export function indexBlock(state) {
+  setIndexList(state);
+  var headerElms = [
+    authorHandle(state, true),
+    authorUrl(state, true),
+  ];
+  var contentElms = [
+    aboutElm(state),
+    indexList,
+  ];
+  return blockWrap("index", headerElms, contentElms, true);
 }
