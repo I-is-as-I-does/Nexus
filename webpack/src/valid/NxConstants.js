@@ -3,13 +3,13 @@ export const defaultSelector = '#Nexus';
 export const defaultOpts = {
   src:null,
   id:'/',
-  style:"https://cdn.jsdelivr.net/gh/I-is-as-I-does/Nexus-Prototype@0.2.0/cdn/NexusI.css",
+  style:"https://cdn.jsdelivr.net/gh/I-is-as-I-does/Nexus-Prototype@0.2.0/cdn/css/NexusI.css",
   lang:"en",
   embed:true,
   history:false,
   log:false
 };
-export const defaultIO = "https://cdn.jsdelivr.net/gh/I-is-as-I-does/Nexus-Prototype@0.2.0/cdn/ViewerIO.js";
+export const defaultIO = "https://cdn.jsdelivr.net/gh/I-is-as-I-does/Nexus-Prototype@0.2.0/cdn/js/NxViewerIO.js";
 export const appUrl = "https://github.com/I-is-as-I-does/Nexus-Prototype";
 export const historyMax = 100;
 export const charMinMax = {
