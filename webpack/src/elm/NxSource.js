@@ -26,7 +26,7 @@ export function toolTip(className, text) {
   tooltip.textContent = text;
   tooltip.style.opacity = 0;
   tooltip.hidden = true;
-  NxNimrod.registerTextElm(tooltip, text);
+  NxNimrod.registerTranslElm(tooltip, text);
   return tooltip;
 }
 

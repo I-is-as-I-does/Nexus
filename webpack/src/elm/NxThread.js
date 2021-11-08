@@ -108,7 +108,8 @@ export function recordBody(thread) {
 export function dateElm(thread) {
   var datediv = document.createElement("DIV");
   datediv.classList.add("nx-record-meta");
-  datediv.append(threadTextElm(thread, ["record", "timestamp"]));
+  var rdate = threadTextElm(thread, ["record", "timestamp"]).substr(0,10);
+  datediv.append(rdate);
   return datediv;
 }
 

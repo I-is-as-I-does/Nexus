@@ -43,7 +43,7 @@ export function errorElm(text) {
   var sp2 = document.createElement("SPAN");
   var text = "Nexus not found";
   sp2.textContent = NxNimrod.get(text);
-  NxNimrod.registerTextElm(sp2, text);
+  NxNimrod.registerTranslElm(sp2, text);
   p.append(sp1, sp2);
   return p;
 }
@@ -74,7 +74,7 @@ export function landmarkElm(name) {
   var lndmrk = document.createElement("SPAN");
   lndmrk.classList.add("nx-landmark", "nx-landmark-" + name);
   lndmrk.textContent = NxNimrod.get(name);
-  NxNimrod.registerTextElm(lndmrk, name);
+  NxNimrod.registerTranslElm(lndmrk, name);
   return lndmrk;
 }
 

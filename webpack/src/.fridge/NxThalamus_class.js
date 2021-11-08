@@ -13,7 +13,7 @@ import {
   miniUrl,
 } from "./lib/Jack/Trades/Web.js";
 import { insertDiversion } from "./lib/Valva/Valva.js";
-import { defaultCss } from "./NxConstants.js";
+import { defaultCssUrl } from "./NxConstants.js";
 import NxNimrod from "./NxNimrod.js";
 import { isValidId, validMap } from "./NxStamper.js";
 
@@ -21,7 +21,7 @@ class NxThalamus {
   constructor() {
     this.container = null;
 
-    this.themeCssUrl = defaultCss;
+    this.themeCssUrl = defaultCssUrl;
     this.embedMode = false;
     this.logMode = false;
 
@@ -41,14 +41,16 @@ class NxThalamus {
       threadId: null,
     };
 
-    this.bufferTime = 800;
+    
     this.originLang = "en";
 
     this.isHistoryEvent = false;
 
     this.updateStore = { onChange: [], onSrcChange: [] };
     this.updateRunning = false;
-    this.doneLoadingEvt = new CustomEvent("Done");
+    this.bufferTime = 800;
+
+ //   this.doneLoadingEvt = new CustomEvent("Done");
 
     this.visitStore = {};
     this.dataStore = {};

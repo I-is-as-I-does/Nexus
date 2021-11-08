@@ -1,5 +1,5 @@
 import NxNimrod from "../NxNimrod.js";
-import { appSite } from "../NxConstants.js";
+import { appUrl } from "../NxConstants.js";
 import { blockWrap } from "./NxMeta.js";
 import { splitFlap } from "../lib/Valva/Valva.js";
 
@@ -11,7 +11,7 @@ export function appLink() {
   var link = document.createElement("A");
   link.target = "_blank";
   link.classList.add("nx-app-link", "nx-external-link");
-  link.href = appSite;
+  link.href = appUrl;
   link.title = "Nexus";
   link.textContent = "Nexus";
   return link;

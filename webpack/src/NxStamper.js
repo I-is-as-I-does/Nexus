@@ -1,87 +1,142 @@
-import * as Check from "./lib/Jack/Trades/Check.js";
+import { isEmpty, isNonEmptyStr } from "./lib/Jack/Trades/Check.js";
 import { isValidHttpUrl } from "./lib/Jack/Trades/Web.js";
 import { charCut } from "./lib/Jack/Trades/Help.js";
+import {
+  typesMap,
+  idPattern,
+  timestampPattern,
+  supportedMediaTypes,
+  itemsMinMax,
+  charMinMax,
+} from "./NxConstants.js";
+
+var logs = [];
+
+function logErr(msg, detail = null) {
+  var entry = { msg: msg };
+  if (isNonEmptyStr(detail)) {
+    entry["detail"] = detail;
+  }
+  logs.push(entry);
+}
+
+export function resetLogs() {
+  logs = [];
+}
+
+export function getLogs() {
+  return logs;
+}
 
 export function charLimits(catg) {
-  var limits = {
-    handle: [3, 30],
-    about: [0, 400],
-    id: [3, 36],
-    name: [3, 30],
-    description: [0, 400],
-    main: [1, 1000],
-    aside: [0, 400],
-    caption: [0, 200],
-  };
-  if (limits.hasOwnProperty(catg)) {
-    return limits[catg];
+  if (charMinMax.hasOwnProperty(catg)) {
+    return charMinMax[catg];
   }
+  logErr("Unknown characters limits category", catg);
   return false;
 }
 
 export function itmLimits(catg) {
-  var limits = {
-    threads: 100,
-    linked: 100,
-  };
-  if (limits.hasOwnProperty(catg)) {
-    return limits[catg];
+  if (itemsMinMax.hasOwnProperty(catg)) {
+    return itemsMinMax[catg];
   }
+  logErr("Unknown items limits category", catg);
   return false;
 }
 
-export function isValidMediaType(type) {
-  return (
-    Check.isNonEmptyStr(type) &&
-    [
-      "page",
-      "video",
-      "image",
-      "audio",
-      "youtube",
-      "vimeo",
-      "soundcloud",
-    ].includes(type)
-  );
+export function isValidMediaType(mediaType) {
+  if (
+    hasValidType(mediaType, "type", true) &&
+    supportedMediaTypes.includes(mediaType)
+  ) {
+    return true;
+  }
+
+  logErr("Invalid media type", type);
+  return false;
 }
 
-export function validLenghtItem(item, catg) {
-  if (Check.isNonEmptyStr(item) && hasValidMinLength(item, catg)) {
-    if (!hasValidMaxLength(item, catg)) {
-      item = cutItemLength(item, catg);
+export function extendString(str, catg) {
+  var limits = charLimits(catg);
+  if (limits !== false) {
+    var diff = limits[0] - str.length;
+    if (diff > 0) {
+      var placeholder = "-";
+      str = placeholder.repeat(diff) + str;
     }
-    return item;
+    return str;
   }
-  var min = charLimits(catg);
-  if(min === 0){
-    return "";
+  logErr("Unable to extend string", catg);
+  return null;
+}
+
+export function validLenghtStr(str, catg) {
+  if (!hasValidType(str, catg, true)) {
+    str = "";
   }
-  var placeholder = "-";
-  return placeholder.repeat(min);
+  if (!strHasValidMinLength(str, catg)) {
+    str = extendString(str, catg);
+  } else if (!strHasValidMaxLength(str, catg)) {
+    str = cutString(str, catg);
+  }
+  return str;
+}
+
+export function hasValidType(item, field, nonEmpty = true) {
+  if (typesMap.hasOwnProperty(field)) {
+    var type = typesMap[field];
+    if (
+      typeof item !== "undefined" &&
+      item !== null &&
+      item.constructor.name == type
+    ) {
+      if (!nonEmpty || !isEmpty(item)) {
+        return true;
+      }
+      logErr("Field is empty", field);
+    } else {
+      logErr("Invalid field type", field);
+    }
+  } else {
+    logErr("Unknown field", field);
+  }
+
+  return false;
 }
 
 export function validMedia(mediaObj) {
   if (
-    Check.isNonEmptyObj(mediaObj) &&
-    isValidHttpUrl(mediaObj.url) &&
+    hasValidType(mediaObj, "media", true) &&
+    isValidUrl(mediaObj.url) &&
     isValidMediaType(mediaObj.type)
   ) {
-    mediaObj.caption = validLenghtItem(mediaObj.caption, "caption");
+    mediaObj.caption = validLenghtStr(mediaObj.caption, "caption");
     return mediaObj;
   }
   return { url: "", type: "", caption: "" };
 }
 
+export function isValidTimestamp(timestamp) {
+  if (
+    hasValidType(timestamp, "timestamp", true) &&
+    timestamp.match(timestampPattern)
+  ) {
+    return true;
+  }
+  logErr("Invalid timestamp", timestamp);
+  return false;
+}
+
 export function validRecord(record) {
   if (
-    Check.isNonEmptyObj(record) &&
-    Check.seemsLikeValidDate(record.timestamp) &&
-    Check.isNonEmptyStr(record.main)
+    hasValidType(record, "record", true) &&
+    isValidTimestamp(record.timestamp) &&
+    hasValidType(record.main, "main", true)
   ) {
-    record.main = validLenghtItem(record.main, "main");
+    record.main = validLenghtStr(record.main, "main");
 
     if (record.main) {
-      record.aside = validLenghtItem(record.aside, "aside");
+      record.aside = validLenghtStr(record.aside, "aside");
       record.media = validMedia(record.media);
       return record;
     }
@@ -90,61 +145,86 @@ export function validRecord(record) {
   return null;
 }
 
-export function cutItemLength(item, catg) {
-  var limits = charLimits(catg);
-  if (limits) {
-    return charCut(item, limits[1]);
-  }
-  return item;
-}
-
-export function hasValidMaxLength(item, catg) {
+export function cutString(item, catg) {
   var limits = charLimits(catg);
   if (limits !== false) {
-    return item.length <= limits[1];
+    return charCut(item, limits[1]);
   }
-  return true;
+  logErr("Unable to cut string", catg);
+  return "";
 }
-export function hasValidMinLength(item, catg) {
+
+export function strHasValidMaxLength(item, catg) {
   var limits = charLimits(catg);
-  if (limits) {
-    return item.length >= limits[0];
+  if (limits !== false) {
+    if (item.length <= limits[1]) {
+      return true;
+    }
+    logErr("Invalid max length", catg);
   }
-  return true;
+  return false;
+}
+export function strHasValidMinLength(item, catg) {
+  var limits = charLimits(catg);
+  if (limits !== false) {
+    if (item.length >= limits[0]) {
+      return true;
+    }
+    logErr("Invalid min length", catg);
+  }
+  return false;
 }
 
 export function hasValidLength(item, catg) {
   var limits = charLimits(catg);
-  if (limits) {
-    return item.length >= limits[0] && item.length <= limits[1];
+  if (limits !== false) {
+    if (item.length >= limits[0] && item.length <= limits[1]) {
+      return true;
+    }
+    logErr("Invalid length", catg);
   }
-  return true;
+  return false;
 }
 
 export function isValidId(id) {
-  return (
-    Check.isNonEmptyStr(id) &&
-    hasValidLength(id, "id") &&
-    id.replace(/[^a-zA-Z0-9-]/, "") === id
-  );
+  if (hasValidType(id, "id", true) && id.match(idPattern)) {
+    return true;
+  }
+  logErr("Invalid thread id", id);
+  return false;
+}
+
+export function isValidUrl(url) {
+  if (isValidHttpUrl(url)) {
+    return true;
+  }
+  logErr("Invalid url", url);
+  return false;
 }
 
 export function isValidLinkItm(link) {
-  return (
-    Check.isNonEmptyObj(link) && isValidHttpUrl(link.url) && isValidId(link.id)
-  );
+  if (
+    hasValidType(link, "linked.item", true) &&
+    isValidUrl(url) &&
+    isValidId(link.id)
+  ) {
+    return true;
+  }
+  logErr("Invalid linked thread");
+  return false;
 }
 
 export function validLinks(linked) {
-  var items = linked.slice(0, itmLimits("linked"));
+  var items = linked.slice(0, itmLimits("linked")[1]);
   var map = [];
   for (var i = 0; i < items.length; i++) {
     if (isValidLinkItm(items[i])) {
-      var concat = items[i].id + items[i].url;
+      var concat = items[i].url + " " + items[i].id;
       if (!map.includes(concat)) {
         map.push(concat);
         continue;
       }
+      logErr("Duplicate linked thread", concat);
     }
     items.splice(i, 1);
   }
@@ -155,11 +235,11 @@ export function validLinks(linked) {
 }
 
 export function validThread(thread) {
-  if (Check.isNonEmptyObj(thread) && isValidId(thread.id)) {
+  if (hasValidType(thread, "threads.item", true) && isValidId(thread.id)) {
     thread.record = validRecord(thread.record);
     if (thread.record) {
-      thread.name = validLenghtItem(thread.name, "name");
-      thread.description = validLenghtItem(thread.description, "description");
+      thread.name = validLenghtStr(thread.name, "name");
+      thread.description = validLenghtStr(thread.description, "description");
       thread.linked = validLinks(thread.linked);
       return thread;
     }
@@ -168,24 +248,31 @@ export function validThread(thread) {
 }
 
 export function validThreads(threads) {
-  if (Check.isNonEmptyArr(threads)) {
-    threads = threads.slice(0, itmLimits("threads"));
+  if (hasValidType(threads, "threads", true)) {
+    var ids = [];
+    threads = threads.slice(0, itmLimits("threads")[1]);
     for (var i = 0; i < threads.length; i++) {
       threads[i] = validThread(threads[i]);
-      if (!threads[i]) {
-        threads.splice(i, 1);
+      if (threads[i] && !ids.includes(threads[i].id)) {
+        ids.push(threads[i].id);
+        continue;
       }
+      logErr("Duplicate thread id", threads[i].id);
+      threads.splice(i, 1);
     }
-    return threads;
+    if (threads.length) {
+      return threads;
+    }
   }
+  logErr("No valid thread");
   return [];
 }
 
 export function validAuthor(author) {
-  if (Check.isNonEmptyObj(author) && isValidHttpUrl(author.url)) {
-    author.handle = validLenghtItem(author.handle, "handle");
+  if (hasValidType(author, "author", true) && isValidUrl(author.url)) {
+    author.handle = validLenghtStr(author.handle, "handle");
     if (author.handle) {
-      author.about = validLenghtItem(author.about, "about");
+      author.about = validLenghtStr(author.about, "about");
       return author;
     }
   }
@@ -193,7 +280,7 @@ export function validAuthor(author) {
 }
 
 export function validMap(data) {
-  if (Check.isNonEmptyObj(data) && isValidHttpUrl(data.nexus)) {
+  if (hasValidType(data, "data", true) && isValidUrl(data.nexus)) {
     data.author = validAuthor(data.author);
     if (data.author) {
       data.threads = validThreads(data.threads);
