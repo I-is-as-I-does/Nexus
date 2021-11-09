@@ -1,6 +1,6 @@
 import { viewerBlocks } from "../elm/NxMeta.js";
 import { splitFlap } from "../lib/Valva/Valva.js";
-import { opts, container } from "./NxHost.js";
+import { opts, container, setContents } from "./NxHost.js";
 import { resolveOriginState } from "./NxInstance.js";
 import { registerThreadVisit } from "./NxMemory.js";
 import { getTxt, setUserSelectedLang } from "./NxTranslate.js";
@@ -83,7 +83,7 @@ export function triggerUpdate(state, skipHistoryUpdate = false) {
       updateRunning = true;
       if (!skipHistoryUpdate) {
         registerThreadVisit(currentState);
-        if (opts.history) {
+        if (opt("history")) {
           updateBrowserHistory();
         }
       }
@@ -114,11 +114,11 @@ export function getCurrentState() {
 export function init(plugin = null) {
   resolveOriginState().then((state) => {
     currentState = state;
-    container.append(viewerBlocks(state));
+   setContents(viewerBlocks(state));
     if (typeof plugin === "function") {
       plugin(state);
     }
-    if (opts.history) {
+    if (opt("history")) {
       registerBrowserEvent();
     }
   });

@@ -1,28 +1,18 @@
 import { loadCss, loadJson, miniUrl } from "../lib/Jack/Trades/Web.js";
-import { container, opts } from "./NxHost.js";
+import { opt, setContents } from "./NxHost.js";
 import { getStoredData, registerData } from "./NxMemory.js";
 import { getLogs, validMap } from "../valid/NxStamper.js";
 import { getTxt, setOriginLang } from "./NxTranslate.js";
 
 var errMsg = null;
 
-function loadAppCss() {
-  var root = null;
-  if (opts.embed) {
-    root = container;
-  }
-  return loadCss(".nexus", opts.style, root).catch((err) => {
-    logEvent(err);
-    errMsg = "theme not found";
-  });
-}
 
 function handleErr(err) {
   logEvent(err);
   if (!errMsg) {
     errMsg = "init failed";
   }
-  container.append(errorLine(errMsg));
+  setContents(errorLine(errMsg));
 }
 
 function resolveData(dataUrl) {
@@ -84,13 +74,14 @@ function setCookiePl(){
 export function resolveOriginState() {
   setCookiePl();
   
-  if (opts.lang) {
-    setOriginLang(opts.lang);
+  if (opt("lang")) {
+    setOriginLang(opt("lang"));
   }
   var promise;
-  if (opts.src) {
-    promise = loadAppCss(opts.style).then(() =>
-      resolveState(opts.src, opts.id)
+
+  if (opt("src")) {
+    promise = loadAppCss().then(() =>
+      resolveState(opt("src"), opt("id"))
     );
   } else {
     promise = Promise.reject(422);
@@ -101,7 +92,7 @@ export function resolveOriginState() {
 }
 
 export function logEvent(msg) {
-  if (opts.log !== false) {
+  if (opt("log") !== false) {
     console.log(msg);
   }
 }
@@ -119,5 +110,18 @@ export function resolveState(dataUrl, threadId) {
       state.threadId = "/";
     }
     return state;
+  });
+}
+export function loadAppCss(url = null) {
+  if(!url){
+    url = opt('style');
+  }
+  var root = null;
+  if (opt('embed')) {
+    root = container;
+  }
+  return loadCss(".nexus", url, root).catch((err) => {
+    logEvent(err);
+    errMsg = "theme not found";
   });
 }

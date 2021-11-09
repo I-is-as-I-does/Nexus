@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./assets/css/editor.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/marx-css@3.0.8/css/marx.min.css">
+</head>
+<body>
+    <div class="remake-menu">
+      <button class="cool-button js-toggle-reset">Reset Cache</button>
+        <button class="cool-button js-toggle-view">Generate Data</button>
+        <a href="" id="data-download" download="nexus-feed.json" hidden>Save File</a>
+      </div>
+    <div id="nexus-editor">
+    <div object>
+        <h1>Feed</h1>
+        <ul>
+        <li object key:title="@innerText" edit:title>
+          {{default title "Feed Titles"}}
+        </li>
+        <li object key:author="@innerText" edit:author>
+          {{default author "Anon"}}
+        </li>
+        <li>
+        <ul array key="records" sortable>
+          {{#for record in records}}
+            <li object key:content="@innerText" edit:content>
+              {{default record.content "some content"}}
+            </li>
+          {{/for}}
+        </ul>
+
+        <button new:record>Add Record</button>
+  </li>
+      </ul>
+      </div>
+    </div>
+    <div id="app-data"></div>
+      <script src="https://cdn.jsdelivr.net/npm/crostini@1.1.0/dist/crostini.umd.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.10.2/Sortable.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/handlebars@4.7.6/dist/handlebars.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/gh/remake/remake-framework@2.4.5/_remake/dist/remake/js/remake.min.js?v=1"></script>
+      <script src="./assets/js/remake-clientside.js"></script>
+      <script src="./assets/js/editor.js"></script>
+</body>
+</html>
