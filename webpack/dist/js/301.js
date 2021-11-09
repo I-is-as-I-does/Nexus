@@ -1,0 +1,2 @@
+/*! For license information please see 301.js.LICENSE.txt */
+"use strict";(self.webpackChunknexus=self.webpackChunknexus||[]).push([[301],{301:(n,e,i)=>{i.r(e),i.d(e,{initEdit:()=>s});var t=i(948);function s(){(0,t.init)((function(n){console.log("im an editor for "+n.threadId)}))}}}]);
