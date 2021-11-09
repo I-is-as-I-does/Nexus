@@ -25,10 +25,7 @@ export function isValidHttpUrl(string) {
 }
 
 export function loadJson(url) {
-  return fetch(url,{
-    method: 'GET',
-    credentials: 'include'
-  }).then((response) => response.json());
+  return fetch(url).then((response) => response.json());
 }
 
 export function oembedLink(url, provider, maxwidth = null, maxheight = null) {

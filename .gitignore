@@ -4,7 +4,7 @@ env/*
 composer.lock
 vendor/*
 .vscode/*
-.fridge/*
+
 node_modules/*
 .autogit/*
 .git/*
