@@ -69,14 +69,15 @@
   text-decoration: none;
 }
 
-a.nx-author-url .nx-author-url-brackets {
+.nx-author-url .nx-author-url-brackets {
   padding: 0 1px;
 }
 
-a.nx-author-url span:not(.nx-author-url-brackets) {
+.nx-author-url a {
   text-decoration: underline dotted #444 1px;
 }
-a.nx-author-url :last-child:before {
+
+.nx-author-url  a:not([href=""]):after {
   content: "↗";
   text-decoration: none;
 }
@@ -164,6 +165,7 @@ a.nx-app-link:before {
   margin-left: 75%;
   width: 25%;
   border-bottom: 1px solid #444;
+  top: -2px;
 }
 
 a.nx-app-link:after {
@@ -221,6 +223,7 @@ a.nx-app-link:after {
 }
 .nx-instance footer a.nx-source-snippets {
   font-size: 1rem;
+
 }
 .nx-source-open {
   font-size: 1.2rem;
@@ -240,9 +243,11 @@ a.nx-app-link:after {
 .nx-record-timestamp {
   margin-bottom: 10px;
 }
-.nx-record-timestamp,
-.nx-record-media-caption {
+.nx-record-timestamp {
   font-family: "Inconsolata", "Courier New", Courier, monospace;
+  font-size: 0.85em;
+}
+.nx-record-media-caption {
   font-size: 0.85em;
 }
 
@@ -251,13 +256,15 @@ a.nx-app-link:after {
   font-weight: bold;
   line-height: 0.9em;
   margin: 1rem 0;
-  word-break: break-word;
+  word-break: break-all;
+  overflow-wrap: break-word;
   -webkit-hyphens: auto;
   -moz-hyphens: auto;
   -ms-hyphens: auto;
   -o-hyphens: auto;
   hyphens: auto;
 }
+
 
 .nx-landmark {
   font-family: "Inconsolata", "Courier New", Courier, monospace;
@@ -279,10 +286,10 @@ a.nx-app-link:after {
   margin-right: 2px;
 }
 
-a.nx-author-url {
+.nx-author-url {
   font-size: 0.85em;
 }
-.nx-history-drawer a.nx-author-url {
+.nx-history-drawer .nx-author-url {
   font-size: 0.9em;
 }
 .nx-instance main a.nx-view-link {
@@ -383,10 +390,15 @@ a.nx-view-link.nx-on-display {
 .nx-source-toggle,
 .nx-history-nav {
   line-height: 1.8rem;
+  font-family: "Inconsolata", "Courier New", Courier, monospace;
+}
+
+.nx-source-copy {
+  font-family: "Inconsolata", "Courier New", Courier, monospace;
 }
 
 .nx-source-copy-tooltip {
-  font-family: "Inconsolata", "Courier New", Courier, monospace;
+
   cursor: normal;
   margin-left: 5px;
   /* color: #888; */

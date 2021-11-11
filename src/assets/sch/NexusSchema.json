@@ -1,7 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema",
   "type": "object",
-  "required": ["nexus", "author", "threads"],
   "properties": {
     "nexus": {
       "type": "string",
@@ -31,8 +30,6 @@
       "uniqueItems": true,
       "additionalItems": true,
       "items": {
-        "anyOf": [
-          {
             "type": "object",
             "required": ["id", "name", "record"],
             "properties": {
@@ -101,8 +98,7 @@
                 "uniqueItems": true,
                 "additionalItems": true,
                 "items": {
-                  "anyOf": [
-                    {
+     
                       "type": "object",
                       "required": ["url", "id"],
                       "properties": {
@@ -116,16 +112,19 @@
                         }
                       },
                       "additionalProperties": false
-                    }
-                  ]
+           
                 }
               }
             },
             "additionalProperties": false
-          }
-        ]
+   
       }
     }
   },
+  "required": [
+    "nexus",
+    "author",
+    "threads"
+  ],
   "additionalProperties": false
 }
