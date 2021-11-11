@@ -1,8 +1,8 @@
-/*import { getLocalStorage } from "../libr/Jack/Trades/Stock.js";
-import { isNonEmptyObj, isNonEmptyStr } from "../libr/Jack/Trades/Check.js";*/
-import { getLocalStorage, isNonEmptyObj, isNonEmptyStr } from "../NxJackBundle.js";
+import { getLocalStorage } from "../libr/Jack/Trades/Stock.js";
+import { isNonEmptyObj, isNonEmptyStr } from "../libr/Jack/Trades/Check.js";
+/*import { getLocalStorage, isNonEmptyObj, isNonEmptyStr } from "../NxJackBundle.js";
+*/
 import NxCommons from "./NxCommons.js";
-
 const storage = getLocalStorage();
 var txts = {};
 var availableLangs = ["en"];

@@ -1,11 +1,11 @@
-/*import { loadCss, isValidHttpUrl } from "../libr/Jack/Trades/Web.js";
+import { loadCss, isValidHttpUrl } from "../libr/Jack/Trades/Web.js";
 import { isNonEmptyObj, isNonEmptyStr } from "../libr/Jack/Trades/Check.js";
 
-import { isValidId } from "../valdt/NxStamper.js";
-import { setOriginLang } from "../transl/NxTranslate.js";
-*/
-import { isNonEmptyObj, isNonEmptyStr, loadCss, isValidHttpUrl } from "../NxJackBundle.js";
-import { isValidId, setOriginLang }  from "../NxUtilsBundle.js";
+import { isValidId } from "../utils/NxStamper.js";
+import { setOriginLang } from "../utils/NxTranslate.js";
+
+/*import { isNonEmptyObj, isNonEmptyStr, loadCss, isValidHttpUrl } from "../NxJackBundle.js";
+import { isValidId, setOriginLang }  from "../NxUtilsBundle.js";*/
 
 
 const defaultSelector = "#Nexus";
@@ -54,6 +54,41 @@ function setContainer(selector) {
 }
 
 
+function loadAppCss() {
+  return loadCss(".nexus", opts.style, container)
+    .then(() => {
+      appStyleLoaded = true;
+      return true;
+    })
+    .catch((err) => {
+      logEvent(err);
+      errMsgs.push("Theme not found");
+      throw 404;
+    });
+}
+
+
+function setup(selector = null, options = null, debug = false) {
+  debugMode = debug;
+
+  if (container != null) {
+    errMsgs.push("Instance already initiated");
+    return false;
+  }
+
+  setContainer(selector);
+
+  if (isNonEmptyObj(options)) {
+    setOpts(options);
+  } else if (container.dataset) {
+    setOpts(container.dataset);
+  }
+  setOriginLang(opts.lang);
+
+  container.classList.add("nexus");
+  container = container.attachShadow({ mode: "open" });
+  return true;
+}
 
 
 export function getErrMsgs() {
@@ -82,42 +117,9 @@ export function opt(key) {
   return opts[key];
 }
 
-export function loadAppCss(url = null) {
-  if(!url){
-    url = opts.style;
-  }
-  return loadCss(".nexus", url, container)
-    .then(() => {
-      appStyleLoaded = true;
-      return true;
-    })
-    .catch((err) => {
-      logEvent(err);
-      errMsgs.push("Theme not found");
-      throw 404;
-    });
+export function init(selector = null, options = null, debug = false){
+if(setup(selector, options, debug)){
+return loadAppCss();
 }
-
-
-
-export function setup(selector = null, options = null, debug = false) {
-  debugMode = debug;
-
-  if (container != null) {
-    errMsgs.push("Instance already initiated");
-    return false;
-  }
-
-  setContainer(selector);
-
-  if (isNonEmptyObj(options)) {
-    setOpts(options);
-  } else if (container.dataset) {
-    setOpts(container.dataset);
-  }
-  setOriginLang(opts.lang);
-
-  container.classList.add("nexus");
-  container = container.attachShadow({ mode: "open" });
-  return true;
+return Promise.reject();
 }

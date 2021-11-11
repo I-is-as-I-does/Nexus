@@ -8,19 +8,19 @@ module.exports = {
     mode: 'production',
     entry: {
    //   NxTransl:'./src/transl/NxCommons.js',
-    /*  NxViewerIO:'./src/ignt/NxViewerIO.js',
+      NxViewerIO:'./src/ignt/NxViewerIO.js',
       NxEditorIO: {
         import: './src/ignt/NxEditorIO.js',
         dependOn: 'NxViewerIO',
       }
     }
-    NxJack:'./src/NxJackBundle.js',
+  /*  NxJack:'./src/NxJackBundle.js',
     NxValva:'./src/NxValvaBundle.js',
     NxUtils:'./src/NxUtilsBundle.js',
     NxCore:'./src/NxCoreBundle.js',
-    NxShared:'./src/NxSharedBundle.js',*/
-    NxGo:'./src/NxGoBundle.js',
-  },
+    NxShared:'./src/NxSharedBundle.js',
+    NxGo:'./src/NxGoBundle.js',}*/
+  ,
     output: {
       path: path.resolve(__dirname, 'dist'),
       filename: 'js/[name].js',

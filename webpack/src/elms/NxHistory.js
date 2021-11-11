@@ -1,12 +1,12 @@
-import { easeIn, easeOut, insertDiversion } from "../../libr/Valva/Valva.js";
-import { registerUpdateEvt, triggerUpdate } from "../../procs/NxState.js";
-import { blockWrap, getElm } from "../shared/NxMeta.js";
+import { easeIn, easeOut, insertDiversion } from "../libr/Valva/Valva.js";
+import { registerUpdateEvt, triggerUpdate } from "../procs/NxState.js";
+import { blockWrap, getElm } from "./NxMeta.js";
 import {
   authorIndexLink,
   authorUrl,
   baseViewLink,
   setToggleOnDisplay,
-} from "../shared/NxIdent.js";
+} from "./NxIdent.js";
 
 const historyMax = 100;
 var isHistoryEvent = false;
@@ -14,19 +14,20 @@ var historyList = null;
 var historyElm = null;
 var historyCount = 1;
 var historyPosition = 1;
-var historyNavArrow = {
-  "<": null,
-  ">": null,
-};
+var navArrows = {
+  "prev": {"symbol":"<", "elm":null},
+   "next": {"symbol":">", "elm":null},
+ }
+var editMode = false;
 
 function historyNav() {
   var wrp = getElm("DIV", "nx-history-nav");
-  Object.keys(historyNavArrow).forEach((arrw) => {
-    historyNavArrow[arrw] = getElm("A", "nx-nav-end");
-    historyNavArrow[arrw].textContent = arrw;
-    historyNavArrow[arrw].addEventListener("click", function () {
-      if (!historyNavArrow[arrw].classList.contains("nx-nav-end")) {
-        if (arrw == "<") {
+  Object.keys(navArrows).forEach((pos) => {
+    navArrows[pos].elm = getElm("A", "nx-nav-end");
+    navArrows[pos].elm.textContent = navArrows[pos].symbol;
+    navArrows[pos].addEventListener("click", function () {
+      if (!navArrows[pos].elm.classList.contains("nx-nav-end")) {
+        if (pos == "prev") {
           historyPosition--;
         } else {
           historyPosition++;
@@ -42,7 +43,7 @@ function historyNav() {
       }
     });
   });
-  wrp.append(historyNavArrow["<"], historyToggleElm(), historyNavArrow[">"]);
+  wrp.append(navArrows["prev"],historyToggleElm(),navArrows["next"]);
   return wrp;
 }
 function historyToggleElm() {
@@ -106,25 +107,39 @@ function historyEvent(state) {
 
 function toggleNavEnd() {
   if (historyPosition > 1) {
-    historyNavArrow["<"].classList.remove("nx-nav-end");
+    navArrows["prev"].elm.classList.remove("nx-nav-end");
   } else {
-    historyNavArrow["<"].classList.add("nx-nav-end");
+    navArrows["prev"].elm.classList.add("nx-nav-end");
   }
   if (historyPosition < historyCount - 1) {
-    historyNavArrow[">"].classList.remove("nx-nav-end");
+    navArrows["next"].elm.classList.remove("nx-nav-end");
   } else {
-    historyNavArrow[">"].classList.add("nx-nav-end");
+    navArrows["next"].elm.classList.add("nx-nav-end");
   }
+}
+
+function viewElms(state){
+return [authorIndexLink(state, false),
+  authorUrl(state, false),
+  historyViewLink(state, false)];
+}
+
+function editElms(state){
+  var link = historyViewLink(state, false);
+  var sp = getElm('SPAN', "nx-edit-event");
+  sp.textContent = state.lastEvent; 
+  link.prepend(sp);
+  return [link];
 }
 
 function historyItm(state) {
   historyCount++;
   var itm = document.createElement("LI");
-  itm.append(
-    authorIndexLink(state, false),
-    authorUrl(state, false),
-    historyViewLink(state, false)
-  );
+  if(!editMode){
+    itm.append(...viewElms(state));
+  } else {
+ itm.append(...editElms(state));
+  }
   return itm;
 }
 
@@ -139,7 +154,16 @@ function historyViewLink(state) {
   return viewlk;
 }
 
-export function historyBlock(state) {
+function setEditMode(){
+  navArrows.prev.symbol = "↶";
+  navArrows.next.symbol = "↷";
+  editMode = true;
+}
+
+export function historyBlock(state, editionHistory = false) {
+  if(editionHistory){
+    setEditMode();
+  }
   setHistoryListElm(state);
-  return blockWrap("history", null, [historyNav(), historyElm], false);
+  return blockWrap("history", null, [historyNav(navArrows), historyElm], false);
 }

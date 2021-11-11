@@ -1,15 +1,15 @@
-/*import {
-  clearPartialStorage,
-  getLocalStorage,
-  getSessionStorage,
-  jsonSize,
-} from "../libr/Jack/Trades/Stock.js";*/
 import {
   clearPartialStorage,
   getLocalStorage,
   getSessionStorage,
   jsonSize,
-} from "../NxJackBundle.js";
+} from "../libr/Jack/Trades/Stock.js";
+/*import {
+  clearPartialStorage,
+  getLocalStorage,
+  getSessionStorage,
+  jsonSize,
+} from "../NxJackBundle.js";*/
 
 var visitStore = {};
 var dataStore = {};

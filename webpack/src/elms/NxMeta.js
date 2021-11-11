@@ -1,6 +1,6 @@
-import { getTxt } from "../../utils/NxTranslate.js";
-import { registerTranslElm } from "../../procs/NxState.js";
-import { getErrMsgs, isAppStyleLoaded } from "../../procs/NxInstance.js";
+import { getTxt } from "../utils/NxTranslate.js";
+import { registerTranslElm } from "../procs/NxState.js";
+import { getErrMsgs, isAppStyleLoaded } from "../procs/NxInstance.js";
 
 export function getElm(tag, classList) {
   var elm = document.createElement(tag);

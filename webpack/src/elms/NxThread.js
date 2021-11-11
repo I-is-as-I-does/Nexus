@@ -1,6 +1,6 @@
-import { isNonEmptyStr } from "../../libr/Jack/Trades/Check.js";
-import { insertDiversion, replaceDiversion } from "../../libr/Valva/Valva.js";
-import { registerUpdateEvt,resolveState } from "../../procs/NxState.js";
+import { isNonEmptyStr } from "../libr/Jack/Trades/Check.js";
+import { insertDiversion, replaceDiversion } from "../libr/Valva/Valva.js";
+import { registerUpdateEvt,resolveState } from "../procs/NxState.js";
 import {
   authorIndexLink,
   authorUrl,

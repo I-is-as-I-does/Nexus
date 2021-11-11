@@ -1,16 +1,17 @@
-/*import { loadJson, miniUrl } from "../libr/Jack/Trades/Web.js";
+import { loadJson, miniUrl } from "../libr/Jack/Trades/Web.js";
 import { splitFlap } from "../libr/Valva/Valva.js";
 
 import { getStoredData, registerData, registerThreadVisit } from "./NxMemory.js";
-import { resetLogs, validMap } from "../valdt/NxStamper.js";
-import { getTxt, setUserSelectedLang } from "../transl/NxTranslate.js";*/
+import { resetLogs, validMap } from "../utils/NxStamper.js";
+import { getTxt, setUserSelectedLang } from "../utils/NxTranslate.js";
 
 
+/*
 import { loadJson, miniUrl } from "../NxJackBundle.js";
 import { splitFlap } from "../NxValvaBundle.js";
 import { getTxt, setUserSelectedLang,resetLogs, validMap }  from "../NxUtilsBundle.js";
 import { getStoredData, registerData, registerThreadVisit} from "./NxMemory.js";
-import { addErrMsg, logEvent } from "./NxInstance.js";
+import { addErrMsg, logEvent } from "./NxInstance.js";*/
 
 const bufferTime = 800;
 var currentState = {
@@ -18,6 +19,7 @@ var currentState = {
   srcData: null,
   threadId: "/",
   threadIndex: -1,
+  lastEvent:null
 };
 
 var translStore = {};
@@ -27,14 +29,16 @@ var useBrowserHistory = false;
 
 function registerBrowserEvent() {
     window.onpopstate = (event) => {
-      if (event.state && event.state.src && event.state.id) {
-        triggerUpdate(event.state.src, event.state.id, false);
+      if (event.state && event.state.src && event.state.id && event.state.ix && event.state.ev) {
+        var newState = event.state;
+        newState.srcData = getStoredData(event.state.src);
+        triggerUpdate(newState, false);
       }
     };
   }
   
 function updateBrowserHistory() {
-  var ref = { id: currentState.threadId, src: currentState.dataUrl };
+  var ref = { id: currentState.threadId, src: currentState.dataUrl, ix:currentState.threadIndex, ev:currentState.lastEvent };
   history.replaceState(ref, "");
   history.pushState(ref, "");
 }
@@ -110,6 +114,14 @@ function loadSrcFile(dataUrl) {
   });
 }
 
+export function activateBrowserHistory(){
+  if(!useBrowserHistory){
+      useBrowserHistory = true;
+      registerBrowserEvent();
+  }
+}
+
+
 export function resolveState(dataUrl, threadId) {
   return resolveData(dataUrl).then((data) => {
     var state = {
@@ -117,6 +129,7 @@ export function resolveState(dataUrl, threadId) {
       threadId: threadId,
       srcData: data,
       threadIndex: data.index.indexOf(threadId),
+      lastEvent:"read"
     };
 
     if (state.threadIndex === -1 && threadId !== "/") {
@@ -176,12 +189,6 @@ export function getCurrentState() {
   return currentState;
 }
 
-export function activateBrowserHistory(){
-    if(!useBrowserHistory){
-        useBrowserHistory = true;
-        registerBrowserEvent();
-    }
-}
 
 
 export function setOriginState(state){
@@ -192,3 +199,4 @@ export function setOriginState(state){
     addErrMsg("Origin state already set");
     return false;
 }
+

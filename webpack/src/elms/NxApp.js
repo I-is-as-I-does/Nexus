@@ -1,8 +1,8 @@
-import { getAvailableLangs, getLang } from "../../utils/NxTranslate.js";
+import { getAvailableLangs, getLang } from "../utils/NxTranslate.js";
 import { blockWrap, getElm } from "./NxMeta.js";
-import { splitFlap } from "../../libr/Valva/Valva.js";
-import { triggerTranslate } from "../../procs/NxState.js";
-import { appUrl } from "../../utils/NxStamper.js";
+import { splitFlap } from "../libr/Valva/Valva.js";
+import { triggerTranslate } from "../procs/NxState.js";
+import { appUrl } from "../utils/NxStamper.js";
 
 export function appBlock() {
   return blockWrap("app", null, [appLink(), langDropDown()], false);

@@ -1,10 +1,10 @@
-import { conciseUrl, oembedIframe, oembedLink } from "../../libr/Jack/Trades/Web.js";
+import { conciseUrl, oembedIframe, oembedLink } from "../libr/Jack/Trades/Web.js";
 import {
   insertDiversion,
   replaceDiversion,
-} from "../../libr/Valva/Valva.js";
+} from "../libr/Valva/Valva.js";
 import { threadTextElm } from "./NxThread.js";
-import { logEvent } from "../../procs/NxInstance.js";
+import { logEvent } from "../procs/NxInstance.js";
 import { getElm } from "./NxMeta.js";
 
 var mediaWrap;

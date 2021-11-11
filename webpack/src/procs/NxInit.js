@@ -1,11 +1,11 @@
-/*
-import { errorPrgr } from "../elms/shared/NxMeta.js";
+
+import { errorPrgr } from "../elms/NxMeta.js";
 
 import { getContainer, loadAppCss, logEvent, opt, setup } from "./NxInstance.js";
-import { activateBrowserHistory, resolveState, setOriginState } from "./NxState.js";
-*/
-import { errorPrgr } from "../NxSharedBundle.js";
-import { getContainer, loadAppCss, logEvent, opt, setup, activateBrowserHistory, resolveState, setOriginState } from "../NxCoreBundle.js";
+import { activateBrowserHistory, resolveState, setOriginState, triggerUpdate } from "./NxState.js";
+
+/*import { errorPrgr } from "../NxSharedBundle.js";
+import { getContainer, loadAppCss, logEvent, opt, setup, activateBrowserHistory, resolveState, setOriginState } from "../NxCoreBundle.js";*/
 
 export function Init(
   buildCallback,
@@ -20,20 +20,14 @@ export function Init(
         if (useBrowserHistory) {
           activateBrowserHistory();
         }
-
+        getContainer().append(buildCallback());
         if (opt("src")) {
-          return resolveState(opt("src"), opt("id"));
-        } else {
-          return Promise.resolve({});
+          return resolveState(opt("src"), opt("id")).then((state) => {
+            setOriginState(state);
+            triggerUpdate(state);
+        })
         }
-      })
-      .then((state) => {
-        if (state != false) {
-          setOriginState(state);
-        }
-        getContainer().append(buildCallback(state));
-      })
-      .catch((err) => {
+      }).catch((err) => {
         logEvent(err);
         getContainer().append(errorPrgr());
       } );

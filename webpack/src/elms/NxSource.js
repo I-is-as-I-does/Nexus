@@ -1,16 +1,17 @@
-import { copyToClipboard } from "../../libr/Jack/Trades/Stock.js";
-import { timedFadeToggle, easeOut, easeIn } from "../../libr/Valva/Valva.js";
-import { blockWrap, getElm } from "../shared/NxMeta.js";
-import { getLang, getTxt } from "../../utils/NxTranslate.js";
+import { copyToClipboard } from "../libr/Jack/Trades/Stock.js";
+import { timedFadeToggle, easeOut, easeIn } from "../libr/Valva/Valva.js";
+import { blockWrap, getElm } from "./NxMeta.js";
+import { getLang, getTxt } from "../utils/NxTranslate.js";
 import {
   registerTranslElm,
   registerUpdateEvt
-} from "../../procs/NxState.js";
-import { opt } from "../../procs/NxInstance.js";
+} from "../procs/NxState.js";
+import { opt } from "../procs/NxInstance.js";
 
 
 const defaultIO = "https://cdn.jsdelivr.net/gh/I-is-as-I-does/Nexus-Prototype@0.2.0/cdn/js/NxViewerIO.js";
 var drawerElm = null;
+var editMode = false;
 
 function actionLink(action, text) {
   var lk = getElm("A", "nx-source-" + action);
@@ -61,13 +62,22 @@ function toggleLink() {
   return lk;
 }
 
+function jsonSource(state){
+  return codeElm("source", textAreaElm(state, sourceContent));
+}
+
 function snippetsBundle(state) {
   drawerElm = getElm("DIV", "nx-source-drawer");
-  drawerElm.append(jsonSnippet(state), embedSnippet(state));
+
+  if(editMode){
+    drawerElm.append(jsonSource(state));
+  } else {
+    drawerElm.append(jsonSnippet(state), embedSnippet(state));
+  }
+  
   drawerElm.style.display = "none";
 
   var tgg = getElm("DIV", "nx-source-toggle");
-
   var snippetLink = toggleLink();
   tgg.append(snippetLink);
 
@@ -98,18 +108,24 @@ function copyLink(snpElm) {
   return copyLk;
 }
 
-function snippetElm(name, elm) {
+function codeElm(name, elm) {
   var snp = getElm("DIV", "nx-" + name + "-snippet");
   snp.append(elm, copyLink(elm));
   return snp;
 }
 
 function jsonSnippet(state) {
-  return snippetElm("json", textAreaElm(state, jsonContent));
+  return codeElm("json", textAreaElm(state, jsonContent));
 }
 
 function embedSnippet(state) {
-  return snippetElm("embed", textAreaElm(state, embedContent));
+  return codeElm("embed", textAreaElm(state, embedContent));
+}
+
+function sourceContent(state){
+  if(state.srcData){
+return JSON.stringify(state.srcData);
+  }
 }
 
 function embedContent(state) {
@@ -131,6 +147,9 @@ function embedContent(state) {
   return "";
 }
 
-export function sourceBlock(state) {
+export function sourceBlock(state, editionSource = false) {
+  if(editionSource){
+    editMode = true;
+  }
   return blockWrap("source", null, snippetsBundle(state), false);
 }

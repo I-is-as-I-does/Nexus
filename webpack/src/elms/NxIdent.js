@@ -1,10 +1,10 @@
-import { splitFlap } from "../../libr/Valva/Valva.js";
-import { isThreadRecordUnseen } from "../../procs/NxMemory.js";
+import { splitFlap } from "../libr/Valva/Valva.js";
+import { isThreadRecordUnseen } from "../procs/NxMemory.js";
 import {
   getCurrentState,
   registerUpdateEvt,
   triggerUpdate,
-} from "../../procs/NxState.js";
+} from "../procs/NxState.js";
 import { getElm } from "./NxMeta.js";
 
 function toggleUnseen(viewlk, state) {
@@ -136,6 +136,7 @@ export function authorIndexLink(state, update = false) {
     srcData: state.srcData,
     threadId: "/",
     threadIndex: -1,
+    lastEvent:"read"
   };
   auth.addEventListener("click", function () {
     triggerUpdate(newState, "/");

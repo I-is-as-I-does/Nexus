@@ -1,7 +1,7 @@
-/*import { isEmpty, isNonEmptyStr, seemsLikeValidDate } from "../libr/Jack/Trades/Check.js";
+import { isEmpty, isNonEmptyStr, seemsLikeValidDate } from "../libr/Jack/Trades/Check.js";
 import { isValidHttpUrl } from "../libr/Jack/Trades/Web.js";
-import { charCut } from "../libr/Jack/Trades/Help.js";*/
-import { isEmpty, isNonEmptyStr, seemsLikeValidDate, isValidHttpUrl, charCut } from "../NxJackBundle.js";
+import { charCut } from "../libr/Jack/Trades/Help.js";
+/*import { isEmpty, isNonEmptyStr, seemsLikeValidDate, isValidHttpUrl, charCut } from "../NxJackBundle.js";*/
 
 var logs = [];
 
