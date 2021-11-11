@@ -23,7 +23,7 @@
 }
 
 .nexus {
-  margin-left: calc(100vw - 100%); /* todo : fix */
+  margin-left: calc(100vw - 100%);
   scroll-behavior: smooth;
 }
 
@@ -43,7 +43,7 @@
   margin: 2vh auto;
   position: relative;
   padding: 0 2vw;
-  min-height: 96vh;
+  min-height: 94vh;
 }
 
 .nx-instance main {
@@ -81,7 +81,10 @@
   content: "↗";
   text-decoration: none;
 }
-
+.nx-edit-event:after {
+  content:"|";
+  padding:0 4px;
+}
 .nx-instance > header {
   width: 100%;
   margin-bottom: 1rem;
@@ -153,10 +156,9 @@
 
 a.nx-app-link {
   line-height: 1.6;
-  font-size: 0.85em;
+  font-size: 0.8em;
   position: relative;
   letter-spacing: 1em;
-  font-family: "Inconsolata", "Courier New", Courier, monospace;
 }
 a.nx-app-link:before {
   content: " ";
@@ -179,7 +181,7 @@ a.nx-app-link:after {
 .nx-about-author,
 .nx-thread-description {
   font-style: italic;
-  padding: 1.2rem 0;
+  padding: 1rem 0;
 }
 
 .nx-index ul {
@@ -237,26 +239,25 @@ a.nx-app-link:after {
   margin-top: 0.5em;
   font-size: 0.85em;
 }
-.nx-record-media-caption {
-  margin-top: 5px;
-}
+
 .nx-record-timestamp {
   margin-bottom: 10px;
-}
-.nx-record-timestamp {
   font-family: "Inconsolata", "Courier New", Courier, monospace;
   font-size: 0.85em;
 }
+
 .nx-record-media-caption {
   font-size: 0.85em;
+  margin-top: 6px;
+  color:#b3b3b3;
 }
 
 .nx-local header .nx-thread-name {
-  font-size: clamp(2rem, 5vw, 3rem);
+  font-size: clamp(30px, 5vw, 40px);
   font-weight: bold;
   line-height: 0.9em;
   margin: 1rem 0;
-  word-break: break-all;
+  word-break: break-word;
   overflow-wrap: break-word;
   -webkit-hyphens: auto;
   -moz-hyphens: auto;
@@ -317,7 +318,6 @@ a.nx-view-link.nx-on-display {
 
 .nx-page-media,
 .nx-broken-media {
-  font-family: "Inconsolata", "Courier New", Courier, monospace;
   display: table;
   position: relative;
 }
@@ -365,6 +365,9 @@ a.nx-view-link.nx-on-display {
   width: 100%;
   max-width: 100%;
 }
+.nx-source-snippet textarea{
+  height: 240px;
+}
 .nx-json-snippet textarea {
   height: 60px;
 }
@@ -393,15 +396,11 @@ a.nx-view-link.nx-on-display {
   font-family: "Inconsolata", "Courier New", Courier, monospace;
 }
 
-.nx-source-copy {
-  font-family: "Inconsolata", "Courier New", Courier, monospace;
-}
-
 .nx-source-copy-tooltip {
 
   cursor: normal;
-  margin-left: 5px;
-  /* color: #888; */
+  margin-left: 10px;
+ color: #b3b3b3;
   font-size: 0.85em;
   display: inline-block;
   vertical-align: middle;

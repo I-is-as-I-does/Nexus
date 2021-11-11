@@ -8,9 +8,9 @@ module.exports = {
     mode: 'production',
     entry: {
    //   NxTransl:'./src/transl/NxCommons.js',
-      NxViewerIO:'./src/ignt/NxViewerIO.js',
+      NxViewerIO:'./src/class/io/NxViewerIO.js',
       NxEditorIO: {
-        import: './src/ignt/NxEditorIO.js',
+        import: './src/class/io/NxEditorIO.js',
         dependOn: 'NxViewerIO',
       }
     }
@@ -50,7 +50,7 @@ module.exports = {
    // ]
   },
   plugins: [
-   new webpack.optimize.ModuleConcatenationPlugin(),
+   //new webpack.optimize.ModuleConcatenationPlugin(),
    // new MiniCssExtractPlugin({filename:"css/main.css"}),
     new webpack.BannerPlugin({
       banner: license,
