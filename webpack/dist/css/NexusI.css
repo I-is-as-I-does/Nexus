@@ -426,3 +426,43 @@ a.nx-view-link.nx-on-display {
   max-height: 340px;
   object-fit: cover;
 }
+/* editor */
+
+.nx-author {
+  width: 340px  ;
+  padding-bottom: 2rem;
+  margin-right: 3vw;
+}
+.nx-instance form label {
+ display: block;
+
+}
+.nx-edit-title {
+  text-transform: capitalize;
+}
+.nx-edit-feedback {
+  font-family: "Inconsolata", "Courier New", Courier, monospace;
+  margin-left:5px;
+}
+.nx-edit-indication {
+padding-right:5px;
+font-family: "Inconsolata", "Courier New", Courier, monospace;
+font-size: 0.85em;
+}
+.nx-instance form input, .nx-instance form textarea {
+  width:300px;
+  border: 1px solid #dedede;
+  color: #444;
+  margin:1em 0;
+  padding: 0.8em;
+outline: none;
+display: inline-block;
+vertical-align: middle;
+ }
+ .nx-instance form input {
+  height:2em;
+ }
+ .nx-instance form textarea {
+  height:9em;
+  resize: vertical;
+ }

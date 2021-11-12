@@ -66,6 +66,24 @@ class Memory {
     }
   }
 
+  #retrieveData(store, key){
+    if (store) {
+      var data = store.getItem(key);
+      if (data) {
+        return JSON.parse(data);
+      }
+    }
+    return null;
+  }
+
+  registerEditData(data){
+    this.#setStoreItem(this.#locStore, "NxEdit", data);
+  }
+
+  getStoredEditData(){
+    return this.#retrieveData(this.#locStore, "NxEdit");
+  }
+
   registerData(dataUrl, data) {
     this.#dataStore[dataUrl] = data;
     this.#setStoreItem(this.#sesStore, dataUrl, data);
@@ -99,13 +117,7 @@ class Memory {
     if (this.#dataStore.hasOwnProperty(dataUrl)) {
       return this.#dataStore[dataUrl];
     }
-    if (this.#sesStore) {
-      var data = this.#sesStore.getItem(dataUrl);
-      if (data) {
-        return JSON.parse(data);
-      }
-    }
-    return null;
+    return this.#retrieveData(this.#sesStore, dataUrl);
   }
 }
 

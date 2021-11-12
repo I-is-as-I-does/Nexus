@@ -133,8 +133,7 @@ export function authorIndexLink(state, update = false) {
     dataUrl: state.dataUrl,
     srcData: state.srcData,
     threadId: "/",
-    threadIndex: -1,
-    lastEvent:"read"
+    threadIndex: -1
   };
   auth.addEventListener("click", function () {
     NxState.triggerUpdate(newState, "/");

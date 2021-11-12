@@ -22,7 +22,7 @@ export const supportedMediaTypes = [
   "soundcloud",
 ];
 export const timestampPattern =
-  "^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1]) (0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$";
+  "^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])(T(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]))?$";
 export const idPattern = "[a-zA-Z0-9-]{3,36}";
 export const typesMap = {
   data: "Object",

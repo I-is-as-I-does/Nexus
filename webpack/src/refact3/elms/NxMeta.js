@@ -81,3 +81,35 @@ export function errorPrgr() {
   return p;
 }
 
+
+export function toggleNavEnd(map) {
+  if (map.position > 1) {
+    map["prev"].elm.classList.remove("nx-nav-end");
+  } else {
+    map["prev"].elm.classList.add("nx-nav-end");
+  }
+  if (map.position < map.count - 1) {
+    map["next"].elm.classList.remove("nx-nav-end");
+  } else {
+    map["next"].elm.classList.add("nx-nav-end");
+  }
+}
+
+
+export function setHistoryControls(map, triggerCallback){
+  Object.keys(map.ctrls).forEach((ctrl) => {
+    map.ctrls[ctrl].elm = getElm("A", "nx-nav-end");
+    map.ctrls[ctrl].elm.textContent = map.ctrls[ctrl].symbol;
+    map.ctrls[ctrl].elm.addEventListener("click", function () {
+      if (!map.ctrls[ctrl].elm.classList.contains("nx-nav-end")) {
+        if (ctrl == "prev") {
+          map.position--;
+        } else {
+          map.position++;
+        }
+        toggleNavEnd(map);
+        triggerCallback(map.position);
+      }
+    });
+  });
+}

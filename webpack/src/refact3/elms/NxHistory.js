@@ -1,50 +1,39 @@
 import { easeIn, easeOut, insertDiversion } from "../../libr/Valva/Valva.js";
 import { NxState } from "../NxState.js";
-import { blockWrap, getElm } from "./NxMeta.js";
+import { blockWrap, getElm, setHistoryControls, toggleNavEnd } from "./NxMeta.js";
 import {
   authorIndexLink,
   authorUrl,
   baseViewLink,
   setToggleOnDisplay,
 } from "./NxIdent.js";
-import { NxTranslate } from "../NxTranslate.js";
 
 const historyMax = 100;
 var isHistoryEvent = false;
 var historyList = null;
 var historyElm = null;
-var historyCount = 1;
-var historyPosition = 1;
-var navArrows = {
-  "prev": {"symbol":"<", "elm":null},
-   "next": {"symbol":">", "elm":null},
+
+var histCtrls = {
+  "ctrls":{
+    "prev": {"symbol":"<", "elm":null},
+    "next": {"symbol":">", "elm":null}
+  },
+
+   position:1,
+   count:1
  }
-var editMode = false;
+
 
 function historyNav() {
   var wrp = getElm("DIV", "nx-history-nav");
-  Object.keys(navArrows).forEach((pos) => {
-    navArrows[pos].elm = getElm("A", "nx-nav-end");
-    navArrows[pos].elm.textContent = navArrows[pos].symbol;
-    navArrows[pos].elm.addEventListener("click", function () {
-      if (!navArrows[pos].elm.classList.contains("nx-nav-end")) {
-        if (pos == "prev") {
-          historyPosition--;
-        } else {
-          historyPosition++;
-        }
-
-        toggleNavEnd();
-
-        var target =
-          historyList.children[historyPosition].querySelector(
-            ".nx-thread-name"
-          );
-        target.click();
-      }
-    });
+  setHistoryControls(histCtrls, function(position){
+    var target =
+    historyList.children[position].querySelector(
+      ".nx-thread-name"
+    );
+  target.click();
   });
-  wrp.append(navArrows["prev"].elm,historyToggleElm(),navArrows["next"].elm);
+  wrp.append(histCtrls.ctrls["prev"].elm,historyToggleElm(),histCtrls.ctrls["next"].elm);
   return wrp;
 }
 function historyToggleElm() {
@@ -91,31 +80,18 @@ function autoScroll() {
 
 function historyEvent(state) {
   if (!isHistoryEvent) {
-    if (historyCount > historyMax) {
+    if (histCtrls.count > historyMax) {
       historyList.children[1].remove();
-      historyCount--;
+      histCtrls.count--;
     }
-    historyPosition = historyCount;
+    histCtrls.position = histCtrls.count;
     var itm = historyItm(state);
 
     insertDiversion(historyList, itm, false, true, 200, function () {
       autoScroll();
     });
 
-    toggleNavEnd();
-  }
-}
-
-function toggleNavEnd() {
-  if (historyPosition > 1) {
-    navArrows["prev"].elm.classList.remove("nx-nav-end");
-  } else {
-    navArrows["prev"].elm.classList.add("nx-nav-end");
-  }
-  if (historyPosition < historyCount - 1) {
-    navArrows["next"].elm.classList.remove("nx-nav-end");
-  } else {
-    navArrows["next"].elm.classList.add("nx-nav-end");
+    toggleNavEnd(histCtrls);
   }
 }
 
@@ -125,23 +101,10 @@ return [authorIndexLink(state, false),
   historyViewLink(state, false)];
 }
 
-function editElms(state){
-  var link = historyViewLink(state, false);
-  var sp = getElm('SPAN', "nx-edit-event");
-  sp.textContent = NxTranslate.getTxt(state.lastEvent); 
-  NxState.registerTranslElm(sp, state.lastEvent);
-  link.prepend(sp);
-  return [link];
-}
-
 function historyItm(state) {
-  historyCount++;
+  histCtrls.count++;
   var itm = document.createElement("LI");
-  if(!editMode){
     itm.append(...viewElms(state));
-  } else {
- itm.append(...editElms(state));
-  }
   return itm;
 }
 
@@ -156,16 +119,8 @@ function historyViewLink(state) {
   return viewlk;
 }
 
-function setEditMode(){
-  navArrows.prev.symbol = "↶";
-  navArrows.next.symbol = "↷";
-  editMode = true;
-}
 
-export function historyBlock(state, editionHistory = false) {
-  if(editionHistory){
-    setEditMode();
-  }
+export function historyBlock(state) {
   setHistoryListElm(state);
   return blockWrap("history", null, [historyNav(navArrows), historyElm], false);
 }

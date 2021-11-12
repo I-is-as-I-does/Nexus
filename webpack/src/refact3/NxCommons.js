@@ -52,5 +52,6 @@ export default {
     "read":"lecture",
     "delete":"suppression",
     "create":"création"
+  
   },
 };

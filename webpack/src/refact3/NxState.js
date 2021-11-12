@@ -19,8 +19,7 @@ class State {
       dataUrl: null,
       srcData: null,
       threadId: "/",
-      threadIndex: -1,
-      lastEvent: null,
+      threadIndex: -1
     };
     
     this.#translStore = {};
@@ -38,8 +37,7 @@ class State {
         event.state &&
         event.state.src &&
         event.state.id &&
-        event.state.ix &&
-        event.state.ev
+        event.state.ix
       ) {
         var newState = event.state;
         newState.srcData = NxMemory.getStoredData(event.state.src);
@@ -52,8 +50,7 @@ class State {
   var ref = {
     id: this.#currentState.threadId,
     src: this.#currentState.dataUrl,
-    ix: this.#currentState.threadIndex,
-    ev: this.#currentState.lastEvent,
+    ix: this.#currentState.threadIndex
   };
   history.replaceState(ref, "");
   history.pushState(ref, "");
@@ -93,8 +90,7 @@ resolveState(dataUrl, threadId) {
       dataUrl: dataUrl,
       threadId: threadId,
       srcData: data,
-      threadIndex: data.index.indexOf(threadId),
-      lastEvent: "read",
+      threadIndex: data.index.indexOf(threadId)
     };
 
     if (state.threadIndex === -1 && threadId !== "/") {
