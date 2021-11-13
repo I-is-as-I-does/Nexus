@@ -4,11 +4,10 @@ import { NxState } from "../NxState.js";
 import {
   authorIndexLink,
   authorUrl,
-  threadNameElm,
   viewLink,
 } from "./NxIdent.js";
 import { mediaElm } from "./NxMedia.js";
-import { blockWrap, getElm } from "./NxMeta.js";
+import { blockWrap, getElm,  threadNameElm } from "./NxMeta.js";
 
 var linkedWrap;
 var descrpElm;

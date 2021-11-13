@@ -3,7 +3,7 @@ import { NxMemory } from "../NxMemory.js";
 import {
   NxState
 } from "../NxState.js";
-import { getElm } from "./NxMeta.js";
+import { baseViewLink, getElm, setToggleOnDisplay } from "./NxMeta.js";
 
 function toggleUnseen(viewlk, state) {
   if (viewlk.classList.contains("nx-on-display")) {
@@ -15,35 +15,7 @@ function toggleUnseen(viewlk, state) {
   }
 }
 
-function toggleOnDisplay(viewlk, givenState, newState) {
-  if (newState.dataUrl && givenState.dataUrl == newState.dataUrl && givenState.threadId == newState.threadId) {
-    viewlk.classList.add("nx-on-display");
-  } else {
-    viewlk.classList.remove("nx-on-display");
-  }
-}
 
-function resolveThreadName(state) {
-  var threadName = "/";
-  if (state.threadId && state.threadId != "/") {
-    threadName = state.srcData.threads[state.threadIndex].name;
-  }
-  return threadName;
-}
-
-export function baseViewLink(state, update = false) {
-  var viewlk = getElm("A", "nx-view-link");
-  viewlk.append(threadNameElm(state, update));
-  return viewlk;
-}
-
-export function setToggleOnDisplay(viewlk, state) {
- 
-  toggleOnDisplay(viewlk, state, NxState.getCurrentState());
-  NxState.registerUpdateEvt(function (newState) {
-    toggleOnDisplay(viewlk, state, newState);
-  });
-}
 
 export function authorHandle(state, update = false) {
   var hnd = getElm("SPAN", "nx-handle");
@@ -91,18 +63,6 @@ export function authorUrl(state, update = false) {
   return authorlksp;
 }
 
-export function threadNameElm(state, update = false) {
-  var sp = getElm("SPAN", "nx-thread-name");
-  sp.textContent = resolveThreadName(state);
-  if (update) {
-    NxState.registerUpdateEvt(function (newState) {
-      var newThreadName = resolveThreadName(newState);
-      splitFlap(sp, newThreadName, 15);
-    });
-  }
-
-  return sp;
-}
 
 export function setToggleUnseen(viewlk, state) {
   viewlk.append(getElm("SPAN", "nx-new-tag"));

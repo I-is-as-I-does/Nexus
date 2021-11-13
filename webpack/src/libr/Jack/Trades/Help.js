@@ -37,3 +37,33 @@ export function waitForElmInDOM(elmSelector, parentElm = null) {
     });
   });
 }
+
+
+export function replaceDiacritics(text) {
+  if (text == "" || text.length == 0) {
+      return "";
+  }
+  var diactricMap = {
+'À':'A','Á':'A','Â':'A','Ã':'A','Ä':'A','Å':'A','à':'a','á':'a','â':'a','ã':'a','ä':'a','å':'a','ă':'a','ą':'a',
+'Ò':'O','Ó':'O','Ô':'O','Õ':'O','Õ':'O','Ö':'O','Ø':'O','ò':'o','ó':'o','ô':'o','õ':'o','ö':'o','ø':'o',
+'È':'E','É':'E','Ê':'E','Ë':'E','è':'e','é':'e','ê':'e','ë':'e','ð':'e','ę':'e',
+'Ç':'C','ç':'c','ć':'c','č':'c',
+'Ð':'D','đ':'d',
+'ğ':'g',
+'Ì':'I','Í':'I','Î':'I','Ï':'I','ì':'i','í':'i','î':'i','ï':'i',
+'Ł':'L','ł':'l',
+'Ñ':'N','ñ':'n','ń':'n',
+'Š':'S','š':'s',
+'Ù':'U','Ú':'U','Û':'U','Ü':'U','ù':'u','ú':'u','û':'u','ü':'u',
+'Ÿ':'Y','ÿ':'y','ý':'y',
+'Ž':'Z','ž':'z','Ż':'Z','ż':'z',
+'ɶ':'oe','Œ':'OE','æ':'ae','Æ':'AE','ß':'ss'
+  };
+  var diactrics = Object.keys(diactricMap);
+  for (var diactricIndex = 0; diactricIndex < diactrics.length; diactricIndex++) {
+      var from = diactrics[diactricIndex];
+      var to = diactricMap[from];
+      text = text.replace(from, to);
+  }
+  return text;
+}

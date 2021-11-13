@@ -1,17 +1,23 @@
 import { easeIn, easeOut, insertDiversion } from "../../libr/Valva/Valva.js";
 import { NxState } from "../NxState.js";
-import { blockWrap, getElm, setHistoryControls, toggleNavEnd } from "./NxMeta.js";
+import { blockWrap, getElm, setHistoryControls, toggleNavEnd,setToggleOnDisplay,
+  baseViewLink } from "./NxMeta.js";
 import {
   authorIndexLink,
-  authorUrl,
-  baseViewLink,
-  setToggleOnDisplay,
+  authorUrl
 } from "./NxIdent.js";
 
 const historyMax = 100;
 var isHistoryEvent = false;
 var historyList = null;
 var historyElm = null;
+
+var historyState = {
+  dataUrl: null,
+  srcData: null,
+  threadId: "/",
+  threadIndex: -1
+};
 
 var histCtrls = {
   "ctrls":{
@@ -55,6 +61,7 @@ function historyToggleElm() {
 }
 
 function setHistoryListElm(state) {
+
   historyList = getElm("UL", "nx-history-list");
   var first = getElm("LI");
   first.textContent = "...";
@@ -79,7 +86,8 @@ function autoScroll() {
 }
 
 function historyEvent(state) {
-  if (!isHistoryEvent) {
+  if (!isHistoryEvent && (state.dataUrl != historyState.dataUrl || state.threadId != historyState.threadId)) {
+    historyState = state;
     if (histCtrls.count > historyMax) {
       historyList.children[1].remove();
       histCtrls.count--;
@@ -115,6 +123,7 @@ function historyViewLink(state) {
   viewlk.addEventListener("click", () => {
     isHistoryEvent = true;
     NxState.triggerUpdate(state, true);
+    isHistoryEvent = false;
   });
   return viewlk;
 }
@@ -122,5 +131,5 @@ function historyViewLink(state) {
 
 export function historyBlock(state) {
   setHistoryListElm(state);
-  return blockWrap("history", null, [historyNav(navArrows), historyElm], false);
+  return blockWrap("history", null, [historyNav(), historyElm], false);
 }

@@ -1,8 +1,7 @@
-import { splitFlap } from "../../libr/Valva/Valva.js";
 import { NxTranslate } from "../NxTranslate.js";
 import { appUrl } from "../NxConstants.js";
 import { NxState } from "../NxState.js";
-import { blockWrap, getElm } from "./NxMeta.js";
+import { blockWrap, getElm, selectDropDown } from "./NxMeta.js";
 
 
 export function appBlock() {
@@ -18,46 +17,12 @@ export function appLink() {
   return link;
 }
 
+
+//"nx-lang-list" = "nx-select-list"/  "nx-lang-list-toggle" = "nx-select-toggle" /   "nx-selected-lang" = "nx-selected"
 export function langDropDown() {
-  var selectedClass = "nx-selected-lang";
-
-  var langTgg = getElm("SPAN", "nx-lang-list-toggle");
-  langTgg.textContent = NxTranslate.getLang();
-
-  var langDrp = getElm("UL", "nx-lang-list");
-  NxTranslate.getAvailableLangs().forEach((lang) => {
-    var li = getElm("LI");
-    li.textContent = lang;
-    if (lang == langTgg.textContent) {
-      li.classList.add(selectedClass);
-    }
-    li.addEventListener("click", () => {
-      var nlang = li.textContent;
-      if (nlang != NxTranslate.getLang()) {
-        var prev = langDrp.querySelector("." + selectedClass);
-        prev.classList.remove(selectedClass);
-        li.classList.add(selectedClass);
-
-        splitFlap(langTgg, nlang, 50);
-        NxState.triggerTranslate(nlang);
-      }
-      langDrp.style.display = "none";
-    });
-
-    langDrp.append(li);
-  });
-  langDrp.style.display = "none";
-
-  var swtch = getElm("DIV", "nx-lang-switch");
-  swtch.append(langTgg, langDrp);
-
-  langTgg.addEventListener("click", () => {
-    var styl = "none";
-    if (langDrp.style.display == styl) {
-      styl = "block";
-    }
-    langDrp.style.display = styl;
-  });
-
-  return swtch;
+  var toggle = getElm('P');
+  toggle.textContent = NxTranslate.getLang();
+  return selectDropDown(NxTranslate.getAvailableLangs(), toggle, function(nlang){
+    NxState.triggerTranslate(nlang);
+  }, "nx-lang-switch");
 }

@@ -1,10 +1,8 @@
 
 import { appBlock } from "./elms/NxApp.js";
-import { authorForm, editActions, setState } from "./elms/NxEdit.js";
+import { editIndexBlock, editActions,  setThreadsForms, editThreadsBlock } from "./elms/NxEdit.js";
 import { getElm, instanceWrap, errorPrgr } from "./elms/NxMeta.js";
 import { sourceBlock } from "./elms/NxSource.js";
-import { threadBlocks } from "./elms/NxThread.js";
-
 
 
 export function editorContent(success, state){
@@ -12,15 +10,17 @@ export function editorContent(success, state){
         return errorPrgr();
     }
 
-    setState(state);
+    setThreadsForms(state);
 
     var indexPart = getElm("DIV");
-    indexPart.append(authorForm());
+    indexPart.append(editIndexBlock());
     var threadPart = getElm("DIV");
-    threadPart.append(...threadBlocks(state));
+    threadPart.append(editThreadsBlock());
     
-    return instanceWrap([appBlock(), editActions()], [
+    var instWrap = instanceWrap([appBlock(), editActions()], [
      indexPart,
      threadPart
-     ], [sourceBlock(state,true)]);
+     ],[]);
+     instWrap.classList.add('nx-edit');
+     return instWrap;
 }

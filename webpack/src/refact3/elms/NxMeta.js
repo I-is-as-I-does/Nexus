@@ -1,6 +1,7 @@
 import { NxTranslate } from "../NxTranslate.js";
 import { NxState } from "../NxState.js";
 import { NxInstance } from "../NxInstance.js";
+import { splitFlap } from "../../libr/Valva/Valva.js";
 
 
 export function getElm(tag, classList) {
@@ -83,15 +84,16 @@ export function errorPrgr() {
 
 
 export function toggleNavEnd(map) {
+
   if (map.position > 1) {
-    map["prev"].elm.classList.remove("nx-nav-end");
+    map.ctrls["prev"].elm.classList.remove("nx-nav-end");
   } else {
-    map["prev"].elm.classList.add("nx-nav-end");
+    map.ctrls["prev"].elm.classList.add("nx-nav-end");
   }
   if (map.position < map.count - 1) {
-    map["next"].elm.classList.remove("nx-nav-end");
+    map.ctrls["next"].elm.classList.remove("nx-nav-end");
   } else {
-    map["next"].elm.classList.add("nx-nav-end");
+    map.ctrls["next"].elm.classList.add("nx-nav-end");
   }
 }
 
@@ -112,4 +114,113 @@ export function setHistoryControls(map, triggerCallback){
       }
     });
   });
+}
+
+export function selectDropDown(list, toggleElm, actionCallback = null, switchClass = null){
+  var selectedClass = "nx-selected";
+  toggleElm.classList.add('nx-select-toggle');
+  var isInput = toggleElm.tagName == 'INPUT';
+  var firstValue;
+  if(isInput){
+    firstValue = toggleElm.value;
+  } else {
+    firstValue = toggleElm.textContent;
+  }
+
+
+  var drp = getElm("UL", "nx-select-list");
+  list.forEach((itm) => {
+
+    var li = getElm("LI");
+    li.textContent = itm;
+    li.dataset.item = itm;
+    if (itm == firstValue) {
+      li.classList.add(selectedClass);
+    }
+    li.addEventListener("click", () => {
+      
+      if(!li.classList.contains(selectedClass)){
+        var nitm = li.textContent;
+        var prev = drp.querySelector("." + selectedClass);
+  
+        prev.classList.remove(selectedClass);
+        li.classList.add(selectedClass);
+
+        if(isInput){
+         toggleElm.value = nitm;
+        } else {
+        toggleElm.textContent = nitm;
+        }
+        if (typeof actionCallback === "function") {
+          actionCallback(nitm);
+        }
+       
+drp.style.display = "none";
+      }
+       
+    });
+
+    drp.append(li);
+  });
+  drp.style.display = "none";
+
+  var swtch = getElm("DIV", "nx-select");
+  if(switchClass){
+    swtch.classList.add(switchClass);
+  }
+  swtch.append(toggleElm, drp);
+
+  toggleElm.addEventListener("click", () => {
+    var styl = "none";
+    if (drp.style.display == styl) {
+      styl = "block";
+    }
+    drp.style.display = styl;
+  });
+
+  return swtch;
+}
+
+
+export function setToggleOnDisplay(viewlk, state) {
+ 
+  toggleOnDisplay(viewlk, state, NxState.getCurrentState());
+  NxState.registerUpdateEvt(function (newState) {
+    toggleOnDisplay(viewlk, state, newState);
+  });
+}
+
+function toggleOnDisplay(viewlk, givenState, newState) {
+  if (newState.dataUrl && givenState.dataUrl == newState.dataUrl && givenState.threadId == newState.threadId) {
+    viewlk.classList.add("nx-on-display");
+  } else {
+    viewlk.classList.remove("nx-on-display");
+  }
+}
+
+export function baseViewLink(state, update = false) {
+  var viewlk = getElm("A", "nx-view-link");
+  viewlk.append(threadNameElm(state, update));
+  return viewlk;
+}
+
+export function threadNameElm(state, update = false) {
+  var sp = getElm("SPAN", "nx-thread-name");
+  sp.textContent = resolveThreadName(state);
+  if (update) {
+    NxState.registerUpdateEvt(function (newState) {
+      var newThreadName = resolveThreadName(newState);
+      splitFlap(sp, newThreadName, 15);
+    });
+  }
+
+  return sp;
+}
+
+function resolveThreadName(state) {
+  var threadName = "/";
+  if (state.threadId && state.threadId != "/") {
+    threadName = state.srcData.threads[state.threadIndex].name;
+  }
+  return threadName;
 }
