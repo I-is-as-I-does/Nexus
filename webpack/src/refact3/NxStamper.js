@@ -226,7 +226,9 @@ class Stamper {
   }
 
   validLinks(linked) {
-    linked = linked.slice(0, this.itmLimits("linked")[1]);
+   
+    linked.slice(0, this.itmLimits("linked")[1]);
+
 
     var done = [];
     for (var i = 0; i < linked.length; i++) {
@@ -262,8 +264,9 @@ class Stamper {
           thread.description,
           "description"
         );
-        thread.linked = this.validLinks(thread.linked);
 
+        thread.linked = this.validLinks(thread.linked);
+  
         return thread;
       }
     }
@@ -330,8 +333,7 @@ class Stamper {
       data.author = this.validAuthor(data.author);
       if (data.author) {
         data.threads = this.validThreads(data.threads);
-
-        if (data.threads.length) {
+        if (data.threads.length) { 
           return data;
         }
       }

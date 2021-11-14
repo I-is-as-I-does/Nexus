@@ -84,3 +84,16 @@ export function cssExtract(strength = 2) {
     false
   );
 }
+
+export function autoScrollToBottom(elm) {
+  elm.scrollIntoView({
+    block: "end",
+    behavior: "smooth",
+  });
+}
+export function autoScrollToTop(elm) {
+  elm.scrollIntoView({
+    block: "start",
+    behavior: "smooth",
+  });
+}

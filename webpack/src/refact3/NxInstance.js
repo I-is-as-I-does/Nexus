@@ -96,9 +96,11 @@ class Instance {
       .then((data) => {
         NxStamper.resetLogs();
         data = NxStamper.validMap(data);
+      
         if (data) {
           this.#setDataHelpers(data);
           NxMemory.registerData(dataUrl, data);
+ 
           return data;
         }
         NxMemory.registerData(dataUrl, 400);

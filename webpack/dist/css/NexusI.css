@@ -4,7 +4,6 @@
   display: block;
   contain: content;
 }
-
 .nexus ::-moz-selection {
   background: #ebebeb;
 }
@@ -35,14 +34,14 @@
   font-weight: normal;
   line-height: 1.2;
   -webkit-text-size-adjust: 100%;
-  background: rgb(46, 45, 45);
+  background: white;
   color: #444;
   min-width: 360px;
-  width: calc(960px + 10vw);
+  width: calc(1020px + 10vw);
   max-width: 100%;
   margin: 2vh auto;
   position: relative;
-  padding: 0 2vw;
+  padding: 0 1vw;
   min-height: 94vh;
 }
 
@@ -194,12 +193,10 @@ a.nx-app-link:after {
   max-width: 100%;
 }
 .nx-local,
-.nx-distant {
+.nx-distant, .nx-index {
   width: 340px;
 }
-.nx-index {
-  width: 280px;
-}
+
 .nx-local,
 .nx-distant,
 .nx-index {
@@ -471,10 +468,10 @@ padding-left:0.5em;
   font-size: 1em;
   width:100%;
   word-wrap:break-word;
-  border:1px solid #dedede;
+  border:none;
   color: #444;
   margin-top:2px;
-  padding: 0.4em;
+
 outline: none;
 display: inline-block;
 vertical-align: middle;
@@ -484,18 +481,22 @@ sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
 
  }
  .nx-instance form input {
-  min-height: 25px;
+   padding:0.2em 0.4em;
+  border-bottom:1px solid #dedede;
  }
  .nx-instance form textarea {
   overflow-y: scroll;
-
+  border:1px solid #dedede;
   resize: vertical;
-  height:auto;
+  padding: 0.4em;
  }
 
  
  .nx-edit-author-about textarea, .nx-edit-threads-description textarea {
 font-style: italic;
+ }
+ .nx-edit-record-aside textarea.nx-edit-textarea, .nx-edit-media-caption textarea.nx-edit-textarea {
+  font-size: 0.85em;
  }
  .nx-edit-author-about textarea, .nx-edit-record-aside textarea, .nx-edit-threads-description textarea {
    min-height: 60px;
@@ -503,7 +504,7 @@ font-style: italic;
 
  }
  .nx-edit-record-main textarea {
-  min-height: 80px;
+  min-height: 100px;
   max-height: 400px;
  }
  .nx-edit-media-caption textarea {
@@ -513,31 +514,66 @@ font-style: italic;
  .nx-edit-media-type {
    position: relative;
  }
+
  .nx-edit-media-type ul{
-background-color: whitesmoke;
-width: 100%;
+    background-color: white;
+    width: 100%;
+    border: 1px solid #dedede;
+    box-shadow: 0px 2px 4px 2px #ebebeb;
+
 }
 
 .nx-edit-media-type li{
- border-top:1px solid #b3b3b3
+ border-top:1px solid #dedede
   }
   
 
 .nx-edit-input {
   margin-bottom:12px;
 }
-
 .nx-edit-move button {
+  border: none;
+  width: 16px;
   margin-right:4px;
+}
+.nx-edit-move button,.nx-add-link, .nx-delete-link {
+
   font-size: 22px;
   font-family: "Inconsolata", "Courier New", Courier, monospace;
-  border: none;
+
   background-color: white;
-  width: 16px;
+
       height: 24px;
       vertical-align: middle;
       border-radius: 0;
       cursor: pointer;
+}
+
+.nx-add-link, .nx-delete-link {
+  border: 1px solid #dedede;
+  width: 1em;
+}
+.nx-delete-link {
+  margin:0,
+}
+.nx-add-link:hover, .nx-delete-link:hover {
+border-color:#444
+}
+.nx-distant-link-action {
+text-align: right;
+}
+
+.nx-distant-link, .nx-edit-author, .nx-edit-index {
+  border-left: 3px solid #dedede;
+  padding: 12px 0 8px 12px;
+  margin: 2em 0;
+}
+
+ul.nx-edit-index {
+  padding: 12px 0 8px 12px;
+}
+.nx-add-link {
+  margin-top:1em;
 }
 
 .nx-edit-move button:not(:disabled):hover {

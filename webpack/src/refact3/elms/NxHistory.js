@@ -6,6 +6,7 @@ import {
   authorIndexLink,
   authorUrl
 } from "./NxIdent.js";
+import { autoScrollToBottom } from "../../libr/Jack/Trades/Style.js";
 
 const historyMax = 100;
 var isHistoryEvent = false;
@@ -25,16 +26,20 @@ var histCtrls = {
     "next": {"symbol":">", "elm":null}
   },
 
-   position:1,
+   position:0,
    count:1
  }
 
 
 function historyNav() {
   var wrp = getElm("DIV", "nx-history-nav");
-  setHistoryControls(histCtrls, function(position){
+  setHistoryControls(histCtrls, function(ctrl){
+    var postn = histCtrls.position;
+    if(ctrl == 'prev'){
+      postn += 1;
+    }
     var target =
-    historyList.children[position].querySelector(
+    historyList.children[postn].querySelector(
       ".nx-thread-name"
     );
   target.click();
@@ -54,7 +59,7 @@ function historyToggleElm() {
       tggl.textContent = "≙";
       tggl.classList.add("nx-active");
       easeIn(historyElm, 200);
-      autoScroll();
+      autoScrollToBottom(historyList);
     }
   });
   return tggl;
@@ -67,7 +72,9 @@ function setHistoryListElm(state) {
   first.textContent = "...";
   historyList.append(first);
   if(state.srcData){
+    //historyEvent(state);
   historyList.append(historyItm(state));
+
 }
   historyElm = getElm("DIV", "nx-history-drawer");
   historyElm.append(historyList);
@@ -75,28 +82,23 @@ function setHistoryListElm(state) {
   NxState.registerUpdateEvt(function (newState) {
     historyEvent(newState);
   });
-  return historyElm;
+
 }
 
-function autoScroll() {
-  historyList.scrollIntoView({
-    block: "end",
-    behavior: "smooth",
-  });
-}
 
 function historyEvent(state) {
   if (!isHistoryEvent && (state.dataUrl != historyState.dataUrl || state.threadId != historyState.threadId)) {
     historyState = state;
     if (histCtrls.count > historyMax) {
-      historyList.children[1].remove();
-      histCtrls.count--;
+      historyList.children[1].remove();      
+    } else {
+      histCtrls.count++;
     }
-    histCtrls.position = histCtrls.count;
-    var itm = historyItm(state);
 
+    histCtrls.position = histCtrls.count-1;
+    var itm = historyItm(state);
     insertDiversion(historyList, itm, false, true, 200, function () {
-      autoScroll();
+      autoScrollToBottom(historyList);
     });
 
     toggleNavEnd(histCtrls);
@@ -110,7 +112,7 @@ return [authorIndexLink(state, false),
 }
 
 function historyItm(state) {
-  histCtrls.count++;
+
   var itm = document.createElement("LI");
     itm.append(...viewElms(state));
   return itm;

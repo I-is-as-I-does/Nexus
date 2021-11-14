@@ -156,6 +156,9 @@ setOriginState(state) {
   return false;
 }
 
+getBuffertime(){
+  return this.#bufferTime;
+}
 
 }
 

@@ -85,12 +85,12 @@ export function errorPrgr() {
 
 export function toggleNavEnd(map) {
 
-  if (map.position > 1) {
+  if (map.position > 0) {
     map.ctrls["prev"].elm.classList.remove("nx-nav-end");
   } else {
     map.ctrls["prev"].elm.classList.add("nx-nav-end");
   }
-  if (map.position < map.count - 1) {
+  if (map.position < map.count-1) {
     map.ctrls["next"].elm.classList.remove("nx-nav-end");
   } else {
     map.ctrls["next"].elm.classList.add("nx-nav-end");
@@ -104,13 +104,13 @@ export function setHistoryControls(map, triggerCallback){
     map.ctrls[ctrl].elm.textContent = map.ctrls[ctrl].symbol;
     map.ctrls[ctrl].elm.addEventListener("click", function () {
       if (!map.ctrls[ctrl].elm.classList.contains("nx-nav-end")) {
-        if (ctrl == "prev") {
-          map.position--;
-        } else {
+        if (ctrl == "next") {
           map.position++;
+        } else {
+          map.position--;
         }
+        triggerCallback(ctrl);
         toggleNavEnd(map);
-        triggerCallback(map.position);
       }
     });
   });
