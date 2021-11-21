@@ -1,17 +1,17 @@
 import { errorElm, defaultReaderBlocks } from "./elm/NxMeta.js";
-import { isElement, isNonEmptyStr } from "./lib/Jack/Trades/Check.js";
+import { isElement, isNonEmptyStr } from "./lib/Jack/Check.js";
 import {
   clearPartialStorage,
   getLocalStorage,
   getSessionStorage,
   jsonSize,
-} from "./lib/Jack/Trades/Stock.js";
+} from "./lib/Jack/Stock.js";
 import {
   isValidHttpUrl,
   loadJson,
   loadCss,
   miniUrl,
-} from "./lib/Jack/Trades/Web.js";
+} from "./lib/Jack/Web.js";
 import { insertDiversion } from "./lib/Valva/Valva.js";
 import { defaultCssUrl } from "./NxConstants.js";
 import NxNimrod from "./NxNimrod.js";

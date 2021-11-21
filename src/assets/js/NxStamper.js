@@ -1,6 +1,6 @@
-import * as Check from "./lib/Jack/Trades/Check.js";
-import { isValidHttpUrl } from "./lib/Jack/Trades/Web.js";
-import { charCut } from "./lib/Jack/Trades/Help.js";
+import * as Check from "./lib/Jack/Check.js";
+import { isValidHttpUrl } from "./lib/Jack/Web.js";
+import { charCut } from "./lib/Jack/Help.js";
 
 export function charLimits(catg) {
   var limits = {

@@ -1,4 +1,4 @@
-import { conciseUrl, oembedHtml, oembedLink } from "../lib/Jack/Trades/Web.js";
+import { conciseUrl, oembedHtml, oembedLink } from "../lib/Jack/Web.js";
 import NxThalamus from "../NxThalamus.js";
 import {
   easeOut,

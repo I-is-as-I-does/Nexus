@@ -1,4 +1,4 @@
-import { copyToClipboard } from "../lib/Jack/Trades/Stock.js";
+import { copyToClipboard } from "../lib/Jack/Stock.js";
 import { timedFadeToggle, easeOut, easeIn } from "../lib/Valva/Valva.js";
 import { blockWrap } from "./NxMeta.js";
 import NxNimrod from "../NxNimrod.js";

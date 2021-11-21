@@ -1,4 +1,4 @@
-import { isNonEmptyStr } from "../lib/Jack/Trades/Check.js";
+import { isNonEmptyStr } from "../lib/Jack/Check.js";
 import { insertDiversion, replaceDiversion } from "../lib/Valva/Valva.js";
 import NxThalamus from "../NxThalamus.js";
 import { authorIndexLink, authorUrl, threadName, viewLink } from "./NxIdent.js";

@@ -8,9 +8,9 @@ module.exports = {
     mode: 'production',
     entry: {
    //   NxTransl:'./src/transl/NxCommons.js',
-      NxViewerIO:'./src/class/io/NxViewerIO.js',
+      NxViewerIO:'./src/io/NxViewerIO.js',
       NxEditorIO: {
-        import: './src/class/io/NxEditorIO.js',
+        import: './src/io/NxEditorIO.js',
         dependOn: 'NxViewerIO',
       }
     }

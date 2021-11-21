@@ -1,5 +1,5 @@
-import { getLocalStorage } from "./lib/Jack/Trades/Stock.js";
-import { isNonEmptyObj, isNonEmptyStr } from "./lib/Jack/Trades/Check.js";
+import { getLocalStorage } from "./lib/Jack/Stock.js";
+import { isNonEmptyObj, isNonEmptyStr } from "./lib/Jack/Check.js";
 import NxCommons from "./transl/NxCommons.js";
 import { splitFlap } from "./lib/Valva/Valva.js";
 
