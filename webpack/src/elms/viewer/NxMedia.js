@@ -1,12 +1,12 @@
-import { conciseUrl, oembedIframe, oembedLink, oembedResponse } from "../libr/Jack/Web.js";
+import { conciseUrl, oembedIframe, oembedLink, oembedResponse } from "../../libr/Jack/Web.js";
 import {
   insertDiversion,
   replaceDiversion,
-} from "../libr/Valva/Valva.js";
+} from "../../libr/Valva/Valva.js";
 import { threadTextElm } from "./NxThread.js";
-import { getElm } from "./NxMeta.js";
-import { consoleLog } from "../logs/NxLog.js";
-import { getStoredOembedResponse, registerOembedResponse } from "../storg/NxMemory.js";
+import { getElm } from "../NxCommons.js";
+import { consoleLog } from "../../logs/NxLog.js";
+import { getStoredOembedResponse, registerOembedResponse } from "../../storg/NxMemory.js";
 
 var mediaWrap;
 

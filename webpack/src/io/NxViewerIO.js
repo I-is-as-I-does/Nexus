@@ -1,9 +1,9 @@
 (function () {
   
 
-  import("../servc/NxViewer.js").then((NxViewer)=> { 
+  import("../elms/NxViewerInstance.js").then((NxViewer)=> { 
   import("../load/NxInit.js").then((NxInit)=> { 
-    NxInit.initPage(NxViewer.viewerContent);
+    NxInit.initPage(NxViewer.viewerElms);
     });
   });
 })();

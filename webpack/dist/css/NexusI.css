@@ -1,32 +1,30 @@
 @import url("https://fonts.googleapis.com/css2?family=Inconsolata:wght@500&family=Roboto&display=swap");
 
-:host {
-  display: block;
-  contain: content;
-}
-.nexus ::-moz-selection {
+
+.nx ::selection, .nx ::-moz-selection {
   background: #ebebeb;
 }
 
-.nexus ::selection {
-  background: #ebebeb;
-}
-
-.nexus,
-.nexus *,
-.nexus *::before,
-.nexus *::after {
+.nx,
+.nx::before,
+.nx::after, 
+.nx *,
+.nx *::before,
+.nx *::after {
+  all: revert;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-}
-
-.nexus {
-  margin-left: calc(100vw - 100%);
   scroll-behavior: smooth;
 }
 
-.nx-instance {
+.nx {
+  margin-left: calc(100vw - 100%);
+  position: relative;
+}
+
+.nx .nx-instance {
+  background-color: white;
   font-family: "Roboto", Arial, "Segoe UI", "Helvetica Neue", "Noto Sans",
     sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
     "Noto Color Emoji";
@@ -45,7 +43,7 @@
   min-height: 94vh;
 }
 
-.nx-instance main {
+.nx .nx-instance main {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -54,42 +52,42 @@
   align-items: flex-start;
 }
 
-.nx-instance ul {
+.nx .nx-instance ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
 }
 
-.nx-instance a:not(.nx-on-display):not(.nx-nav-end) {
+.nx .nx-instance a:not(.nx-on-display):not(.nx-nav-end) {
   cursor: pointer;
 }
-.nx-instance a {
+.nx .nx-instance a {
   color: #444;
   text-decoration: none;
 }
 
-.nx-author-url .nx-author-url-brackets {
+.nx .nx-author-url .nx-author-url-brackets {
   padding: 0 1px;
 }
 
-.nx-author-url a {
+.nx .nx-author-url a {
   text-decoration: underline dotted #444 1px;
 }
 
-.nx-author-url  a:not([href=""]):after {
+.nx .nx-author-url  a:not([href=""]):after {
   content: "↗";
   text-decoration: none;
 }
-.nx-edit-event:after {
+.nx .nx-edit-event:after {
   content:"|";
   padding:0 4px;
 }
-.nx-instance > header {
+.nx .nx-instance > header {
   width: 100%;
   margin-bottom: 1rem;
 }
 
-.nx-instance footer {
+.nx .nx-instance footer {
   width: 100%;
   display: block;
   position: sticky;
@@ -97,53 +95,53 @@
   top: 100%;
   bottom: 0%;
 }
-.nx-local,
-.nx-distant {
+.nx .nx-local,
+.nx .nx-distant {
   vertical-align: top;
   display: inline-block;
 }
-.nx-index,
-.nx-local {
+.nx .nx-index,
+.nx .nx-local {
   margin-right: 3vw;
 }
-.nx-app {
+.nx .nx-app {
   width: 100%;
   position: relative;
 }
 
-.nx-app > * {
+.nx .nx-app > * {
   text-transform: uppercase;
 }
-.nx-app-link,
-.nx-lang-switch {
+.nx .nx-app-link,
+.nx .nx-lang-switch {
   display: inline-block;
   vertical-align: top;
 }
-.nx-lang-switch {
+.nx .nx-lang-switch {
   position: absolute;
   right: 0;
   margin-right: 10px;
 }
-.nx-select-list li.nx-selected {
+.nx .nx-select-list li.nx-selected {
   display: none;
 }
-.nx-lang-switch li,
-.nx-lang-switch .nx-select-toggle {
+.nx .nx-lang-switch li,
+.nx .nx-lang-switch .nx-select-toggle {
   font-size: 0.75em;
 
   width: 50px;
 
 }
-.nx-select li, .nx-select-toggle {
+.nx .nx-select li, .nx .nx-select-toggle {
   cursor: pointer;
   line-height: 1.1;
   display: block;
 }
 
-.nx-select-list {
+.nx .nx-select-list {
   position: absolute;
 }
-.nx-select-list li:hover {
+.nx .nx-select-list li:hover {
   border-left: 1px solid #444;
 }
 .nx-select-list li {
@@ -151,18 +149,18 @@
   border-left: 1px solid transparent;
 }
 
-.nx-select-toggle {
+.nx .nx-select-toggle {
   padding: 0.25em 0.5em;
   border-bottom: 1px solid #444;
 }
 
-a.nx-app-link {
+.nx a.nx-app-link {
   line-height: 1.6;
   font-size: 0.8em;
   position: relative;
   letter-spacing: 1em;
 }
-a.nx-app-link:before {
+.nx a.nx-app-link:before {
   content: " ";
   display: block;
   position: absolute;
@@ -172,7 +170,7 @@ a.nx-app-link:before {
   top: -2px;
 }
 
-a.nx-app-link:after {
+.nx a.nx-app-link:after {
   content: " ";
   display: block;
   position: absolute;
@@ -180,79 +178,79 @@ a.nx-app-link:after {
   border-bottom: 1px solid #444;
 }
 
-.nx-about-author,
-.nx-thread-description {
+.nx .nx-about-author,
+.nx .nx-thread-description {
   font-style: italic;
   padding: 1rem 0;
 }
 
-.nx-index ul {
+.nx .nx-index ul {
   padding-top: 1rem;
 }
-.nx-block > * {
+.nx .nx-block > * {
   max-width: 100%;
 }
-.nx-local,
-.nx-distant, .nx-index {
+.nx .nx-local,
+.nx .nx-distant, .nx .nx-index {
   width: 340px;
 }
 
-.nx-local,
-.nx-distant,
-.nx-index {
+.nx .nx-local,
+.nx .nx-distant,
+.nx .nx-index {
   padding-bottom: 2rem;
 }
-.nx-source {
+.nx .nx-source {
   padding-top: 10px;
 }
-.nx-history,
-.nx-source {
+.nx .nx-history,
+.nx .nx-source {
   margin: 0 auto;
   width: 100%;
 }
 
-.nx-instance .nx-history-toggle {
+.nx .nx-instance .nx-history-toggle {
   font-size: 1.3rem;
   margin: 0 24px;
 }
 
-.nx-history-nav,
-.nx-source-toggle {
+.nx .nx-history-nav,
+.nx .nx-source-toggle {
   text-align: center;
 }
-.nx-history-nav a:not(.nx-history-toggle) {
+.nx .nx-history-nav a:not(.nx-history-toggle) {
   font-size: 1.05rem;
 }
-.nx-instance footer a.nx-source-snippets {
+.nx .nx-instance footer a.nx-source-snippets {
   font-size: 1rem;
 
 }
-.nx-source-open {
+.nx .nx-source-open {
   font-size: 1.2rem;
 }
 
-.nx-record {
+.nx .nx-record {
   margin-top: 2rem;
 }
 
-.nx-record-aside {
+.nx .nx-record-aside {
   margin-top: 0.5em;
   font-size: 0.85em;
 }
 
-.nx-record-timestamp {
+.nx .nx-record-timestamp {
   margin-bottom: 10px;
   font-family: "Inconsolata", "Courier New", Courier, monospace;
   font-size: 0.85em;
 }
 
-.nx-record-media-caption {
+.nx .nx-record-media-caption {
   font-size: 0.85em;
   margin-top: 6px;
   color:#b3b3b3;
 }
 
-.nx-local header .nx-thread-name {
+.nx .nx-local header .nx-thread-name {
   font-size: clamp(30px, 5vw, 40px);
   font-weight: bold;
   line-height: 0.9em;
@@ -267,7 +265,7 @@ a.nx-app-link:after {
 }
 
 
-.nx-landmark {
+.nx .nx-landmark {
   font-family: "Inconsolata", "Courier New", Courier, monospace;
   display: block;
 
@@ -275,54 +273,54 @@ a.nx-app-link:after {
   position: relative;
   font-size: 0.85em;
 }
-.nx-landmark:before {
+.nx .nx-landmark:before {
   content: "#";
   padding-right: 2px;
 }
-.nx-ident {
+.nx .nx-ident {
   margin-right: 0.6em;
 }
 
-.nx-handle {
+.nx .nx-handle {
   margin-right: 2px;
 }
 
-.nx-author-url {
+.nx .nx-author-url {
   font-size: 0.85em;
 }
-.nx-history-drawer .nx-author-url {
+.nx .nx-history-drawer .nx-author-url {
   font-size: 0.9em;
 }
-.nx-instance main a.nx-view-link {
+.nx .nx-instance main a.nx-view-link {
   display: block;
   margin-top: 4px;
 }
-.nx-instance main a.nx-view-link:before {
+.nx .nx-instance main a.nx-view-link:before {
   margin-right: 3px;
   content: "∟";
   position: relative;
   top: -1px;
 }
 
-.nx-instance main .nx-view-link .nx-thread-name,
-.nx-instance main a.nx-author-link{
+.nx .nx-instance main .nx-view-link .nx-thread-name,
+.nx .nx-instance main a.nx-author-link{
   text-decoration: underline 1px solid;
 }
 
-.nx-instance a.nx-on-display {
+.nx .nx-instance a.nx-on-display {
   color: #b3b3b3;
 }
-.nx-instance a.nx-nav-end {
+.nx .nx-instance a.nx-nav-end {
   color: #b3b3b3;
 }
 
-.nx-page-media,
-.nx-broken-media {
+.nx .nx-page-media,
+.nx .nx-broken-media {
   display: table;
   position: relative;
 }
-.nx-page-media a,
-.nx-broken-media a {
+.nx .nx-page-media a,
+.nx .nx-broken-media a {
   vertical-align: middle;
   display: table-cell;
   border-left: 1px solid #444;
@@ -343,19 +341,19 @@ a.nx-app-link:after {
 ::-webkit-scrollbar-track {
   background: transparent;
 }
-.nx-embed-snippet,
-.nx-json-snippet {
+.nx .nx-embed-snippet,
+.nx .nx-json-snippet {
   margin-top: 2px;
 }
-.nx-history-drawer {
+.nx .nx-history-drawer {
   overflow-y: scroll;
   position: relative;
   margin-top: 7px;
   height: 120px;
 }
 
-.nx-history-drawer,
-.nx-source textarea {
+.nx .nx-history-drawer,
+.nx .nx-source textarea {
   border: 1px solid #dedede;
   color: #444;
   padding: 0.8em;
@@ -365,38 +363,38 @@ a.nx-app-link:after {
   width: 100%;
   max-width: 100%;
 }
-.nx-source-snippet textarea{
+.nx .nx-source-snippet textarea{
   height: 240px;
 }
-.nx-json-snippet textarea {
+.nx .nx-json-snippet textarea {
   height: 60px;
 }
-.nx-embed-snippet textarea {
+.nx .nx-embed-snippet textarea {
   height: 120px;
 }
-.nx-source-drawer,
-.nx-history-drawer {
+.nx .nx-source-drawer,
+.nx .nx-history-drawer {
   width: 340px;
 
   margin: 0 auto;
 }
 
-.nx-source-drawer {
+.nx .nx-source-drawer {
   padding-bottom: 2rem;
 }
-.nx-source textarea {
+.nx .nx-source textarea {
   margin-top: 5px;
 
   outline: none;
 }
 
-.nx-source-toggle,
-.nx-history-nav {
+.nx .nx-source-toggle,
+.nx .nx-history-nav {
   line-height: 1.8rem;
   font-family: "Inconsolata", "Courier New", Courier, monospace;
 }
 
-.nx-source-copy-tooltip {
+.nx .nx-source-copy-tooltip {
 
   cursor: normal;
   margin-left: 10px;
@@ -406,22 +404,22 @@ a.nx-app-link:after {
   vertical-align: middle;
 }
 
-.nx-new-tag {
+.nx .nx-new-tag {
   padding-left: 4px;
 }
-.nx-record-media a.nx-external-link {
+.nx .nx-record-media a.nx-external-link {
   text-decoration: underline dotted #444 1px;
 }
 
-.nx-record-media a.nx-external-link:after {
+.nx .nx-record-media a.nx-external-link:after {
   content: "↗";
   padding-left: 2px;
   font-size: 0.8em;
 }
-.nx-record-media {
+.nx .nx-record-media {
   margin-top: 1rem;
 }
-.nx-record-media :not(a):not(p) {
+.nx .nx-record-media :not(a):not(p) {
   width: 340px;
   max-height: 340px;
   object-fit: cover;
@@ -429,42 +427,42 @@ a.nx-app-link:after {
 /* editor */
 
 
-.nx-instance form label {
+.nx .nx-instance form label {
  display: block;
 
 
 }
-.nx-edit-category-indent {
+.nx .nx-edit-category-indent {
   padding-left:2px;
 }
 
-.nx-edit-category span:last-of-type{
+.nx .nx-edit-category span:last-of-type{
   padding-left:4px;
 }
 
-.nx-edit-title, .nx-edit-category {
+.nx .nx-edit-title, .nx .nx-edit-category {
   text-transform: capitalize;
 }
-.nx-edit-category {
+.nx .nx-edit-category {
   margin:2em 0 1em 0;
   font-family: "Inconsolata", "Courier New", Courier, monospace;
 }
-.nx-edit-title {
+.nx .nx-edit-title {
   color:#aaa;
   font-size: 0.9em;
 }
-.nx-edit-feedback {
+.nx .nx-edit-feedback {
   font-family: "Inconsolata", "Courier New", Courier, monospace;
   margin-left:5px;
   float: right;
 }
-.nx-edit-indication {
+.nx .nx-edit-indication {
   font-size: 0.8em;
   font-family: "Inconsolata", "Courier New", Courier, monospace;
 padding-left:0.5em;
 }
 
-.nx-instance form input, .nx-instance form textarea {
+.nx .nx-instance form input, .nx .nx-instance form textarea {
   font-size: 1em;
   width:100%;
   word-wrap:break-word;
@@ -480,11 +478,11 @@ sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
 "Noto Color Emoji";
 
  }
- .nx-instance form input {
+ .nx .nx-instance form input {
    padding:0.2em 0.4em;
   border-bottom:1px solid #dedede;
  }
- .nx-instance form textarea {
+ .nx .nx-instance form textarea {
   overflow-y: scroll;
   border:1px solid #dedede;
   resize: vertical;
@@ -492,30 +490,30 @@ sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
  }
 
  
- .nx-edit-author-about textarea, .nx-edit-threads-description textarea {
+ .nx .nx-edit-author-about textarea, .nx .nx-edit-threads-description textarea {
 font-style: italic;
  }
- .nx-edit-record-aside textarea.nx-edit-textarea, .nx-edit-media-caption textarea.nx-edit-textarea {
+ .nx .nx-edit-record-aside textarea.nx-edit-textarea, .nx .nx-edit-media-caption textarea.nx-edit-textarea {
   font-size: 0.85em;
  }
- .nx-edit-author-about textarea, .nx-edit-record-aside textarea, .nx-edit-threads-description textarea {
+ .nx .nx-edit-author-about textarea, .nx .nx-edit-record-aside textarea, .nx .nx-edit-threads-description textarea {
    min-height: 60px;
   max-height: 200px;
 
  }
- .nx-edit-record-main textarea {
+ .nx .nx-edit-record-main textarea {
   min-height: 100px;
   max-height: 400px;
  }
- .nx-edit-media-caption textarea {
+ .nx .nx-edit-media-caption textarea {
   min-height: 60px;
   max-height: 90px;
  }
- .nx-edit-media-type {
+ .nx .nx-edit-media-type {
    position: relative;
  }
 
- .nx-edit-media-type ul{
+ .nx .nx-edit-media-type ul{
     background-color: white;
     width: 100%;
     border: 1px solid #dedede;
@@ -523,20 +521,20 @@ font-style: italic;
 
 }
 
-.nx-edit-media-type li{
+.nx .nx-edit-media-type li{
  border-top:1px solid #dedede
   }
   
 
-.nx-edit-input {
+.nx .nx-edit-input {
   margin-bottom:12px;
 }
-.nx-edit-move button {
+.nx .nx-edit-move button {
   border: none;
   width: 16px;
   margin-right:4px;
 }
-.nx-edit-move button,.nx-add-link, .nx-delete-link {
+.nx .nx-edit-move button,.nx .nx-add-link, .nx .nx-delete-link {
 
   font-size: 22px;
   font-family: "Inconsolata", "Courier New", Courier, monospace;
@@ -549,52 +547,52 @@ font-style: italic;
       cursor: pointer;
 }
 
-.nx-add-link, .nx-delete-link {
+.nx .nx-add-link, .nx .nx-delete-link {
   border: 1px solid #dedede;
   width: 1em;
 }
-.nx-delete-link {
+.nx .nx-delete-link {
   margin:0,
 }
-.nx-add-link:hover, .nx-delete-link:hover {
+.nx .nx-add-link:hover, .nx .nx-delete-link:hover {
 border-color:#444
 }
-.nx-distant-link-action {
+.nx .nx-distant-link-action {
 text-align: right;
 }
 
-.nx-distant-link, .nx-edit-author, .nx-edit-index {
+.nx .nx-distant-link, .nx .nx-edit-author, .nx .nx-edit-index {
   border-left: 3px solid #dedede;
   padding: 12px 0 8px 12px;
   margin: 2em 0;
 }
 
-ul.nx-edit-index {
+.nx ul.nx-edit-index {
   padding: 12px 0 8px 12px;
 }
-.nx-add-link {
+.nx .nx-add-link {
   margin-top:1em;
 }
 
-.nx-edit-move button:not(:disabled):hover {
+.nx .nx-edit-move button:not(:disabled):hover {
   border:1px solid white;
   
 }
 
-.nx-edit-move button:disabled {
+.nx .nx-edit-move button:disabled {
   cursor: default;
   color:#c0c0c0;
 }
-.nx-edit-index li {
+.nx .nx-edit-index li {
   height:28px;
 }
-.nx-edit-index li a.nx-view-link, .nx-edit-index li .nx-edit-move {
+.nx .nx-edit-index li a.nx-view-link, .nx .nx-edit-index li .nx-edit-move {
   display: inline-block;
   vertical-align: top;
-}.nx-edit-index li .nx-edit-move {
+}.nx .nx-edit-index li .nx-edit-move {
   float: right;
 }
-.nx-delete-thread {
+.nx .nx-delete-thread {
   cursor: pointer;
   padding: 4px;
   background-color: white;
@@ -608,9 +606,25 @@ ul.nx-edit-index {
   margin-top: 1em;
   border:1px solid white;
 }
-.nx-delete-thread:hover {
+.nx .nx-delete-thread:hover {
   border-color:#444;
 }
-.nx-delete-thread:active {
+.nx .nx-delete-thread:active {
   border-color:#d3d3d3;
+}
+.nx-edit-switch {
+  width: 50px;
+  height: 50px;
+  background-color: #eee;
+  font-family: "Inconsolata", "Courier New", Courier, monospace;
+  border: 1px solid #dedede;
+  border-radius: 50%;
+  font-size: 1.5em;
+  position: fixed;
+  left: 90vw;
+  bottom: 5vh;
+  cursor: pointer;
+}
+.nx-edit-switch:hover {
+  border-color: #444;
 }

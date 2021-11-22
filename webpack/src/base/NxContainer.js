@@ -4,7 +4,6 @@ import { setOptions } from "./NxOptions.js";
 
 var container;
 var host;
-var shadow;
 
 export function setContainer(selector = null) {
 
@@ -22,10 +21,8 @@ export function setContainer(selector = null) {
             setOptions(Object.assign({},container.dataset));
     }
     host = document.createElement('DIV');
-    host.className = "nexus";
-  
-    shadow = container.attachShadow({ mode: "open" });
-    shadow.append(host);
+    host.className = "nx";
+    container.append(host);
 } else {
 consoleLog("Nexus | container already set");
 }
@@ -36,10 +33,3 @@ export function getHost() {
   }
     return host;
   }
-
-  export function getShadow() {
-    if(!shadow){
-      setContainer();
-    }
-      return shadow;
-    }

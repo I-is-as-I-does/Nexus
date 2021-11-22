@@ -3,16 +3,13 @@ import { loadAppCss } from "./NxStyle.js";
 import { getOpt, setOptions } from "../base/NxOptions.js";
 import { consoleLog } from "../logs/NxLog.js";
 import { resolveState, setOriginState } from "../state/NxUpdate.js";
-
+import { errorPrgr } from "../elms/NxCommons.js";
 
 
 export function initPage(contentCallback, containerSelector = null, options = null){
   setContainer(containerSelector);
   setOptions(options);
 
-    var render = function(success, state){
-      getHost().append(contentCallback(success, state));
-  };
   loadAppCss().then(()=> {
     if(getOpt('src')){
         return resolveState(getOpt('src'), getOpt('id'));
@@ -23,9 +20,9 @@ export function initPage(contentCallback, containerSelector = null, options = nu
     if(state){
       setOriginState(state);    
     }
-    render(true, state);
+    getHost().append(contentCallback(state));
   }).catch((err)=> {
     consoleLog(err);
-    render(false, null);
+    getHost().append(errorPrgr());
   });
   }

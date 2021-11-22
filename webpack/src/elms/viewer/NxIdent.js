@@ -1,7 +1,7 @@
-import { splitFlap } from "../libr/Valva/Valva.js";
-import { registerUpdateEvt, triggerUpdate } from "../state/NxUpdate.js";
-import { authorMiniUrl, isThreadRecordUnseen } from "../storg/NxMemory.js";
-import { baseViewLink, getElm, setToggleOnDisplay } from "./NxMeta.js";
+import { splitFlap } from "../../libr/Valva/Valva.js";
+import { registerUpdateEvt, triggerUpdate } from "../../state/NxUpdate.js";
+import { authorMiniUrl, isThreadRecordUnseen } from "../../storg/NxMemory.js";
+import { baseViewLink, getElm, setToggleOnDisplay } from "../NxCommons.js";
 
 function toggleUnseen(viewlk, state) {
   if (viewlk.classList.contains("nx-on-display")) {

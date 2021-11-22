@@ -101,6 +101,7 @@ export function pageHasSheet(signatureRule, url) {
 }
 
 export function loadCss(signatureRule, url, shadowRootElm = null) {
+
   if (shadowRootElm || !pageHasSheet(signatureRule, url)) {
     return new Promise((resolve, reject) => {
       var link = document.createElement("link");
@@ -110,10 +111,11 @@ export function loadCss(signatureRule, url, shadowRootElm = null) {
       link.onerror = reject;
       link.href = url;
       if (shadowRootElm) {
-        shadowRootElm.prepend(link);
+        shadowRootElm.append(link);
       } else {
         document.head.append(link);
       }
+       
     });
   } else {
     return Promise.resolve(true);

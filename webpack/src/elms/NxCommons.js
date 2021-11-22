@@ -2,8 +2,27 @@ import { splitFlap } from "../libr/Valva/Valva.js";
 import { getErr } from "../logs/NxLog.js";
 import { isCssLoaded } from "../load/NxStyle.js";
 import { getCurrentState, registerUpdateEvt } from "../state/NxUpdate.js";
-import { registerTranslElm } from "../transl/NxElmTranslate.js";
-import { getTxt } from "../transl/NxCoreTranslate.js";
+import { registerTranslElm, triggerTranslate } from "../transl/NxElmTranslate.js";
+import { getTxt, getAvailableLangs, getLang } from "../transl/NxCoreTranslate.js";
+import { appUrl } from "../validt/NxSpecs.js";
+
+
+function resolveThreadName(state) {
+  var threadName = "/";
+  if (state.threadId && state.threadId != "/") {
+    threadName = state.srcData.threads[state.threadIndex].name;
+  }
+  return threadName;
+}
+
+
+function toggleOnDisplay(viewlk, givenState, newState) {
+  if (newState.dataUrl && givenState.dataUrl == newState.dataUrl && givenState.threadId == newState.threadId) {
+    viewlk.classList.add("nx-on-display");
+  } else {
+    viewlk.classList.remove("nx-on-display");
+  }
+}
 
 
 export function getElm(tag, classList) {
@@ -15,15 +34,18 @@ export function getElm(tag, classList) {
 }
 
 
-export function instanceWrap(headerElms, mainElms, footerElms) {
-  var wrap = getElm("DIV", "nx-instance");
+export function instanceWrap(headerElms, mainElms, footerElms = [], service = 'viewer') {
+  var wrap = getElm("DIV", "nx-instance nx-"+service);
   var header = getElm("HEADER");
   header.append(...headerElms);
   var main = getElm("MAIN");
   main.append(...mainElms);
-  var footer = getElm("FOOTER");
-  footer.append(...footerElms);
-  wrap.append(header, main, footer);
+  wrap.append(header, main);
+  if(footerElms.length){
+    var footer = getElm("FOOTER");
+    footer.append(...footerElms);
+    wrap.append(footer);
+  }
   return wrap;
 }
 
@@ -192,14 +214,6 @@ export function setToggleOnDisplay(viewlk, state) {
   });
 }
 
-function toggleOnDisplay(viewlk, givenState, newState) {
-  if (newState.dataUrl && givenState.dataUrl == newState.dataUrl && givenState.threadId == newState.threadId) {
-    viewlk.classList.add("nx-on-display");
-  } else {
-    viewlk.classList.remove("nx-on-display");
-  }
-}
-
 export function baseViewLink(state, update = false) {
   var viewlk = getElm("A", "nx-view-link");
   viewlk.append(threadNameElm(state, update));
@@ -219,10 +233,35 @@ export function threadNameElm(state, update = false) {
   return sp;
 }
 
-function resolveThreadName(state) {
-  var threadName = "/";
-  if (state.threadId && state.threadId != "/") {
-    threadName = state.srcData.threads[state.threadIndex].name;
-  }
-  return threadName;
+export function appBlock() {
+  return blockWrap("app", null, [appLink(), langDropDown()], false);
+}
+
+export function appLink() {
+  var link = getElm("A", "nx-app-link nx-external-link");
+  link.target = "_blank";
+  link.href = appUrl;
+  link.title = "Nexus";
+  link.textContent = "Nexus";
+  return link;
+}
+
+export function langDropDown() {
+  var toggle = getElm('P');
+  toggle.textContent = getLang();
+  return selectDropDown(getAvailableLangs(), toggle, function(nlang){
+    triggerTranslate(nlang);
+  }, "nx-lang-switch");
+}
+
+export function viewerInstance(state){
+  var indexPart = getElm("DIV");
+  indexPart.append(indexBlock(state));
+  var threadPart = getElm("DIV");
+  threadPart.append(...threadBlocks(state));
+  
+  return instanceWrap([appBlock(), historyBlock(state)], [
+   indexPart,
+   threadPart
+   ], [sourceBlock(state)]);
 }

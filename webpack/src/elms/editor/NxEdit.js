@@ -2,10 +2,7 @@
 // load file, save file
 // switch to preview
 
-import { charMinMax, idPattern, supportedMediaTypes } from "../NxConstants.js";
-import { NxState } from "../NxState.js";
-import { NxMemory } from "../../storg/NxStorage.js";
-import { NxTranslate } from "../NxTranslate.js";
+import { charMinMax, idPattern, supportedMediaTypes } from "../../validt/NxSpecs.js";
 import {
   baseViewLink,
   blockWrap,
@@ -14,7 +11,7 @@ import {
   setHistoryControls,
   setToggleOnDisplay,
   toggleNavEnd,
-} from "./NxMeta.js";
+} from "../NxCommons.js";
 import {
   easeIn,
   easeOut,
@@ -22,8 +19,13 @@ import {
   insertDiversion,
 } from "../../libr/Valva/Valva.js";
 import { replaceDiacritics } from "../../libr/Jack/Help.js";
+import { getBuffertime, registerUpdateEvt, triggerUpdate } from "../../state/NxUpdate.js";
+import { registerTranslElm } from "../../transl/NxElmTranslate.js";
+import { getTxt } from "../../transl/NxCoreTranslate.js";
+import { getStoredEditData, registerEditData } from "../../storg/NxMemory.js";
 
-const editBuffer = NxState.getBuffertime();
+
+const editBuffer =getBuffertime();
 const editHistoryMax = 10;
 const providers = ["youtube", "vimeo", "soundcloud"];
 const guessMap = {
@@ -32,7 +34,7 @@ const guessMap = {
   audio: ["mp3"],
 };
 var editState = {
-  dataUrl: "NxEdit",
+  dataUrl: "nx-edit",
   srcData: null,
   threadId: "/",
   threadIndex: -1,
@@ -55,6 +57,7 @@ var btnSymbols = {
   up: "↑",
   down: "↓",
 };
+
 
 function moveItem(from, to) {
   editState.srcData.index.splice(
@@ -141,8 +144,8 @@ function formCategory(name, subcount) {
     p.append(sp);
   }
   var txtsp = getElm("SPAN");
-  txtsp.textContent = NxTranslate.getTxt(name);
-  NxState.registerTranslElm(txtsp, name);
+  txtsp.textContent = getTxt(name);
+registerTranslElm(txtsp, name);
   p.append(txtsp);
   return p;
 }
@@ -268,7 +271,7 @@ function threadLi(idx, id, form) {
   if (editState.threadId != id) {
     li.style.display = "none";
   }
-  NxState.registerUpdateEvt(function (newState) {
+ registerUpdateEvt(function (newState) {
     if (newState.dataUrl == editState.dataUrl) {
       editState = newState;
       var isHidden = elmIsHidden(li);
@@ -329,7 +332,7 @@ function indexLink(idx, id) {
       NxState.triggerUpdate(state);
     }
     setLastAction(act);*/
-    NxState.triggerUpdate(itemState);
+triggerUpdate(itemState);
   });
 
   return indLk;
@@ -385,7 +388,7 @@ function deleteEvent(localLi, distantLi, id) {
 
   var act = function (redo) {
     if (redo) {
-      NxState.triggerUpdate(stateUpdate(-1, "/"));
+   triggerUpdate(stateUpdate(-1, "/"));
       Object.keys(map).forEach((field) => {
         editState.srcData[field].splice(idx, 1);
       });
@@ -430,8 +433,8 @@ function deleteEvent(localLi, distantLi, id) {
 function deleteThreadElm(localLi, distantLi, id) {
   var btn = getElm("BUTTON", "nx-delete-thread");
   btn.type = "button";
-  btn.textContent = NxTranslate.getTxt("del");
-  NxState.registerTranslElm(btn, "del");
+  btn.textContent = getTxt("del");
+registerTranslElm(btn, "del");
   btn.addEventListener("click", function () {
     deleteEvent(localLi, distantLi, id);
   });
@@ -545,8 +548,8 @@ function baseLabel(field) {
   var lb = getElm("LABEL", "nx-edit-label");
   lb.for = field;
   var title = getElm("SPAN", "nx-edit-title");
-  title.textContent = NxTranslate.getTxt(field);
-  NxState.registerTranslElm(title, field);
+  title.textContent = getTxt(field);
+registerTranslElm(title, field);
   lb.append(title);
   return lb;
 }
@@ -694,20 +697,27 @@ export function editLocalBlock() {
 export function editDistantBlock() {
   return blockWrap("distant", null, [editDistant], true);
 }
+
+export function editActions() {
+  var wrp = getElm("DIV", "nx-edit-actions nx-history-nav");
+  setHistoryControls(actCtrls, triggerUndoRedo);
+  wrp.append(actCtrls.ctrls["prev"].elm, actCtrls.ctrls["next"].elm); //@todo: save, new
+  return wrp;
+}
 export function setThreadsForms(state) {
   if (!state || !state.srcData) {
-    var data = NxMemory.getStoredEditData();
+    var data = getStoredEditData();
     if (!data) {
       return;
     }
     state = {
-      dataUrl: "NxEdit",
+      dataUrl: "nx-edit",
       srcData: data,
       threadId: "/",
       threadIndex: -1,
     };
   } else {
-    NxMemory.registerEditData(state.srcData);
+registerEditData(state.srcData);
   }
 
   editIndex = getElm("UL", "nx-edit-index");
@@ -723,12 +733,7 @@ export function setThreadsForms(state) {
   }
 }
 
-export function editActions() {
-  var wrp = getElm("DIV", "nx-edit-actions nx-history-nav");
-  setHistoryControls(actCtrls, triggerUndoRedo);
-  wrp.append(actCtrls.ctrls["prev"].elm, actCtrls.ctrls["next"].elm); //@todo: save, new
-  return wrp;
-}
+
 
 /*
 function editBtn() {
@@ -748,7 +753,7 @@ function editBtn() {
       }
       } else {
         editState ={
-  dataUrl: "NxEdit",
+  dataUrl: "nx-edit",
   srcData: null,
   threadId: "/",
   threadIndex: -1,

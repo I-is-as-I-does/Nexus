@@ -27,6 +27,8 @@ export const NxTranslations = {
     "embed": "intégré",
     "source": "source",
     "del":"suppr",
+    "edit":"édition",
+    "preview":"aperçu",
     "No valid thread": "Aucun fil valide",
     "Duplicate thread id": "Identifiant du fil en double",
     "Duplicate linked thread": "Fil lié en double",

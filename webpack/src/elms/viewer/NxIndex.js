@@ -2,10 +2,10 @@ import {
   easeOut,
   insertDiversion,
   replaceDiversion,
-} from "../libr/Valva/Valva.js";
-import { registerUpdateEvt } from "../state/NxUpdate.js";
+} from "../../libr/Valva/Valva.js";
+import { registerUpdateEvt } from "../../state/NxUpdate.js";
 import { authorHandle, authorUrl, viewLink } from "./NxIdent.js";
-import { blockWrap, getElm } from "./NxMeta.js";
+import { blockWrap, getElm } from "../NxCommons.js";
 
 var indexList = null;
 

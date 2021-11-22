@@ -1,13 +1,14 @@
-import { copyToClipboard } from "../libr/Jack/Stock.js";
-import { timedFadeToggle, easeOut, easeIn } from "../libr/Valva/Valva.js";
-import { blockWrap, getElm } from "./NxMeta.js";
-import { getOpt } from "../base/NxOptions.js";
-import { registerTranslElm } from "../transl/NxElmTranslate.js";
-import { registerUpdateEvt } from "../state/NxUpdate.js";
-import { getLang, getTxt } from "../transl/NxCoreTranslate.js";
+import { copyToClipboard } from "../../libr/Jack/Stock.js";
+import { timedFadeToggle, easeOut, easeIn } from "../../libr/Valva/Valva.js";
+import { blockWrap, getElm } from "../NxCommons.js";
+import { getOpt } from "../../base/NxOptions.js";
+import { registerTranslElm } from "../../transl/NxElmTranslate.js";
+import { registerUpdateEvt } from "../../state/NxUpdate.js";
+import { getLang, getTxt } from "../../transl/NxCoreTranslate.js";
+import { defaultIO } from "../../base/NxDefaults.js";
 
 
-const defaultIO = "https://cdn.jsdelivr.net/gh/I-is-as-I-does/Nexus-Prototype@0.2.0/cdn/js/NxViewerIO.js";
+
 var drawerElm = null;
 var editMode = false;
 
@@ -138,7 +139,7 @@ function embedContent(state) {
     '" data-lang="' +
     getLang() +
     '"></div>\r\n<script src="' +
-    defaultIO +
+    defaultIO+
     '"></script>'
   );
   }

@@ -1,12 +1,12 @@
-import { easeIn, easeOut, insertDiversion } from "../libr/Valva/Valva.js";
+import { easeIn, easeOut, insertDiversion } from "../../libr/Valva/Valva.js";
 import { blockWrap, getElm, setHistoryControls, toggleNavEnd,setToggleOnDisplay,
-  baseViewLink } from "./NxMeta.js";
+  baseViewLink } from "../NxCommons.js";
 import {
   authorIndexLink,
   authorUrl
 } from "./NxIdent.js";
-import { autoScrollToBottom } from "../libr/Jack/Style.js";
-import { registerUpdateEvt, triggerUpdate } from "../state/NxUpdate.js";
+import { autoScrollToBottom } from "../../libr/Jack/Style.js";
+import { registerUpdateEvt, triggerUpdate } from "../../state/NxUpdate.js";
 
 const historyMax = 100;
 var isHistoryEvent = false;

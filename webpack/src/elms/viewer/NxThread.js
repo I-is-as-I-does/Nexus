@@ -1,13 +1,13 @@
-import { isNonEmptyStr } from "../libr/Jack/Check.js";
-import { insertDiversion, replaceDiversion } from "../libr/Valva/Valva.js";
-import { registerUpdateEvt, resolveState } from "../state/NxUpdate.js";
+import { isNonEmptyStr } from "../../libr/Jack/Check.js";
+import { insertDiversion, replaceDiversion } from "../../libr/Valva/Valva.js";
+import { registerUpdateEvt, resolveState } from "../../state/NxUpdate.js";
 import {
   authorIndexLink,
   authorUrl,
   viewLink,
 } from "./NxIdent.js";
 import { mediaElm } from "./NxMedia.js";
-import { blockWrap, getElm,  threadNameElm } from "./NxMeta.js";
+import { blockWrap, getElm,  threadNameElm } from "../NxCommons.js";
 
 var linkedWrap;
 var descrpElm;

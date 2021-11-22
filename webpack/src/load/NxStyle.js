@@ -1,20 +1,18 @@
 import { loadCss } from "../libr/Jack/Web.js";
 import { consoleLog, logErr } from "../logs/NxLog.js";
-import { getShadow } from "../base/NxContainer.js";
 import { getOpt } from "../base/NxOptions.js";
 
   var loadedCss = {};
 
-  export function loadAppCss(url = null, marker = ".nexus") {
+  export function loadAppCss(url = null, marker = ".nx") {
     if (!url) {
       url = getOpt('style');
     }
-    return loadCss(marker, url, getShadow())
+      return loadCss(marker, url)
       .then(() => {
         loadedCss[url] = true;
         return true;
-      })
-      .catch((err) => {
+      }).catch((err) => {
         consoleLog(err);
         logErr("Theme not found");
         loadedCss[url] = false;
