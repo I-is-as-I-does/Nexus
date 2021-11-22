@@ -1,6 +1,7 @@
 
 // load file, save file
-// switch to preview
+// add thread btn / func
+// switch to preview = fixed state (when deleted especially)
 
 import { charMinMax, idPattern, supportedMediaTypes } from "../../validt/NxSpecs.js";
 import {
@@ -733,66 +734,3 @@ registerEditData(state.srcData);
   }
 }
 
-
-
-/*
-function editBtn() {
-  var btn = getElm("BUTTON", "nx-edit");
-  btn.type = "button";
-  btn.textContent = "✎";
-  return btn;
-}
-  var act = function(redo){
-      if (redo) {
-        editState = state;
-        var items = editState.srcData.index;
-        if(items.length){
-        for (var i = 0; i < items.length; i++) {
-          setThread(i, items[i]);
-        }
-      }
-      } else {
-        editState ={
-  dataUrl: "nx-edit",
-  srcData: null,
-  threadId: "/",
-  threadIndex: -1,
-};
-[editIndex, editLocal].forEach(parent => {
-  Array.from(parent.childNodes).forEach((elm) =>{
-   easeOut(elm, 200,function(){
-      elm.remove();
-    })
-  });
-});
-    
-    } */
-
-/*
-function saveState() {
-  NxMemory.registerEditData(editState.srcData);
-  registerVersion();
-
-
-}
-
-function registerVersion() {
-  if (actCtrls.count > 4) {
-    editHistory.splice(0, 1);
-  }
-  actCtrls.count++;
-  actCtrls.position++;
-
-  editHistory.push(editState);
-  toggleNavEnd(actCtrls);
-}
-*/
-
-/*  editbtn.addEventListener('click', function(){
-    editbtn.disabled = true;
-    savebtn.disabled = false;
-    ["handle", "url", "about"].forEach(field => {
-        inputs[field].disabled = false;
-  
-    });
-  });*/
