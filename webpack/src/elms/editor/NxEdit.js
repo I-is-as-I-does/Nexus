@@ -14,16 +14,23 @@ import {
   toggleNavEnd,
 } from "../NxCommons.js";
 import {
+  diversionToggle,
   easeIn,
   easeOut,
-  elmIsHidden,
   insertDiversion,
+  replaceDiversion,
+  splitFlap,
+  timedFadeToggle
 } from "../../libr/Valva/Valva.js";
-import { replaceDiacritics } from "../../libr/Jack/Help.js";
+import { randomString, replaceDiacritics } from "../../libr/Jack/Help.js";
 import { getBuffertime, registerUpdateEvt, triggerUpdate } from "../../state/NxUpdate.js";
 import { registerTranslElm } from "../../transl/NxElmTranslate.js";
 import { getTxt } from "../../transl/NxCoreTranslate.js";
-import { getStoredEditData, registerEditData } from "../../storg/NxMemory.js";
+import {getStoredEditData, registerEditData } from "../../storg/NxMemory.js";
+import { validData } from "../../validt/NxStamper.js";
+import { getHost } from "../../base/NxContainer.js";
+import { newData, newThread } from "./NxStarters.js";
+
 
 
 const editBuffer =getBuffertime();
@@ -41,7 +48,7 @@ var editState = {
   threadIndex: -1,
 };
 var upDownEvent = new CustomEvent("IndexChange");
-var redoRunning = false;
+var prcRunning = false;
 var actCtrls = {
   ctrls: {
     prev: { symbol: "↶", elm: null },
@@ -54,11 +61,18 @@ var lastAction = [];
 var editIndex = null;
 var editLocal = null;
 var editDistant = null;
+var authorForm;
 var btnSymbols = {
   up: "↑",
   down: "↓",
 };
-
+var saveBtn;
+var actionFdbck;
+var authorInputs = {
+"handle":null,
+"url":null,
+"about":null
+};
 
 function moveItem(from, to) {
   editState.srcData.index.splice(
@@ -71,6 +85,7 @@ function moveItem(from, to) {
     0,
     editState.srcData.threads.splice(from, 1)[0]
   );
+
 }
 
 function toggleActiveBtn(id, btn) {
@@ -108,6 +123,7 @@ function moveItemHandler(li, it, id) {
       moveItem(idx, idx + 1);
       permuteThread(li.nextSibling, li);
     }
+
   };
 
   setLastAction(act);
@@ -187,28 +203,50 @@ function deleteLinkBtn() {
   return btn;
 }
 
-function addLinkBtn(form, id) {
+
+
+function addThreadBtn(){
+  var btn = addBtn();
+  btn.addEventListener('click', function(){
+
+        var randomId = randomString(10);  
+        var idx = editState.srcData.index.length; 
+        editState.srcData.threads.push(newThread(randomId));
+        editState.srcData.index.push(randomId);
+        var map = threadElms(idx, randomId);
+      
+        ['local','distant'].forEach(k => {
+          map[k].parent.append(map[k].child);
+        });
+       
+        insertDiversion( map.index.parent, map.index.child, false, true, 200);
+        editIndex.childNodes[idx-1].dispatchEvent(upDownEvent);     
+        saveBtn.disabled = false;
+  });
+
+   return btn;
+}
+
+function addLinkAct(form, idx){
+ 
+  return function (redo) {
+    if (redo) {
+      var i = editState.srcData.threads[idx].linked.length;
+      editState.srcData.threads[idx].linked.push({ url: "http", id: "/" });
+      appendLinkInputs(form, idx, i);
+    } else {
+      editState.srcData.threads[idx].linked.pop();
+      easeOut(form.lastChild, 200, function () {
+        form.lastChild.remove();
+      });
+    }
+  };
+}
+
+function addBtn() {
   var btn = getElm("BUTTON", "nx-add-link");
   btn.type = "button";
   btn.textContent = "+";
-  btn.addEventListener("click", () => {
-    var idx = editState.srcData.index.indexOf(id);
-    var act = function (redo) {
-      if (redo) {
-        var i = editState.srcData.threads[idx].linked.length;
-        editState.srcData.threads[idx].linked.push({ url: "http", id: "/" });
-        appendLinkInputs(form, idx, i);
-      } else {
-        editState.srcData.threads[idx].linked.pop();
-        easeOut(form.lastChild, 200, function () {
-          form.lastChild.remove();
-        });
-      }
-    };
-
-    setLastAction(act);
-    act(true);
-  });
   return btn;
 }
 
@@ -260,11 +298,21 @@ function threadDistantForm(idx, id) {
     }
   }
   var formCnt = getElm("DIV");
-  formCnt.append(form, addLinkBtn(form, id));
+  var addBtnElm = addBtn();
+  addBtnElm.addEventListener("click", () => {
+    var idx = editState.srcData.index.indexOf(id);
+    var act = addLinkAct(form, idx);
+    setLastAction(act);
+    act(true);
+  
+
+  });
+
+  formCnt.append(form, addBtnElm);
   return formCnt;
 }
 
-function threadLi(idx, id, form) {
+function threadLi(id, form) {
   var li = getElm("LI");
 
   li.append(form);
@@ -273,14 +321,14 @@ function threadLi(idx, id, form) {
     li.style.display = "none";
   }
  registerUpdateEvt(function (newState) {
-    if (newState.dataUrl == editState.dataUrl) {
+ 
+    if (newState.dataUrl == "nx-edit") {
       editState = newState;
-      var isHidden = elmIsHidden(li);
-      if (newState.threadId == id && newState.threadIndex == idx && isHidden) {
+      if (newState.threadId == id) {
         setTimeout(function () {
           easeIn(li, 200);
         }, 200);
-      } else if (!isHidden) {
+      } else {
         easeOut(li, 200);
       }
     }
@@ -316,51 +364,58 @@ function stateUpdate(idx, id) {
   var newState = Object.assign({}, editState);
   newState.threadId = id;
   newState.threadIndex = idx;
+ 
   return newState;
 }
 function indexLink(idx, id) {
+
   var itemState = stateUpdate(idx, id);
   var indLk = baseViewLink(itemState, false);
   setToggleOnDisplay(indLk, itemState);
 
   indLk.addEventListener("click", () => {
-    /*  var prevState = Object.assign({}, editState);
-    var act = function(redo){
-      var state = itemState;
-      if(!redo){
-        state = prevState;
-      }
-      NxState.triggerUpdate(state);
-    }
-    setLastAction(act);*/
-triggerUpdate(itemState);
+   var nidx = editState.srcData.index.indexOf(id);
+
+triggerUpdate(stateUpdate(nidx, id),true);
   });
 
   return indLk;
 }
 
-function setThread(idx, id) {
-  var indexLi = getElm("LI");
-  var indLk = indexLink(idx, id);
+function threadElms(idx, id){
+  var map =  {
+    'index':{"parent":editIndex, "child":null, "link":null },
+    'local':{"parent":editLocal, "child":null,"del":null},
+    'distant':{"parent":editDistant, "child":null}};
 
-  indexLi.append(indLk);
-  setMoveBtns(indexLi, id);
+      map.index.child = getElm("LI");
+      map.index.link = indexLink(idx, id); 
+         map.index.child.append(map.index.link);
+         setMoveBtns(map.index.child, id);
+     
+         var nameCallback = function (val) {
+           var newId = convertToId(val);
+           map.index.link.firstChild.textContent = newId;
+           setNewValue(["threads", idx, "id"], newId);
+         };
+         map.distant.child =threadLi(id, threadDistantForm(idx, id));
+         map.local.child =threadLi(id, threadLocalForm(idx, nameCallback));
 
-  var nameCallback = function (val) {
-    var newId = convertToId(val);
-    indLk.firstChild.textContent = newId;
-    setNewValue(["threads", idx, "id"], newId);
-  };
+         map.local.del = deleteThreadElm(map.local.child, map.distant.child, id);
+         map.local.child.append(map.local.del);
 
-  var localLi = threadLi(idx, id, threadLocalForm(idx, nameCallback));
-
-  var distantLi = threadLi(idx, id, threadDistantForm(idx, id));
-  localLi.append(deleteThreadElm(localLi, distantLi, id));
-
-  editIndex.append(indexLi);
-  editLocal.append(localLi);
-  editDistant.append(distantLi);
+         return map;
 }
+
+
+function setThread(idx, id) {
+  var map = threadElms(idx, id);
+  Object.values(map).forEach(elmSet => {
+      elmSet.parent.append(elmSet.child);
+  });
+ 
+}
+
 
 function setLastAction(callback) {
   if (actCtrls.position != actCtrls.count - 1) {
@@ -376,7 +431,9 @@ function setLastAction(callback) {
   lastAction.push(callback);
   actCtrls.position = actCtrls.count - 1;
   toggleNavEnd(actCtrls);
+  saveBtn.disabled = false;
 }
+
 
 function deleteEvent(localLi, distantLi, id) {
   var idx = editState.srcData.index.indexOf(id);
@@ -388,11 +445,16 @@ function deleteEvent(localLi, distantLi, id) {
   };
 
   var act = function (redo) {
+
     if (redo) {
-   triggerUpdate(stateUpdate(-1, "/"));
+     
       Object.keys(map).forEach((field) => {
         editState.srcData[field].splice(idx, 1);
       });
+
+      editState.threadId = '/';
+      editState.threadIndex = -1;
+
       [distantLi, localLi, indexNode].forEach((elm) => {
         easeOut(elm, 200, function () {
           elm.remove();
@@ -406,9 +468,11 @@ function deleteEvent(localLi, distantLi, id) {
         }
       }
     } else {
+     
       Object.keys(map).forEach((field) => {
         editState.srcData[field].splice(idx, 0, map[field]);
       });
+
       if (idx < len - 1) {
         var next = editIndex.childNodes[idx];
         editIndex.insertBefore(indexNode, next);
@@ -556,7 +620,7 @@ registerTranslElm(title, field);
 }
 
 
-function inputElm(ref, callback = null) {
+function inputElm(ref, callback = null, store = null) {
   var val = fieldValue(ref);
 
   var field = ref[ref.length - 1];
@@ -619,7 +683,9 @@ function inputElm(ref, callback = null) {
   } else {
     wrap.append(inp);
   }
-
+if(store){
+  store[field] = inp;
+}
   return wrap;
 }
 
@@ -662,7 +728,7 @@ function invalidSp() {
 }
 
 function triggerUndoRedo(ctrl) {
-  if (!redoRunning) {
+  if (!prcRunning) {
     var postn = actCtrls.position;
     var redo = false;
     if (ctrl == "next") {
@@ -673,24 +739,147 @@ function triggerUndoRedo(ctrl) {
     lastAction[postn](redo);
     setTimeout(
       function () {
-        redoRunning = false;
+        prcRunning = false;
       }.bind(this),
       editBuffer
     );
+    saveBtn.disabled = false;
   }
 }
 
-function authorForm() {
-  var form = getElm("FORM", "nx-edit-author");
+function setAuthorForm() {
+  authorForm = getElm("FORM", "nx-edit-author");
   ["handle", "url", "about"].forEach((field) => {
-    form.append(inputElm(["author", field]));
+    authorForm.append(inputElm(["author", field], null,authorInputs));
+  });
+}
+
+function setSaveBtn(){
+  saveBtn = getElm('BUTTON', 'nx-save');
+  saveBtn.type= "button";
+  saveBtn.textContent = "🖫";
+  saveBtn.disabled = true;
+  saveBtn.addEventListener('click', function(){
+    if(!saveBtn.disabled){
+      registerEditData(editState.srcData);
+      saveBtn.disabled = true;
+      displayFeedback("saved");
+    }
+   
   });
 
-  return form;
+}
+
+function downloadBtn(){
+  var dlBtn = getElm('BUTTON', 'nx-download');
+  dlBtn.type= "button";
+  dlBtn.textContent = "⭳";
+  dlBtn.addEventListener('click', function(e){
+      var data = Object.assign({}, editState.srcData);
+      delete data.index;
+      var check = validData(data);
+      if(!check){
+        displayFeedback('/!\\ invalid Nexus data');  
+      }
+      data = JSON.stringify(data,undefined,2);
+      var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(data);
+      var anchor = getElm('A');
+      anchor.setAttribute("href", dataStr);
+      anchor.setAttribute("download", "Nexus.json");
+      getHost().appendChild(anchor); 
+      anchor.click();
+      anchor.remove();
+  });
+return dlBtn;
+}
+function newState(data){
+  return {
+    dataUrl: "nx-edit",
+    srcData: data,
+    threadId: "/",
+    threadIndex: -1,
+  }
+}
+
+function resetAuthorForm(){
+  for(let [field, input] of Object.entries(authorInputs)){
+  input.value = editState.srcData.author[field];
+  }
+}
+
+function resetData(nData){
+  var prevData = editState.srcData;
+  var change = function(data){
+    if(editState.srcData.threads.length){
+      [editIndex, editLocal, editDistant].forEach(parent => {
+        Array.from(parent.childNodes).forEach(child=> {
+          easeOut(child, 100, function(){
+            child.remove();
+          })
+        })
+      });
+    }
+  
+    editState = newState(data);
+    resetAuthorForm();
+    setThreads();
+  };
+  var act = function(redo){
+    if(redo){
+      change(nData);
+    }else {
+      change(prevData);
+    }
+  };
+  setLastAction(act);
+  act(true);
+ 
+}
+
+function newDocumenBtn(){
+  var newBtn = getElm('BUTTON', 'nx-new');
+  newBtn.type= "button";
+  newBtn.textContent = "🗋";
+  newBtn.addEventListener('click', function(){
+    resetData(newData());
+   
+});
+return newBtn;
+}
+
+
+function displayFeedback(msg){
+  splitFlap(actionFdbck, getTxt(msg), 20);
+  setTimeout(function(){
+splitFlap(actionFdbck, "", 20);
+  },2000);
+}
+
+function setActionFeedback(){
+actionFdbck = getElm('P','nx-action-feedback');
+
+}
+
+
+function editNav() {
+  var wrp = getElm("DIV", "nx-edit-nav");
+  setActionFeedback();
+  setSaveBtn();
+  var links = getElm('DIV');
+  links.append(newDocumenBtn(), saveBtn, downloadBtn() );
+wrp.append(links, actionFdbck);
+  return wrp;
+}
+function editActions() {
+  var wrp = getElm("DIV", "nx-edit-actions nx-history-nav");
+  setHistoryControls(actCtrls, triggerUndoRedo);
+  wrp.append(actCtrls.ctrls["prev"].elm, actCtrls.ctrls["next"].elm);
+  return wrp;
 }
 
 export function editIndexBlock() {
-  return blockWrap("index", null, [authorForm(), editIndex], true);
+  setAuthorForm();
+  return blockWrap("index", null, [authorForm, editIndex, addThreadBtn()], true);
 }
 export function editLocalBlock() {
   return blockWrap("local", null, [editLocal], true);
@@ -699,25 +888,44 @@ export function editDistantBlock() {
   return blockWrap("distant", null, [editDistant], true);
 }
 
-export function editActions() {
-  var wrp = getElm("DIV", "nx-edit-actions nx-history-nav");
-  setHistoryControls(actCtrls, triggerUndoRedo);
-  wrp.append(actCtrls.ctrls["prev"].elm, actCtrls.ctrls["next"].elm); //@todo: save, new
-  return wrp;
-}
+export function instanceSwitch(viewerInst, editInst){
+  var btn = getElm("BUTTON","nx-edit-switch");
+  btn.textContent ="👁";
+  
+  btn.addEventListener('click',function(){
+      if(btn.textContent == "✎"){
+          btn.textContent ="👁";
+          replaceDiversion(viewerInst, editInst);
+      } else {
+
+          triggerUpdate(editState, true, true);
+        
+          btn.textContent ="✎";
+          replaceDiversion(editInst, viewerInst);
+      }
+  
+  });
+  
+  return btn;
+  }
+
+
+ export function editMenu(){
+  var dv = getElm("DIV", "nx-edit-menu");
+
+  dv.append(editNav(), editActions());
+  return dv;
+ } 
+
 export function setThreadsForms(state) {
   if (!state || !state.srcData) {
     var data = getStoredEditData();
     if (!data) {
-      return;
+      data = newData();
     }
-    state = {
-      dataUrl: "nx-edit",
-      srcData: data,
-      threadId: "/",
-      threadIndex: -1,
-    };
+    state = newState(data);
   } else {
+    state.dataUrl= "nx-edit";
 registerEditData(state.srcData);
   }
 
@@ -725,7 +933,11 @@ registerEditData(state.srcData);
   editLocal = getElm("UL", "nx-edit-local");
   editDistant = getElm("UL", "nx-edit-distant");
   editState = state;
+  setThreads();
 
+}
+
+function setThreads(){
   var items = editState.srcData.index;
   if (items.length) {
     for (var i = 0; i < items.length; i++) {

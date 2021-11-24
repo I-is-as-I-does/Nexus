@@ -1,28 +1,11 @@
-import { editActions, editDistantBlock, editIndexBlock, editLocalBlock, setThreadsForms } from "./editor/NxEdit.js";
+import { editMenu, editDistantBlock, editIndexBlock, editLocalBlock, instanceSwitch, setThreadsForms } from "./editor/NxEdit.js";
 import { appBlock, getElm, instanceWrap } from "./NxCommons.js";
 import { viewerElms } from "./NxViewerInstance.js";
-import { replaceDiversion  } from "../libr/Valva/Valva.js";
+
 
 var viewerInst;
 var editInst;
 
-function instanceSwitch(){
-var btn = getElm("BUTTON","nx-edit-switch");
-btn.textContent ="👁";
-
-btn.addEventListener('click',function(){
-    if(btn.textContent == "✎"){
-        btn.textContent ="👁";
-        replaceDiversion(viewerInst, editInst);
-    } else {
-        btn.textContent ="✎";
-        replaceDiversion(editInst, viewerInst);
-    }
-
-});
-
-return btn;
-}
 
    export function editorElms(state){
      setThreadsForms(state);
@@ -36,12 +19,12 @@ return btn;
      var threadPart = getElm("DIV");
      threadPart.append(editLocalBlock(),editDistantBlock());
      
-     editInst = instanceWrap([appBlock(), editActions()], [
+     editInst = instanceWrap([appBlock(), editMenu()], [
       indexPart,
       threadPart
       ], [], "edit");
    
 
-     metaInst.append(editInst, instanceSwitch());
+     metaInst.append(editInst, instanceSwitch(viewerInst, editInst));
       return metaInst;
    }

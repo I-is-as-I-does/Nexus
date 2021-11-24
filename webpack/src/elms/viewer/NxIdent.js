@@ -78,6 +78,7 @@ export function viewLink(state, update = false) {
   }
 
   viewlk.addEventListener("click", () => {
+ 
     triggerUpdate(state);
   });
   return viewlk;

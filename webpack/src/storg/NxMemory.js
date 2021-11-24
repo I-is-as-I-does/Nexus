@@ -1,5 +1,5 @@
 import { miniUrl } from "../libr/Jack/Web.js";
-import { getStoredItem, storeItem } from "./NxStorage.js";
+import { getStoredItem, removeItem, storeItem } from "./NxStorage.js";
 
 
 var visitStore = {};
@@ -8,7 +8,8 @@ var urlStore = {};
 var oembedStore = {};
 
 function getThreadDate(state) {
-    if (state.threadIndex != -1) {
+
+    if (state.threadIndex != -1 && state.srcData.threads.indexOf(state.threadIndex) != -1) {
       var timestamp = state.srcData.threads[state.threadIndex].record.timestamp;
       return new Date(timestamp);
     }
@@ -55,6 +56,10 @@ function getThreadDate(state) {
       return false;
     }
     return true;
+  }
+
+  export function clearData(dataUrl){
+    removeItem(dataUrl, "session", dataStore);
   }
 
 

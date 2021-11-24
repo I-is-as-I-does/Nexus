@@ -38,6 +38,7 @@ function setIndexList(state) {
     }
   }
  registerUpdateEvt(function (newState) {
+
     changeThreadsList(newState);
   }, true);
 }
@@ -55,11 +56,14 @@ function indexLi(state, id, index) {
 }
 
 function changeThreadsList(state) {
-  var childr = indexList.childNodes;
 
+
+  var childr = indexList.childNodes;
   var items = state.srcData.index;
   var nwlen = items.length;
+
   var chlen = childr.length;
+
   var count = 0;
   if (chlen) {
     var rmv = function (child) {

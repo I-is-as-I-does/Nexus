@@ -1,24 +1,23 @@
 import { loadJson } from "../libr/Jack/Web.js";
 import { clearErr, consoleLog, getErr, logErr } from "../logs/NxLog.js";
 import { getStoredData, registerData } from "../storg/NxMemory.js";
-import { validMap } from "../validt/NxStamper.js";
+import { validData } from "../validt/NxStamper.js";
 
 document.cookie = "Nx=Instance; SameSite=None; Secure";
+function setDataIndex(data) {
+  data.index = [];
 
- function setDataIndex(data) {
-    data.index = [];
-  
-    data.threads.map((it) => {
-      data.index.push(it.id);
-    });
-  }
+  data.threads.map((it) => {
+    data.index.push(it.id);
+  });
+}
 
 
 function loadSrcFile(dataUrl) {
     return loadJson(dataUrl)
       .then((data) => {
         clearErr();
-        data = validMap(data);
+        data = validData(data);
       
         if (data) {
          setDataIndex(data);
@@ -38,6 +37,8 @@ function loadSrcFile(dataUrl) {
         throw 404;
       });
   }
+
+
 
 
 export function getSrcData(dataUrl) {

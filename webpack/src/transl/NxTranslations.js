@@ -52,5 +52,7 @@ export const NxTranslations = {
     "Theme not found":"Thème non trouvé",
     "No response":"Aucune réponse",
     "Invalid source":"Source non valide",
+    "! invalid Nexus data":"! données Nexus non valides",
+    "saved":"sauvegardé"
 }
 };

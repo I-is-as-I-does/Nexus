@@ -306,9 +306,9 @@ export function charLimits(catg) {
     return url;
   }
 
-  export function validMap(data) {
+  export function validData(data) {
     if (hasValidType(data, "data", true)) {
-      data.url = validAppUrl(data.url);
+      data.nexus = validAppUrl(data.url);
       data.author = validAuthor(data.author);
       if (data.author) {
         data.threads = validThreads(data.threads);

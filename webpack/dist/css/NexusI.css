@@ -269,7 +269,7 @@
   font-family: "Inconsolata", "Courier New", Courier, monospace;
   display: block;
 
-  margin: 1.2rem 0;
+  margin: 1.2rem 0 2rem 0;
   position: relative;
   font-size: 0.85em;
 }
@@ -564,7 +564,7 @@ text-align: right;
 .nx .nx-distant-link, .nx .nx-edit-author, .nx .nx-edit-index {
   border-left: 3px solid #dedede;
   padding: 12px 0 8px 12px;
-  margin: 2em 0;
+  margin-bottom: 2em;
 }
 
 .nx ul.nx-edit-index {

@@ -192,7 +192,7 @@ export function validAuthor(author) {
   return null;
 }
 
-export function validMap(data) {
+export function validData(data) {
   if (Check.isNonEmptyObj(data) && isValidHttpUrl(data.nexus)) {
     data.author = validAuthor(data.author);
     if (data.author) {

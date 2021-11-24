@@ -19,9 +19,9 @@ var updateRunning = false;
     }
 
 
-function triggerCallbacks(srcChanged) {
+function triggerCallbacks(triggerAll) {
   var ks = ["onChange"];
-  if (srcChanged) {
+  if (triggerAll) {
     ks.push("onSrcChange");
   }
 
@@ -69,10 +69,10 @@ export function registerUpdateEvt(callback, onSrcChange = false) {
   updateStore[k].push(callback);
 }
 
-export function triggerUpdate(state, skipHistoryUpdate = false) {
+export function triggerUpdate(state, skipHistoryUpdate = false, forceTrigger = false) {
   if (!updateRunning) {
     var srcChanged = state.dataUrl != currentState.dataUrl;
-    if (srcChanged || state.threadId != currentState.threadId) {
+    if (forceTrigger || srcChanged || state.threadId != currentState.threadId) {
       updateRunning = true;
       if (!skipHistoryUpdate) {
         registerThreadVisit(currentState);
@@ -80,9 +80,11 @@ export function triggerUpdate(state, skipHistoryUpdate = false) {
           updateBrowserHistory(currentState);
         }
       }
+    
       currentState = state;
+      var resetIndex = srcChanged || forceTrigger;
 
-      triggerCallbacks(srcChanged);
+      triggerCallbacks(resetIndex);
       updateTimeout();
     }
   }

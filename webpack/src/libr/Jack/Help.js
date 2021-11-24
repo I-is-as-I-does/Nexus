@@ -13,6 +13,18 @@ export function charCut(string, limit) {
   return string;
 }
 
+export function randomString(length = 10){ 
+  var rpt = 1;
+ if (length > 10) {
+    rpt += Math.ceil(length/10);
+  }
+  var str = '';
+ for(var i=0;i<rpt;i++){
+   str += Math.random().toString(36).substr(2,10);
+ }
+ return str.substr(0,length);
+}
+
 export function waitForElmInDOM(elmSelector, parentElm = null) {
   if (!parentElm || !(parentElm instanceof Element)) {
     parentElm = document.body;
