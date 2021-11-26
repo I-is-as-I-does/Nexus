@@ -27,7 +27,7 @@ import { getHost } from "../core/base/NxContainer.js";
 import { newData, newThread } from "./NxStarters.js";
 import { loadSrcFile } from "../core/load/NxData.js";
 import { formCategory, dateInput, baseLabel, textareaInput, textInput, invalidSp, deleteLinkBtn, addBtn } from "./NxEditComps.js";
-import { convertToId, guessMediaType, updateDistantDropdown, newState } from "./NxEditPrc.js";
+import { convertToId, updateDistantDropdown, newState, resolveMediaType } from "./NxEditPrc.js";
 
 
 const editBuffer = getBuffertime();
@@ -163,17 +163,21 @@ function threadLocalForm(idx, nameCallback) {
   var fieldset3 = getElm('FIELDSET');
   fieldset3.append(formCategory("media", 2));
 
-
-
+var typeInp = inputElm(["threads", idx, "record", "media", "type"]);
   var tcallback = function (val, valid) {
     if (valid) {
-      guessMediaType(fieldset3, val);
+      var item = typeInp.querySelector(
+        "[data-item=" + resolveMediaType(val) + "]"
+      );
+      if (item) {
+        item.click();
+      }
     }
   };
   fieldset3.append(inputElm(["threads", idx, "record", "media", "url"], tcallback));
-  ["type", "caption"].forEach((field) => {
-    fieldset3.append(inputElm(["threads", idx, "record", "media", field]));
-  });
+  fieldset3.append(typeInp);
+  fieldset3.append(inputElm(["threads", idx, "record", "media", "caption"]));
+
   form.append(fieldset1, fieldset2, fieldset3);
   return form;
 }
@@ -209,7 +213,7 @@ function addThreadBtn() {
 
 
 function appendLinkInputs(form, idx, i) {
-  var linkwrap = getElm("DIV", "nx-distant-link");
+  var linkwrap = getElm("DIV", "nx-edit-distant-link");
   var elms = { url: null, id: null, list: getElm('DIV', 'nx-distant-ids') };
   var inputs = { id: null, url: null };
   elms["id"] = inputElm(["threads", idx, "linked", i, "id"], null, inputs);

@@ -25,7 +25,6 @@ var histCtrls = {
     "prev": {"symbol":"<", "elm":null},
     "next": {"symbol":">", "elm":null}
   },
-
    position:0,
    count:1
  }

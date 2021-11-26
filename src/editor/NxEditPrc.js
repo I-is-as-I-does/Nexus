@@ -10,7 +10,7 @@ const guessMap = {
   audio: ["mp3"],
 };
 
-function resolveMediaType(val) {
+export function resolveMediaType(val) {
   for (var p = 0; p < providers.length; p++) {
     if (val.includes(providers[p])) {
       return providers[p];
@@ -28,14 +28,6 @@ function resolveMediaType(val) {
 
 export function convertToId(name) {
     return replaceDiacritics(name.trim().replace(/[\s_]/, "-"));
-  }
- export function guessMediaType(fieldset, val) {
-    var item = fieldset.querySelector(
-      ".nx-select-list li[data-item=" + resolveMediaType(val) + "]"
-    );
-    if (item) {
-      item.click();
-    }
   }
 
   

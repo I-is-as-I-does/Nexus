@@ -125,16 +125,14 @@
     margin-right: 10px;
 }
 
-.nx .nx-select-list li.nx-selected {
-    display: none;
-}
-
 .nx .nx-lang-switch li,
 .nx .nx-lang-switch .nx-select-toggle {
     font-size: 0.75em;
     width: 50px;
 }
-
+.nx .nx-lang-switch .nx-select-toggle {
+    border-bottom: 1px solid #444;
+}
 .nx .nx-select li,
 .nx .nx-select-toggle {
     cursor: pointer;
@@ -159,7 +157,6 @@
 
 .nx .nx-select-toggle {
     padding: 0.25em 0.5em;
-    border-bottom: 1px solid #dedede;
 }
 
 .nx a.nx-app-link {
@@ -228,7 +225,7 @@
     text-align: center;
 }
 
-.nx .nx-history .nx-history-nav a:not(.nx-history-toggle) {
+.nx .nx-history .nx-nav-ctrl {
     font-size: 1.05rem;
 }
 
@@ -319,6 +316,16 @@
 .nx main .nx-view-link .nx-thread-name,
 .nx main a.nx-author-link {
     text-decoration: underline 1px solid;
+}
+
+.nx .nx-distant .nx-nav-ctrl {
+    text-align: center;
+    font-size: 1.2rem;;
+    display: block;
+}
+
+.nx .nx-distant-link {
+    margin:1em 0;
 }
 
 .nx a.nx-on-display,
@@ -447,7 +454,6 @@
     max-height: 340px;
     object-fit: cover;
 }
-
 
 /* Nexus Editor CSS addon */
 
@@ -619,7 +625,7 @@
     border: none;
 }
 
-.nx .nx-distant-link,
+.nx .nx-edit-distant-link,
 .nx .nx-edit-author,
 .nx .nx-edit-index,
 .nx .nx-thread-local-form fieldset {
@@ -712,4 +718,7 @@
 .nx .nx-action-feedback {
     height: 1.2em;
     display: block;
+}
+.nx form .nx-select-toggle {
+    border-bottom: 1px solid #dedede;
 }

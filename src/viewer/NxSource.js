@@ -45,7 +45,7 @@ function toggleLink() {
     if (lk.textContent == altText) {
       lk.textContent = text;
       lk.classList.remove("nx-active");
-      easeOut(drawerElm, 100);
+      easeOut(drawerElm, 200);
     } else {
       lk.textContent = altText;
       lk.classList.add("nx-active");

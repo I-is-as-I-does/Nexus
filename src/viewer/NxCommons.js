@@ -124,7 +124,7 @@ export function toggleNavEnd(map) {
 
 export function setHistoryControls(map, triggerCallback){
   Object.keys(map.ctrls).forEach((ctrl) => {
-    map.ctrls[ctrl].elm = getElm("A", "nx-nav-end");
+    map.ctrls[ctrl].elm = getElm("A", "nx-nav-ctrl nx-nav-end");
     map.ctrls[ctrl].elm.textContent = map.ctrls[ctrl].symbol;
     map.ctrls[ctrl].elm.addEventListener("click", function () {
       if (!map.ctrls[ctrl].elm.classList.contains("nx-nav-end")) {
@@ -154,43 +154,7 @@ export function selectDropDown(list, toggleElm, actionCallback = null, switchCla
 
 
   var drp = getElm("UL", "nx-select-list");
-  list.forEach((itm) => {
-
-    var li = getElm("LI");
-    li.textContent = itm;
-    li.dataset.item = itm;
-    if (itm == firstValue) {
-      li.classList.add(selectedClass);
-    }
-    li.addEventListener("click", () => {
-      
-      if(!li.classList.contains(selectedClass)){
-        var nitm = li.textContent;
-        var prev = drp.querySelector("." + selectedClass);
-        if(prev){
-          prev.classList.remove(selectedClass);
-        }
-       
-        li.classList.add(selectedClass);
-
-        if(isInput){
-         toggleElm.value = nitm;
-        } else {
-        toggleElm.textContent = nitm;
-        }
-        if (typeof actionCallback === "function") {
-          actionCallback(nitm);
-        }
-       
-drp.style.display = "none";
-      }
-       
-    });
-
-    drp.append(li);
-  });
-  drp.style.display = "none";
-
+  
   var swtch = getElm("DIV", "nx-select");
   if(switchClass){
     swtch.classList.add(switchClass);
@@ -204,6 +168,49 @@ drp.style.display = "none";
     }
     drp.style.display = styl;
   });
+  
+  list.forEach((itm) => {
+
+    var li = getElm("LI");
+    li.textContent = itm;
+    li.dataset.item = itm;
+    if (itm == firstValue) {
+      li.classList.add(selectedClass);
+    }
+    
+    drp.append(li);
+    li.addEventListener("click", () => {   
+      var nitm = li.textContent;
+      var currVal;
+      if(isInput){
+        currVal = toggleElm.value;
+       } else {
+        currVal = toggleElm.textContent;
+       }
+       if(currVal != nitm){
+        if(!li.classList.contains(selectedClass)){      
+          var prev = drp.querySelector("." + selectedClass);
+          if(prev){
+            prev.classList.remove(selectedClass);
+          }         
+          li.classList.add(selectedClass);
+        }
+        if(isInput){
+          toggleElm.value = nitm;
+         } else {
+         toggleElm.textContent = nitm;
+         }
+         toggleElm.dispatchEvent(new window.Event('change'));
+        if (typeof actionCallback === "function") {
+          actionCallback(nitm);
+        }
+       }
+
+      drp.style.display = "none";
+    });
+
+  });
+  drp.style.display = "none";
 
   return swtch;
 }

@@ -26,9 +26,10 @@ No dep. at all.
 - [x] **Viewer** refactoring / optimizing (that was... painful and probably not that useful) (aaand done it again)
 - [x] Base translations : En/Fr
 - [x] **Editor** (webpack output strategy headache)
-
+- [x] Viewer distant records slider
+ 
 To do:
-- [ ] Viewer distant records slider
+
 - [ ] Check for unused CSS
 - [ ] Check for unused translations
 - [ ] Regenerate css templates for other themes

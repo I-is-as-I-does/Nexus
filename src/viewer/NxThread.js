@@ -1,5 +1,5 @@
 import { isNonEmptyStr } from "../libr/Jack/Check.js";
-import { insertDiversion, replaceDiversion } from "../libr/Valva/Valva.js";
+import { diversionToggle, fadeIn, fadeOut, insertDiversion, replaceDiversion, timedFadeToggle } from "../libr/Valva/Valva.js";
 import { registerUpdateEvt, resolveState } from "../core/state/NxUpdate.js";
 import {
   authorIndexLink,
@@ -7,11 +7,23 @@ import {
   viewLink,
 } from "./NxIdent.js";
 import { mediaElm } from "./NxMedia.js";
-import { blockWrap, getElm,  threadNameElm } from "./NxCommons.js";
+import { blockWrap, getElm,  setHistoryControls,  threadNameElm, toggleNavEnd } from "./NxCommons.js";
 
-var linkedWrap;
+var currentElm;
 var descrpElm;
 var recordElm;
+
+var linked = [];
+
+var linkedCtrls = {
+  "ctrls":{
+    "prev": {"symbol":"⊼", "elm":null},
+    "next": {"symbol":"⊻", "elm":null}
+  },
+   position:0,
+   count:1
+ }
+
 
 function updateThreadBlocks(state) {
   var newThreadData = resolveThreadData(state);
@@ -21,10 +33,7 @@ function updateThreadBlocks(state) {
   replaceDiversion(descrpElm.firstChild, newDescrpTxt);
   replaceDiversion(recordElm.firstChild, newRecord);
 
-  var newLinkedElm = linkedItems(newThreadData);
-  Array.from(linkedWrap.childNodes).forEach((list, ind) => {
-    replaceDiversion(list, newLinkedElm[ind]);
-  });
+  setDistantLinks(newThreadData);
 }
 
 function setDescriptionElm(threadData) {
@@ -40,9 +49,9 @@ function resolveThreadData(state) {
   return threadData;
 }
 function distantThreadBlock(threadData) {
-  linkedWrap = getElm("DIV");
-  linkedWrap.append(...linkedItems(threadData));
-  return blockWrap("distant", null, [linkedWrap], true);
+  var slider = distantSlider();
+  setDistantLinks(threadData);
+  return blockWrap("distant", null, [slider], true);
 }
 
 function localThreadBlock(state, threadData) {
@@ -58,49 +67,85 @@ function setRecordElm(threadData) {
   recordElm.append(threadRecord(threadData));
 }
 
-function linkedItems(threadData) {
-  var linked = [];
-  if (threadData != null) {
-    linked = threadData.linked;
+function setDistantLinks(threadData){
+  setLinkedItems(threadData).then(() =>  {
+
+    linkedCtrls.position = 0;
+    linkedCtrls.count = linked.length;
+    toggleNavEnd(linkedCtrls); //@todo:test: useful?
+    setCurrentLink();
+  });
+
+}
+
+function setCurrentLink(){
+
+  var nw = linked[linkedCtrls.position];
+  var prev = currentElm.firstChild;
+
+  var callb;
+  if(prev){
+    callb = replaceDiversion(prev, nw);
+  } else  {
+    callb = insertDiversion(currentElm, nw, false, true, 200);
   }
+  diversionToggle(linkedCtrls.ctrls["next"].elm, callb, true, 200, 400, false);
+}
 
-  var records = getElm("UL", "nx-distant-records");
-  var indexes = getElm("UL", "nx-distant-indexes");
+function distantSlider(){
+  var slider = getElm("DIV");
+ currentElm = getElm("DIV","nx-distant-link");
+ setHistoryControls(linkedCtrls, setCurrentLink);
+ slider.append(linkedCtrls.ctrls["prev"].elm, currentElm, linkedCtrls.ctrls["next"].elm);
+ return slider;
+}
+function linkedElm(distantState){
+  
+  var linkedAuthor = [
+    authorIndexLink(distantState, false),
+    authorUrl(distantState, false),
+    viewLink(distantState, false),
+  ];
+  var elm = getElm("DIV");
+  elm.append(...linkedAuthor);
+  return elm;
+}
+function setLinkedItems(threadData) {
 
-  if (linked.length) {
-    var doneIndexes = [];
-    linked.forEach((item) => {
+  if (threadData != null && threadData.linked.length) {
+    var records = [];
+    var indexes = [];
+    var done = [];
+    var promises = [];
+    threadData.linked.forEach((item) => {
       if(item.url){
-      resolveState(item.url, item.id).then((distantState) => {
-       
-        var linkedAuthor = [
-          authorIndexLink(distantState, false),
-          authorUrl(distantState, false),
-          viewLink(distantState, false),
-        ];
-
-        if (distantState.threadId == "/") {
-          if (!doneIndexes.includes(distantState.threadId)) {
-            doneIndexes.push(distantState.threadId);
-            var li = getElm("LI");
-            li.append(...linkedAuthor);
-            insertDiversion(indexes, li, false, false, 200);
+         var prc =  resolveState(item.url, item.id).then((distantState) => {
+            var key = distantState.dataUrl+"#"+distantState.threadId;
+            if(!done.includes(key)){
+              done.push(key);
+              var elm = linkedElm(distantState);
+            if (distantState.threadId == "/") {                 
+              indexes.push(elm);
+            } else {
+              elm.append(threadRecord(resolveThreadData(distantState)));
+              records.push(elm);
+            }
           }
-        } else {
-          var li = getElm("LI");
-          li.append(...linkedAuthor);
-          li.append(threadRecord(resolveThreadData(distantState)));
-          insertDiversion(records, li, false, false, 200);
-        }
-      });
+          });
+          promises.push(prc);
     }
     });
-  } else {
-    var li = getElm("LI");
-    li.textContent = "...";
-    records.append(li);
-  }
-  return [records, indexes];
+    return Promise.all(promises).then(()=>{
+      linked = records.concat(indexes);
+    });
+  
+  } 
+    var elm = getElm("DIV");
+    elm.textContent = "...";
+    return Promise.resolve(elm).then(()=> {
+      linked = [elm];
+    })
+
 }
 
 function threadRecord(threadData) {
