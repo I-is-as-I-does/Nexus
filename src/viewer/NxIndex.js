@@ -37,11 +37,12 @@ function setIndexList(state) {
       indexList.append(indexLi(state, items[i], i));
     }
   }
+}
  registerUpdateEvt(function (newState) {
 
     changeThreadsList(newState);
   }, true);
-}
+
 }
 
 function indexLi(state, id, index) {
@@ -56,7 +57,6 @@ function indexLi(state, id, index) {
 }
 
 function changeThreadsList(state) {
-
 
   var childr = indexList.childNodes;
   var items = state.srcData.index;

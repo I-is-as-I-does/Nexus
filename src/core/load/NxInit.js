@@ -16,7 +16,7 @@ export function initPage(containerSelector = null, options = null){
     if(getOpt('src')){
         return resolveState(getOpt('src'), getOpt('id'));
     } else {
-       return null;
+       return {};
     }
   }).then((state)=> {
     if(state){

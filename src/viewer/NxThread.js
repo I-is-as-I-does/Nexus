@@ -80,17 +80,19 @@ function setDistantLinks(threadData){
 }
 
 function setCurrentLink(){
-
+//@todo:fix/improve
   var nw = linked[linkedCtrls.position];
   var prev = currentElm.firstChild;
 
   var callb;
   if(prev){
-    callb = replaceDiversion(prev, nw);
+    callb = function(){
+      replaceDiversion(prev, nw);
+    };
   } else  {
-    callb = insertDiversion(currentElm, nw, false, true, 200);
+    callb = function(){ insertDiversion(currentElm, nw, false, true, 200);};
   }
-  diversionToggle(linkedCtrls.ctrls["next"].elm, callb, true, 200, 400, false);
+  diversionToggle(linkedCtrls.ctrls["next"].elm, callb, true, 200, 500, false);
 }
 
 function distantSlider(){
@@ -118,7 +120,7 @@ function setLinkedItems(threadData) {
     var indexes = [];
     var done = [];
     var promises = [];
-    threadData.linked.forEach((item, ix) => {
+    threadData.linked.forEach((item) => {
       if(item.url){
          var prc =  resolveState(item.url, item.id).then((distantState) => {
             var key = distantState.dataUrl+"#"+distantState.threadId;
