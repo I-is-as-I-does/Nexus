@@ -1,5 +1,5 @@
 {
-  "nexus": "https://github.com/I-is-as-I-does/NexusApp",
+  "nexus": "https://github.com/I-is-as-I-does/Nexus-Prototype",
   "author": {
     "handle": "Ida",
     "about": "I always work at optimal capacity.",
@@ -7,7 +7,7 @@
   },
   "threads": [
     {
-      "id": "prototype-I",
+      "id": "Prototype-I",
       "name": "Prototype I",
       "description": "Semantics, design, electronics, and software programming.",
       "record": {
@@ -28,7 +28,7 @@
       ]
     },
     {
-      "id": "prototype-II",
+      "id": "Prototype-II",
       "name": "Prototype II",
       "description": "Experimental.",
       "record": {
