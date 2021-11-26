@@ -1,5 +1,5 @@
 import { isNonEmptyStr } from "../libr/Jack/Check.js";
-import { diversionToggle, fadeIn, fadeOut, insertDiversion, replaceDiversion, timedFadeToggle } from "../libr/Valva/Valva.js";
+import { diversionToggle, insertDiversion, replaceDiversion } from "../libr/Valva/Valva.js";
 import { registerUpdateEvt, resolveState } from "../core/state/NxUpdate.js";
 import {
   authorIndexLink,
@@ -8,6 +8,7 @@ import {
 } from "./NxIdent.js";
 import { mediaElm } from "./NxMedia.js";
 import { blockWrap, getElm,  setHistoryControls,  threadNameElm, toggleNavEnd } from "./NxCommons.js";
+import { consoleLog } from "../core/logs/NxLog.js";
 
 var currentElm;
 var descrpElm;
@@ -117,7 +118,7 @@ function setLinkedItems(threadData) {
     var indexes = [];
     var done = [];
     var promises = [];
-    threadData.linked.forEach((item) => {
+    threadData.linked.forEach((item, ix) => {
       if(item.url){
          var prc =  resolveState(item.url, item.id).then((distantState) => {
             var key = distantState.dataUrl+"#"+distantState.threadId;
@@ -131,21 +132,32 @@ function setLinkedItems(threadData) {
               records.push(elm);
             }
           }
+          }).catch(err => {
+            consoleLog(err);
           });
           promises.push(prc);
     }
     });
     return Promise.all(promises).then(()=>{
-      linked = records.concat(indexes);
+     
+      if(!records.length && !indexes.length){
+        linked = [noLink()];
+      } else {
+        linked = records.concat(indexes);
+      }
+     
     });
   
   } 
-    var elm = getElm("DIV");
-    elm.textContent = "...";
-    return Promise.resolve(elm).then(()=> {
-      linked = [elm];
-    })
+   return Promise.resolve(noLink()).then((elm)=> {
+    linked = [elm];
+   });
+}
 
+function noLink(){
+  var elm = getElm("DIV");
+  elm.textContent = "...";
+  return elm;
 }
 
 function threadRecord(threadData) {

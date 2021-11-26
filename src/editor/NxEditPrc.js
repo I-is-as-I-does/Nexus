@@ -1,6 +1,7 @@
 import { escapeRegExp, replaceDiacritics } from "../libr/Jack/Help.js";
 import { getSrcData } from "../core/load/NxData.js";
 import { selectDropDown } from "../viewer/NxCommons.js";
+import { urlPattern } from "../core/validt/NxSpecs.js";
 
 
 const providers = ["youtube", "vimeo", "soundcloud"];
