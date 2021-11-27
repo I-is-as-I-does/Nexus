@@ -1,5 +1,5 @@
 import { isNonEmptyStr } from "../libr/Jack/Check.js";
-import { diversionToggle, insertDiversion, replaceDiversion } from "../libr/Valva/Valva.js";
+import { diversionToggle, easeIn, easeOut, fadeIn, insertDiversion, replaceDiversion } from "../libr/Valva/Valva.js";
 import { registerUpdateEvt, resolveState } from "../core/state/NxUpdate.js";
 import {
   authorIndexLink,
@@ -13,6 +13,8 @@ import { consoleLog } from "../core/logs/NxLog.js";
 var currentElm;
 var descrpElm;
 var recordElm;
+
+var slider;
 
 var linked = [];
 
@@ -50,7 +52,7 @@ function resolveThreadData(state) {
   return threadData;
 }
 function distantThreadBlock(threadData) {
-  var slider = distantSlider();
+  setDistantSlider();
   setDistantLinks(threadData);
   return blockWrap("distant", null, [slider], true);
 }
@@ -79,28 +81,46 @@ function setDistantLinks(threadData){
 
 }
 
-function setCurrentLink(){
-//@todo:fix/improve
-  var nw = linked[linkedCtrls.position];
-  var prev = currentElm.firstChild;
-
-  var callb;
-  if(prev){
-    callb = function(){
-      replaceDiversion(prev, nw);
-    };
-  } else  {
-    callb = function(){ insertDiversion(currentElm, nw, false, true, 200);};
+function setPrevCtrlVisb(){
+  if(linkedCtrls.position === 0){
+    linkedCtrls.ctrls["prev"].elm.style.visibility = 'hidden';
+  } else if(linkedCtrls.position === 1) {
+    linkedCtrls.ctrls["prev"].elm.style.visibility = 'visible';
   }
-  diversionToggle(linkedCtrls.ctrls["next"].elm, callb, true, 200, 500, false);
+
 }
 
-function distantSlider(){
-  var slider = getElm("DIV");
+function nextCtrlCallb(){
+  linkedCtrls.ctrls["next"].elm.style.visibility = 'hidden';
+
+  var restr = null;
+  if((linkedCtrls.position + 1) !== linkedCtrls.count){
+    restr = function(){
+      linkedCtrls.ctrls["next"].elm.style.visibility = 'visible';
+    };
+  }
+ return restr;
+}
+
+function setCurrentLink(){
+  var nw = linked[linkedCtrls.position];
+  var prevElm = currentElm.firstChild;
+  setPrevCtrlVisb();
+  var restr = nextCtrlCallb();
+  if(prevElm){
+    replaceDiversion(prevElm, nw, restr);
+  } else {
+    insertDiversion(currentElm, nw, false, true, 200, restr);
+  }
+
+}
+
+function setDistantSlider(){
+slider = getElm("DIV");
  currentElm = getElm("DIV","nx-distant-link");
  setHistoryControls(linkedCtrls, setCurrentLink);
  slider.append(linkedCtrls.ctrls["prev"].elm, currentElm, linkedCtrls.ctrls["next"].elm);
- return slider;
+
 }
 function linkedElm(distantState){
   

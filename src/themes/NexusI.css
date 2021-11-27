@@ -328,7 +328,7 @@
     margin:1em 0;
 }
 .nx .nx-distant .nx-nav-end {
-  visibility: hidden;
+  visibility:;
 }
 .nx a.nx-on-display,
 .nx a.nx-nav-end {
