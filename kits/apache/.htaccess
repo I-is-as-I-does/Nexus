@@ -1,0 +1,5 @@
+<FilesMatch "\.(xml|html|json|js|css|jpg|jpeg|gif|png|svg|webp|ico|mp3|mp4|webm)$">
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+</IfModule>
+</FilesMatch>

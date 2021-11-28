@@ -1,0 +1,26 @@
+{
+    "nexus": "https://github.com/I-is-as-I-does/Nexus",
+    "author": {
+      "handle":"Anonymous",
+      "url":"https://website.zyx",
+      "about":""
+    },
+    "threads": [
+      {
+        "id": "Nexus-I",
+        "name": "Nexus I",
+        "description": "...",
+        "record": {
+          "timestamp": "2021-11-01T12:00",
+          "main": "...",
+          "aside": "",
+          "media": {
+            "url": "",
+            "type": "",
+            "caption": ""
+          }
+        },
+        "linked": []
+      }
+    ]
+  }
