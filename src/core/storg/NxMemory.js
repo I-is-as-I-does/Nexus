@@ -9,7 +9,7 @@ var oembedStore = {};
 
 function getThreadDate(state) {
 
-    if (state.threadIndex != -1 && state.srcData.threads.indexOf(state.threadIndex) != -1) {
+    if (state.threadIndex != -1 && state.srcData.threads[state.threadIndex]) {
       var timestamp = state.srcData.threads[state.threadIndex].record.timestamp;
       return new Date(timestamp);
     }
@@ -35,8 +35,10 @@ function getThreadDate(state) {
   }
 
   export function registerThreadVisit(state) {
+
     var key = state.dataUrl + "#" + state.threadId;
     if (!visitStore.hasOwnProperty(key)) {
+   
       var time = getThreadDate(state);
       if (time) {
         storeItem(key, time, "local", visitStore, false);

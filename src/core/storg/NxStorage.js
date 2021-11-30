@@ -40,8 +40,8 @@ export function storeItem(key, data, storage = "session", instanceStore = null, 
     }
 
     var avail = store.getItem("available");
-    if (avail < 100) {
-      clearPartialStorage(store, avail, 2000);
+    if (avail < 1000) {
+      avail = 5000 - clearPartialStorage(store, 2000);
     }
     avail -= datasize;
 
@@ -49,7 +49,7 @@ export function storeItem(key, data, storage = "session", instanceStore = null, 
       data = JSON.stringify(data);
     }
     store.setItem(key, data);
-    store.setItem("available", avail);
+    store.setItem("available", Math.ceil(avail));
   }
 }
 

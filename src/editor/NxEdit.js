@@ -861,7 +861,6 @@ export function instanceSwitch(viewerInst, editInst) {
       btn.textContent = "👁";
       replaceDiversion(viewerInst, editInst);
     } else {
-console.log(editState);
       triggerUpdate(editState, true, true);
 
       btn.textContent = "✎";

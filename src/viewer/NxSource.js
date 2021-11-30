@@ -128,12 +128,19 @@ return JSON.stringify(state.srcData);
 }
 
 function embedContent(state) {
+
   if(state.dataUrl){
+    var src = state.dataUrl;
+    var id = state.threadId;
+    if(src == 'nx-edit'){
+      src = "";
+      id = "/";
+    }
   return (
     '<div id="Nexus" data-src="' +
-    state.dataUrl +
+    src +
     '" data-id="' +
-    state.threadId +
+    id +
     '" data-style="' +
     getOpt('style') +
     '" data-lang="' +

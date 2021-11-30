@@ -85,7 +85,7 @@ export function pageHasSheet(signatureRule, url) {
         if (sheetUrl == url || pathBasename(sheetUrl) == basename) {
           return true;
         }
-        if (sheetUrl.startsWith(window.location.origin)) {
+        if (sheetUrl.startsWith(window.location.origin) && document.styleSheets[i].hasOwnProperty('cssRules')) {
           var rules = document.styleSheets[i].cssRules;
 
           for (let i = 0; i < rules.length; i++) {

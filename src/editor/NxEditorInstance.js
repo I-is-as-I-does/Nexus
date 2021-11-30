@@ -1,5 +1,5 @@
 import { editMenu, editDistantBlock, editIndexBlock, editLocalBlock, instanceSwitch, setThreadsForms } from "./NxEdit.js";
-import { appBlock, getElm, instanceWrap } from "../viewer/NxCommons.js";
+import { getElm, instanceWrap } from "../viewer/NxCommons.js";
 import { viewerElms } from "../viewer/NxViewerInstance.js";
 
 
@@ -19,7 +19,7 @@ var editInst;
      var threadPart = getElm("DIV");
      threadPart.append(editLocalBlock(),editDistantBlock());
      
-     editInst = instanceWrap([appBlock(), editMenu()], [
+     editInst = instanceWrap([editMenu()], [
       indexPart,
       threadPart
       ], [], "edit");

@@ -6,11 +6,33 @@ import { isValidId } from "../validt/NxStamper.js";
 import { defaultOpts } from "./NxDefaults.js";
 
 var opts = defaultOpts;
+var lc = window.location.href;
+var hostUrl = lc.substr(0,lc.lastIndexOf('/')+1);
+var params = new URLSearchParams(window.location.search.slice(1));
+
+function autoComplete(options, key){
+    if(options.hasOwnProperty(key)){
+
+var type = 'json';
+if(key === "style"){
+    type = 'css';
+}
+    if(options[key].substr(-type.length) !== type){
+        options[key] = options[key]+"."+type;
+    }
+if(options[key].substr(0,4) !== "http"){
+    options[key] = hostUrl+options[key];
+}
+}
+}
 
 export function setOptions(options) {
 
     if (isNonEmptyObj(options)) {
-       
+
+['src', 'style'].forEach(key=>  {
+    autoComplete(options, key)
+});
         if (isValidHttpUrl(options.src)) {
             opts.src = options.src;
             if (isValidId(options.id)) {
@@ -28,13 +50,16 @@ export function setOptions(options) {
         }
 
         ["history", "debug", "edit"].forEach(prop => {
-            if (options[prop] === "true" || options[prop] === true) {
+            if(params.has(prop)){
                 opts[prop] = true;
-                if (prop == "debug") {
-                    setDebugMode(true);
-                }
+              }
+            else if (options[prop] === "true" || options[prop] === true) {
+                opts[prop] = true;
             }
         });
+        if (opts.debug) {
+            setDebugMode(true);
+        }
     }
 }
 

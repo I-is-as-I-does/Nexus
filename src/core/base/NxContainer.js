@@ -5,15 +5,6 @@ import { setOptions } from "./NxOptions.js";
 var container;
 var host;
 
-function dynmOpts(containerOpts){
-var params = new URLSearchParams(window.location.search.slice(1));
-["edit","debug", "history"].forEach(p => {
-if(params.has(p)){
-  containerOpts[p] = true;
-}
-});
-        setOptions(containerOpts);
-}
 
 export function setContainer(selector = null) {
 
@@ -30,7 +21,8 @@ export function setContainer(selector = null) {
     } else if (container.dataset) {    
       containerOpts = Object.assign(containerOpts,container.dataset);
     }
-    dynmOpts(containerOpts);
+    setOptions(containerOpts);
+
     host = document.createElement('DIV');
     host.className = "nx";
     container.append(host);

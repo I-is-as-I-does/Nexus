@@ -34,13 +34,13 @@ export function getElm(tag, classList) {
 }
 
 
-export function instanceWrap(headerElms, mainElms, footerElms = [], service = 'viewer') {
+export function instanceWrap(navElms, mainElms, footerElms = [], service = 'viewer') {
   var wrap = getElm("DIV", "nx-instance nx-"+service);
-  var header = getElm("HEADER");
-  header.append(...headerElms);
+  var nav = getElm("NAV");
+  nav.append(...navElms);
   var main = getElm("MAIN");
   main.append(...mainElms);
-  wrap.append(header, main);
+  wrap.append(nav, main);
   if(footerElms.length){
     var footer = getElm("FOOTER");
     footer.append(...footerElms);
@@ -243,8 +243,10 @@ export function threadNameElm(state, update = false) {
   return sp;
 }
 
-export function appBlock() {
-  return blockWrap("app", null, [appLink(), langDropDown()], false);
+export function appHeader() {
+  var headr = getElm('HEADER');
+  headr.append(blockWrap("app", null, [appLink(), langDropDown()], false));
+  return headr;
 }
 
 export function appLink() {

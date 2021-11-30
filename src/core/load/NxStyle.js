@@ -1,6 +1,7 @@
 import { loadCss } from "../../libr/Jack/Web.js";
 import { consoleLog, logErr } from "../logs/NxLog.js";
 import { getOpt } from "../base/NxOptions.js";
+import { defaultCss } from "../base/NxDefaults.js";
 
   var loadedCss = {};
 
@@ -16,6 +17,9 @@ import { getOpt } from "../base/NxOptions.js";
         consoleLog(err);
         logErr("Theme not found");
         loadedCss[url] = false;
+        if(url != defaultCss){
+          return loadAppCss(defaultCss);
+        }
         throw 404;
       });
   }
