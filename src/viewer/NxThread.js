@@ -1,5 +1,5 @@
 import { isNonEmptyStr } from "../libr/Jack/Check.js";
-import { diversionToggle, easeIn, easeOut, fadeIn, insertDiversion, replaceDiversion } from "../libr/Valva/Valva.js";
+import {insertDiversion, replaceDiversion } from "../libr/Valva/Valva.js";
 import { registerUpdateEvt, resolveState } from "../core/state/NxUpdate.js";
 import {
   authorIndexLink,

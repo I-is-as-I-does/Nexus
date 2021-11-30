@@ -39,10 +39,10 @@
     margin: 2vh auto;
     position: relative;
     padding: 0 1vw;
-    min-height: 94vh;
+
 }
 
-.nx main {
+.nx section {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -51,6 +51,9 @@
     align-items: flex-start;
 }
 
+.nx .nx-viewer > section {
+    min-height: 80vh;
+}
 .nx ul {
     list-style-type: none;
     margin: 0;
@@ -87,10 +90,9 @@
 .nx footer {
     width: 100%;
     display: block;
-    position: sticky;
     margin-top: 2em;
-    top: 100%;
-    bottom: 0%;
+    position: sticky;
+    top:100%;
 }
 
 .nx .nx-local,
@@ -104,12 +106,12 @@
     margin-right: 3vw;
 }
 
-.nx .nx-app {
+.nx header {
     width: 100%;
     position: relative;
 }
 
-.nx .nx-app>* {
+.nx header >* {
     text-transform: uppercase;
 }
 
@@ -205,10 +207,6 @@
     padding-bottom: 2rem;
 }
 
-.nx .nx-source {
-    padding-top: 10px;
-}
-
 .nx .nx-history,
 .nx .nx-source {
     margin: 0 auto;
@@ -218,11 +216,6 @@
 .nx .nx-history-toggle {
     font-size: 1.3rem;
     margin: 0 24px;
-}
-
-.nx .nx-history-nav,
-.nx .nx-source-toggle {
-    text-align: center;
 }
 
 .nx .nx-history .nx-nav-ctrl {
@@ -258,7 +251,7 @@
     color: #b3b3b3;
 }
 
-.nx .nx-local header .nx-thread-name {
+.nx .nx-thread-header .nx-thread-name {
     font-size: clamp(30px, 5vw, 40px);
     font-weight: bold;
     line-height: 0.9em;
@@ -275,7 +268,7 @@
 .nx .nx-landmark {
     font-family: "Inconsolata", "Courier New", Courier, monospace;
     display: block;
-    margin: 1.2rem 0 2rem 0;
+    margin: 1rem 0;
     position: relative;
     font-size: 0.85em;
 }
@@ -284,6 +277,7 @@
     content: "#";
     padding-right: 2px;
 }
+
 
 .nx .nx-ident {
     margin-right: 0.6em;
@@ -301,20 +295,20 @@
     font-size: 0.9em;
 }
 
-.nx main a.nx-view-link {
+.nx section a.nx-view-link {
     display: block;
     margin-top: 4px;
 }
 
-.nx main a.nx-view-link:before {
+.nx section a.nx-view-link:before {
     margin-right: 3px;
     content: "∟";
     position: relative;
     top: -1px;
 }
 
-.nx main .nx-view-link .nx-thread-name,
-.nx main a.nx-author-link {
+.nx section .nx-view-link .nx-thread-name,
+.nx section a.nx-author-link {
     text-decoration: underline 1px solid;
 }
 
@@ -420,6 +414,11 @@
 .nx .nx-history-nav {
     line-height: 1.8rem;
     font-family: "Inconsolata", "Courier New", Courier, monospace;
+    text-align: center;
+}
+
+.nx .nx-history {
+    margin: 1.4em 0 2.2em 0;
 }
 
 .nx .nx-source-copy-tooltip {

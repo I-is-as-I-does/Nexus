@@ -3,7 +3,7 @@ import { loadAppCss } from "./NxStyle.js";
 import { getOpt, setOptions } from "../base/NxOptions.js";
 import { consoleLog } from "../logs/NxLog.js";
 import { resolveState, setOriginState } from "../state/NxUpdate.js";
-import { appHeader, errorPrgr } from "../../viewer/NxCommons.js";
+import { instanceWrap, errorPrgr } from "../../viewer/NxCommons.js";
 import { editorElms } from "../../editor/NxEditorInstance.js";
 import { viewerElms } from "../../viewer/NxViewerInstance.js";
 
@@ -28,7 +28,7 @@ export function initPage(containerSelector = null, options = null){
     } else {
       elms = viewerElms(state);
     }
-      getHost().append(appHeader(), elms);
+      getHost().append(instanceWrap(elms));
   }).catch((err)=> {
     consoleLog(err);
       getHost().append(errorPrgr());

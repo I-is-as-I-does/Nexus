@@ -1,8 +1,9 @@
 import { editMenu, editDistantBlock, editIndexBlock, editLocalBlock, instanceSwitch, setThreadsForms } from "./NxEdit.js";
-import { getElm, instanceWrap } from "../viewer/NxCommons.js";
+import { getElm, serviceWrap
+ } from "../viewer/NxCommons.js";
 import { viewerElms } from "../viewer/NxViewerInstance.js";
 
-
+//@todo debug save nx-edit = custom key for each src + if edit version exists, override file
 var viewerInst;
 var editInst;
 
@@ -12,19 +13,16 @@ var editInst;
 
       viewerInst = viewerElms(state);
 
-     var metaInst = getElm("DIV");
-
      var indexPart = getElm("DIV");
      indexPart.append(editIndexBlock());
      var threadPart = getElm("DIV");
      threadPart.append(editLocalBlock(),editDistantBlock());
      
-     editInst = instanceWrap([editMenu()], [
+     editInst = serviceWrap
+([editMenu()], [
       indexPart,
       threadPart
       ], [], "edit");
    
-
-     metaInst.append(editInst, instanceSwitch(viewerInst, editInst));
-      return metaInst;
+      return [editInst, instanceSwitch(viewerInst, editInst)];
    }

@@ -25,6 +25,35 @@ function toggleOnDisplay(viewlk, givenState, newState) {
 }
 
 
+function appHeader() {
+  var header = getElm('HEADER');
+  header.append(appLink(), langDropDown());
+  return header;
+}
+
+function appLink() {
+  var link = getElm("A", "nx-app-link nx-external-link");
+  link.target = "_blank";
+  link.href = appUrl;
+  link.title = "Nexus";
+  link.textContent = "Nexus";
+  return link;
+}
+function langDropDown() {
+  var toggle = getElm('P');
+  toggle.textContent = getLang();
+  return selectDropDown(getAvailableLangs(), toggle, function(nlang){
+    triggerTranslate(nlang);
+  }, "nx-lang-switch");
+}
+
+function appMain(serviceElms){
+var main = getElm('MAIN');
+main.append(...serviceElms);
+return main;
+}
+
+
 export function getElm(tag, classList) {
   var elm = document.createElement(tag);
   if (classList) {
@@ -33,14 +62,20 @@ export function getElm(tag, classList) {
   return elm;
 }
 
+export function instanceWrap(serviceElms){
+  var inst = getElm("DIV", "nx-instance");
+  inst.append(appHeader(), appMain(serviceElms));
+  return inst;
+}
 
-export function instanceWrap(navElms, mainElms, footerElms = [], service = 'viewer') {
-  var wrap = getElm("DIV", "nx-instance nx-"+service);
+export function serviceWrap
+(navElms, mainElms, footerElms = [], service = 'viewer') {
+  var wrap = getElm("DIV", "nx-"+service);
   var nav = getElm("NAV");
   nav.append(...navElms);
-  var main = getElm("MAIN");
-  main.append(...mainElms);
-  wrap.append(nav, main);
+  var bd = getElm("SECTION");
+  bd.append(...mainElms);
+  wrap.append(nav, bd);
   if(footerElms.length){
     var footer = getElm("FOOTER");
     footer.append(...footerElms);
@@ -55,12 +90,12 @@ export function blockWrap(
   contentElms = null,
   landmark = false
 ) {
-  var dv = getElm("SECTION", "nx-" + blockName + "  nx-block");
+  var dv = getElm("DIV", "nx-" + blockName + " nx-block");
   if (landmark) {
     dv.append(landmarkElm(blockName));
   }
   if (headerElms) {
-    var header = getElm("HEADER");
+    var header = getElm("DIV","nx-thread-header");
     header.append(...headerElms);
     dv.append(header);
   }
@@ -243,28 +278,6 @@ export function threadNameElm(state, update = false) {
   return sp;
 }
 
-export function appHeader() {
-  var headr = getElm('HEADER');
-  headr.append(blockWrap("app", null, [appLink(), langDropDown()], false));
-  return headr;
-}
-
-export function appLink() {
-  var link = getElm("A", "nx-app-link nx-external-link");
-  link.target = "_blank";
-  link.href = appUrl;
-  link.title = "Nexus";
-  link.textContent = "Nexus";
-  return link;
-}
-
-export function langDropDown() {
-  var toggle = getElm('P');
-  toggle.textContent = getLang();
-  return selectDropDown(getAvailableLangs(), toggle, function(nlang){
-    triggerTranslate(nlang);
-  }, "nx-lang-switch");
-}
 
 export function viewerInstance(state){
   var indexPart = getElm("DIV");
@@ -272,7 +285,8 @@ export function viewerInstance(state){
   var threadPart = getElm("DIV");
   threadPart.append(...threadBlocks(state));
   
-  return instanceWrap([appBlock(), historyBlock(state)], [
+  return serviceWrap
+([appBlock(), historyBlock(state)], [
    indexPart,
    threadPart
    ], [sourceBlock(state)]);
