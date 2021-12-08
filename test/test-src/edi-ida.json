@@ -8,7 +8,7 @@
     "threads": [
       {
         "id": "Prototype-I",
-        "name": "Prototype I",
+        "title": "Prototype I",
         "description": "Semantics, design, electronics, and software programming.",
         "record": {
           "timestamp": "2186-01-21 00:05:01",
@@ -41,7 +41,7 @@
       },
       {
         "id": "Prototype-II",
-        "name": "Prototype II",
+        "title": "Prototype II",
         "description": "Experimental.",
         "record": {
           "timestamp": "2187-01-21 00:05:01",
@@ -54,9 +54,6 @@
           }
         },
         "linked": [
-          {
-
-          }
         ]
       }
     ]

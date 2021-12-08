@@ -7,12 +7,12 @@ import { getTxt, getAvailableLangs, getLang } from "../core/transl/NxCoreTransla
 import { appUrl } from "../core/validt/NxSpecs.js";
 
 
-function resolveThreadName(state) {
-  var threadName = "/";
+function resolveThreadTitle(state) {
+  var threadTitle = "/";
   if (state.threadId && state.threadId != "/") {
-    threadName = state.srcData.threads[state.threadIndex].name;
+    threadTitle = state.srcData.threads[state.threadIndex].title;
   }
-  return threadName;
+  return threadTitle;
 }
 
 
@@ -251,9 +251,12 @@ export function selectDropDown(list, toggleElm, actionCallback = null, switchCla
 }
 
 
-export function setToggleOnDisplay(viewlk, state) {
+export function setToggleOnDisplay(viewlk, state, currentState = null) {
  
-  toggleOnDisplay(viewlk, state, getCurrentState());
+  if(!currentState){
+    currentState = getCurrentState();
+  }
+  toggleOnDisplay(viewlk, state, currentState);
  registerUpdateEvt(function (newState) {
     toggleOnDisplay(viewlk, state, newState);
   });
@@ -261,17 +264,17 @@ export function setToggleOnDisplay(viewlk, state) {
 
 export function baseViewLink(state, update = false) {
   var viewlk = getElm("A", "nx-view-link");
-  viewlk.append(threadNameElm(state, update));
+  viewlk.append(threadTitleElm(state, update));
   return viewlk;
 }
 
-export function threadNameElm(state, update = false) {
-  var sp = getElm("SPAN", "nx-thread-name");
-  sp.textContent = resolveThreadName(state);
+export function threadTitleElm(state, update = false) {
+  var sp = getElm("SPAN", "nx-thread-title");
+  sp.textContent = resolveThreadTitle(state);
   if (update) {
     registerUpdateEvt(function (newState) {
-      var newThreadName = resolveThreadName(newState);
-      splitFlap(sp, newThreadName, 15);
+      var newThreadTitle = resolveThreadTitle(newState);
+      splitFlap(sp, newThreadTitle, 15);
     });
   }
 

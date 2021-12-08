@@ -27,13 +27,14 @@ export function resolveMediaType(val) {
   return "page";
 }
 
-export function convertToId(name) {
-    return replaceDiacritics(name.trim().replace(/[\s_]/, "-"));
+export function convertToId(title) {
+    return replaceDiacritics(title.trim().replace(/[\s_]/, "-"));
   }
 
   
 
 export function updateDistantDropdown(inputs, elms, url, valid){
+ 
     var prc = function(items = []){
   
       var id = inputs.id.value;
@@ -49,24 +50,27 @@ export function updateDistantDropdown(inputs, elms, url, valid){
       elms.id.lastChild.replaceWith(ndropdown);
   
     };
+ 
     if(!url || !valid){
       prc();
       return;
       }
     getSrcData(url).then((data)=> {
+
       prc(Array.from(data.index));
     }).catch(() => {
       inputs.url.pattern = urlPattern+"(?<!"+escapeRegExp(url)+")";
       inputs.url.dispatchEvent(new window.Event('change'));
     });
   }
+
   
-  export function newState(data){
+  export function newState(data, url = "new", id = "/", idx = -1){
     return {
-      dataUrl: "nx-edit",
+      dataUrl: url,
       srcData: data,
-      threadId: "/",
-      threadIndex: -1,
-    }
+      threadId: id,
+      threadIndex: idx,
+    };
   }
   

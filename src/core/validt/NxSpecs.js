@@ -9,7 +9,7 @@ export const typesMap = {
   threads: "Array",
   "threads.item": "Object",
   id: "String",
-  name: "String",
+  title: "String",
   description: "String",
   record: "Object",
   timestamp: "String",
@@ -21,11 +21,11 @@ export const typesMap = {
   linked: "Array",
   "linked.item": "Object",
 };
-export const required = ["nexus","author","threads","handle", "url", "id", "name", "record","timestamp", "main", "type"];
+export const required = ["nexus","author","threads","handle", "url", "id", "title", "record","timestamp", "main", "type"];
 export const charMinMax = {
     handle: [3, 30],
     about: [0, 400],
-    name: [3, 30],
+    title: [3, 30],
     description: [0, 400],
     main: [1, 1000],
     aside: [0, 400],
@@ -48,4 +48,4 @@ export const charMinMax = {
     "^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])(T(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]))?$";
   export const idPattern = "[a-zA-Z0-9-]{3,36}";
   export const distantIdPattern = "(/|"+idPattern+")";
-  export const urlPattern = "^https?:\/\/\\w+\\.\\w+.*";
+  export const urlPattern = "^https?:\/\/.*";

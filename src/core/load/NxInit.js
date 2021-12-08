@@ -13,13 +13,14 @@ export function initPage(containerSelector = null, options = null){
   setOptions(options);
 
   return loadAppCss().then(()=> {
+   
     if(getOpt('src')){
         return resolveState(getOpt('src'), getOpt('id'));
     } else {
        return {};
     }
   }).then((state)=> {
-    if(state){
+    if(state.srcData){
       setOriginState(state);    
     }
     var elms;

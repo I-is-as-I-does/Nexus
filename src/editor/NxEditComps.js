@@ -2,7 +2,7 @@ import { getTxt } from "../core/transl/NxCoreTranslate.js";
 import { registerTranslElm } from "../core/transl/NxElmTranslate.js";
 import { getElm } from "../viewer/NxCommons.js";
 
-export function formCategory(name, subcount) {
+export function formCategory(name, subcount = 1) {
     var p = getElm("P", "nx-edit-category");
   
     for (var i = 0; i < subcount; i++) {

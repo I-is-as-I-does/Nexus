@@ -1,11 +1,12 @@
 import { miniUrl } from "../../libr/Jack/Web.js";
-import { getStoredItem, removeItem, storeItem } from "./NxStorage.js";
+import { getStorageKeys, getStoredItem, removeItem, storeItem } from "./NxStorage.js";
 
 
 var visitStore = {};
 var dataStore = {};
 var urlStore = {};
 var oembedStore = {};
+const editprefix = "nx-edit#";
 
 function getThreadDate(state) {
 
@@ -26,12 +27,16 @@ function getThreadDate(state) {
     return null;
   }
 
-  export function registerEditData(data) {
-    storeItem("nx-edit", data, "local");
+  export function registerEditData(data,url) {
+    storeItem(editprefix+url, data, "local");
   }
 
-  export function getStoredEditData() {
-    return getStoredItem("nx-edit", "local");
+  export function getStoredEditData(url) {
+    return getStoredItem(editprefix+url, "local");
+  }
+
+  export function getEditDataList(){
+    return getStorageKeys('local', editprefix);
   }
 
   export function registerThreadVisit(state) {

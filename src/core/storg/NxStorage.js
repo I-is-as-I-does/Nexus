@@ -27,6 +27,22 @@ function resolveStore(storage) {
 setStorageAvailability(locStorag);
 setStorageAvailability(sesStorag);
 
+export function getStorageKeys(storage = 'local', prefix = null){
+  var store = resolveStore(storage);
+  var keys = [];
+  if (store != null) {
+    keys = Object.keys(store);
+
+    if(prefix){
+      var len = prefix.length;
+      keys = keys.filter((k)=>
+k.substr(0,len) == prefix);
+    }
+
+  }
+ return keys;
+}
+
 
 export function storeItem(key, data, storage = "session", instanceStore = null, json = true) {
   if (instanceStore) {

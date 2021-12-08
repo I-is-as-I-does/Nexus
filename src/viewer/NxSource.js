@@ -132,7 +132,7 @@ function embedContent(state) {
   if(state.dataUrl){
     var src = state.dataUrl;
     var id = state.threadId;
-    if(src == 'nx-edit'){
+    if(getOpt('edit')){
       src = "";
       id = "/";
     }

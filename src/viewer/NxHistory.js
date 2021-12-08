@@ -39,7 +39,7 @@ function historyNav() {
     }
     var target =
     historyList.children[postn].querySelector(
-      ".nx-thread-name"
+      ".nx-thread-title"
     );
   target.click();
   });
@@ -70,10 +70,9 @@ function setHistoryListElm(state) {
   var first = getElm("LI");
   first.textContent = "...";
   historyList.append(first);
-  if(state.srcData){
-    //historyEvent(state);
+  if(state && state.srcData){
+  historyState = state;
   historyList.append(historyItm(state));
-
 }
   historyElm = getElm("DIV", "nx-history-drawer");
   historyElm.append(historyList);
@@ -86,6 +85,7 @@ function setHistoryListElm(state) {
 
 
 function historyEvent(state) {
+
   if (!isHistoryEvent && (state.dataUrl != historyState.dataUrl || state.threadId != historyState.threadId)) {
     historyState = state;
     if (histCtrls.count > historyMax) {

@@ -7,7 +7,7 @@ import {
   viewLink,
 } from "./NxIdent.js";
 import { mediaElm } from "./NxMedia.js";
-import { blockWrap, getElm,  setHistoryControls,  threadNameElm, toggleNavEnd } from "./NxCommons.js";
+import { blockWrap, getElm,  setHistoryControls,  threadTitleElm, toggleNavEnd } from "./NxCommons.js";
 import { consoleLog } from "../core/logs/NxLog.js";
 
 var currentElm;
@@ -58,7 +58,7 @@ function distantThreadBlock(threadData) {
 }
 
 function localThreadBlock(state, threadData) {
-  var headerElm = threadNameElm(state, true);
+  var headerElm = threadTitleElm(state, true);
   setDescriptionElm(threadData);
   setRecordElm(threadData);
 

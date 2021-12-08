@@ -245,7 +245,7 @@ export function charLimits(catg) {
       thread.record = validRecord(thread.record);
 
       if (thread.record != null) {
-        thread.name = validLenghtStr(thread.name, "name");
+        thread.title = validLenghtStr(thread.title, "title");
         thread.description = validLenghtStr(
           thread.description,
           "description"

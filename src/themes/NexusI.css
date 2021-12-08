@@ -251,7 +251,7 @@
     color: #b3b3b3;
 }
 
-.nx .nx-thread-header .nx-thread-name {
+.nx .nx-thread-header .nx-thread-title {
     font-size: clamp(30px, 5vw, 40px);
     font-weight: bold;
     line-height: 0.9em;
@@ -307,7 +307,7 @@
     top: -1px;
 }
 
-.nx section .nx-view-link .nx-thread-name,
+.nx section .nx-view-link .nx-thread-title,
 .nx section a.nx-author-link {
     text-decoration: underline 1px solid;
 }
@@ -625,17 +625,14 @@
 }
 
 .nx .nx-edit-distant-link,
-.nx .nx-edit-author,
-.nx .nx-edit-index,
+.nx .nx-edit-author-form,
+.nx .nx-edit-list,
 .nx .nx-thread-local-form fieldset {
     border-left: 3px solid #dedede;
     padding: 12px 0 8px 12px;
     margin-bottom: 2em;
 }
 
-.nx ul.nx-edit-index {
-    padding: 12px 0 8px 12px;
-}
 .nx .nx-edit-index {
     position: relative;
 }

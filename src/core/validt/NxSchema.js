@@ -33,16 +33,16 @@ export const NxSchema = {
         "additionalItems": true,
         "items": {
               "type": "object",
-              "required": ["id", "name", "record"],
+              "required": ["id", "title", "record"],
               "properties": {
                 "id": {
                   "type": "string",
                   "pattern": idPattern
                 },
-                "name": {
+                "title": {
                   "type": "string",
-                  "minLength": charMinMax.name[0],
-                  "maxLength": charMinMax.name[1]
+                  "minLength": charMinMax.title[0],
+                  "maxLength": charMinMax.title[1]
                 },
                 "description": {
                   "type": "string",

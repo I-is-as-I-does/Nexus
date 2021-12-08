@@ -9,7 +9,7 @@ export function newData() {
         "author": {
           "handle": "Anonymous-"+randomInt(100,999),
           "about": "",
-          "url": ""
+          "url": "http://"
         },
         "threads": [
             newThread(randomId)
@@ -21,7 +21,7 @@ export function newData() {
 export function newThread(randomId){
     return {
       "id": randomId,
-      "name": randomId,
+      "title": randomId,
       "description": "...",
       "record": {
         "timestamp": new Date().toISOString().substr(0,16),

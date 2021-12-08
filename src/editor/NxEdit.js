@@ -21,7 +21,7 @@ import { randomString } from "../libr/Jack/Help.js";
 import { getBuffertime, registerUpdateEvt, triggerUpdate } from "../core/state/NxUpdate.js";
 
 import { getTxt } from "../core/transl/NxCoreTranslate.js";
-import { getStoredEditData, registerEditData } from "../core/storg/NxMemory.js";
+import { getEditDataList, getStoredEditData, registerEditData } from "../core/storg/NxMemory.js";
 import { validData } from "../core/validt/NxStamper.js";
 import { getHost } from "../core/base/NxContainer.js";
 import { newData, newThread } from "./NxStarters.js";
@@ -34,7 +34,7 @@ const editBuffer = getBuffertime();
 const editHistoryMax = 10;
 
 var editState = {
-  dataUrl: "nx-edit",
+  dataUrl: "new",
   srcData: null,
   threadId: "/",
   threadIndex: -1,
@@ -65,6 +65,8 @@ var authorInputs = {
   "url": null,
   "about": null
 };
+var feedbackrun = null;
+
 
 function moveItem(from, to) {
   editState.srcData.index.splice(
@@ -145,23 +147,24 @@ function setMoveBtns(li, id) {
 }
 
 
-function threadLocalForm(idx, nameCallback) {
+function threadLocalForm(idx, titleCallback) {
   var form = getElm("FORM", "nx-thread-local-form");
 
   var fieldset1 = getElm('FIELDSET');
-  fieldset1.append(inputElm(["threads", idx, "name"], nameCallback));
+  fieldset1.append(formCategory("local thread"));
+  fieldset1.append(inputElm(["threads", idx, "title"], titleCallback));
   fieldset1.append(inputElm(["threads", idx, "description"]));
 
 
   var fieldset2 = getElm('FIELDSET');
-  fieldset2.append(formCategory("record", 1));
+  fieldset2.append(formCategory("record"));
 
   ["timestamp", "main", "aside"].forEach((field) => {
     fieldset2.append(inputElm(["threads", idx, "record", field]));
   });
 
   var fieldset3 = getElm('FIELDSET');
-  fieldset3.append(formCategory("media", 2));
+  fieldset3.append(formCategory("media",2));
 
 var typeInp = inputElm(["threads", idx, "record", "media", "type"]);
   var tcallback = function (val, valid) {
@@ -178,7 +181,7 @@ var typeInp = inputElm(["threads", idx, "record", "media", "type"]);
   fieldset3.append(typeInp);
   fieldset3.append(inputElm(["threads", idx, "record", "media", "caption"]));
 
-  form.append(fieldset1, fieldset2, fieldset3);
+  form.append(fieldset1 , fieldset2, fieldset3);
   return form;
 }
 
@@ -295,7 +298,7 @@ function threadLi(id, form) {
   }
   registerUpdateEvt(function (newState) {
 
-    if (newState.dataUrl == "nx-edit") {
+    if (newState.dataUrl == editState.dataUrl) {
       editState = newState;
       if (newState.threadId == id) {
         setTimeout(function () {
@@ -322,7 +325,7 @@ function indexLink(idx, id) {
 
   var itemState = stateUpdate(idx, id);
   var indLk = baseViewLink(itemState, false);
-  setToggleOnDisplay(indLk, itemState);
+  setToggleOnDisplay(indLk, itemState, editState);
 
   indLk.addEventListener("click", () => {
     var nidx = editState.srcData.index.indexOf(id);
@@ -345,7 +348,7 @@ function threadElms(idx, id) {
   map.index.child.append(map.index.link);
   setMoveBtns(map.index.child, id);
 
-  var nameCallback = function (val, valid) {
+  var titleCallback = function (val, valid) {
     if (valid) {
       var newId = convertToId(val);
       map.index.link.firstChild.textContent = newId;
@@ -354,7 +357,7 @@ function threadElms(idx, id) {
 
   };
   map.distant.child = threadLi(id, threadDistantForm(idx, id));
-  map.local.child = threadLi(id, threadLocalForm(idx, nameCallback));
+  map.local.child = threadLi(id, threadLocalForm(idx, titleCallback));
 
   map.index.del = deleteThreadElm(map.local.child, map.distant.child, id);
   map.index.child.append(map.index.del);
@@ -569,7 +572,7 @@ function inputElm(ref, callback = null, store = null) {
   inp.id = hook;
   inp.name = hook;
   if (
-    ["handle", "name", "main", "id", "url", "type", "timestamp"].includes(field)
+    ["handle", "title", "main", "id", "url", "type", "timestamp"].includes(field)
   ) {
     inp.required = true;
   }
@@ -703,7 +706,7 @@ function setSaveBtn() {
   saveBtn.disabled = true;
   saveBtn.addEventListener('click', function () {
     if (!saveBtn.disabled) {
-      registerEditData(editState.srcData);
+      registerEditData(editState.srcData, editState.dataUrl);
       saveBtn.disabled = true;
       displayFeedback("saved");
     }
@@ -744,7 +747,7 @@ function resetAuthorForm() {
 function resetData(nData) {
   var prevData = Object.assign({}, editState.srcData);
 
-  var change = function (data) {
+  var change = function (data, url = null) {
     if (editState.srcData.threads.length) {
       [editIndex, editLocal, editDistant].forEach(parent => {
         Array.from(parent.childNodes).forEach(child => {
@@ -755,7 +758,7 @@ function resetData(nData) {
       });
     }
 
-    editState = newState(data);
+    editState = newState(data, url);
     resetAuthorForm();
     setThreads();
   };
@@ -763,7 +766,7 @@ function resetData(nData) {
     if (redo) {
       change(nData);
     } else {
-      change(prevData);
+      change(prevData, editState.dataUrl);
     }
   };
   setLastAction(act);
@@ -781,6 +784,7 @@ function newDocumenBtn() {
   });
   return newBtn;
 }
+
 
 function fileInput() {
   var inp = getElm('INPUT');
@@ -807,10 +811,14 @@ function fileInput() {
 
 
 function displayFeedback(msg) {
-  splitFlap(actionFdbck, getTxt(msg), 20);
-  setTimeout(function () {
-    splitFlap(actionFdbck, "", 20);
-  }, 3000);
+  var txt = getTxt(msg);
+if(feedbackrun){
+  clearTimeout(feedbackrun);
+}
+    splitFlap(actionFdbck, txt, 20);
+    feedbackrun = setTimeout(function () {
+      splitFlap(actionFdbck, "", 20);
+    }, 2000 + (txt.length * 20));
 }
 
 function setActionFeedback() {
@@ -841,9 +849,21 @@ function setThreads() {
     }
   }
 }
+
+function authorPart(){
+ 
+  var dv = getElm('DIV', "nx-edit-author-form");
+  dv.append(formCategory("author"), authorForm);
+  return dv;
+}
+function indexPart(){
+  var dv = getElm('DIV', "nx-edit-list");
+  dv.append(formCategory("threads list"), editIndex);
+  return dv;
+}
 export function editIndexBlock() {
   setAuthorForm();
-  return blockWrap("index", null, [authorForm, editIndex, addThreadBtn()], true);
+  return blockWrap("index", null, [authorPart(),  indexPart(), addThreadBtn()], true);
 }
 export function editLocalBlock() {
   return blockWrap("local", null, [editLocal], true);
@@ -881,21 +901,32 @@ export function editMenu() {
 }
 
 export function setThreadsForms(state) {
-  if (!state || !state.srcData) {
-    var data = getStoredEditData();
-    if (!data) {
-      data = newData();
-    }
-    state = newState(data);
-  } else {
-    state.dataUrl = "nx-edit";
-    registerEditData(state.srcData);
+
+  var url = "new";
+  if (state && state.dataUrl) {
+    url = state.dataUrl;
   }
+  var data = getStoredEditData(url);
+  if (!data) {
+    if (!state || !state.srcData) {
+      data = newData();
+  } else {
+    data = state.srcData;
+  }
+  registerEditData(data, url);
+  }
+
+  var id, idx;
+  if(state && state.threadId && state.threadId != '/'){
+    id = state.threadId;
+    idx = state.threadIndex;
+  }
+
+  editState = newState(data, url, id, idx);
 
   editIndex = getElm("UL", "nx-edit-index");
   editLocal = getElm("UL", "nx-edit-local");
   editDistant = getElm("UL", "nx-edit-distant");
-  editState = state;
   setThreads();
 
 }

@@ -14,9 +14,9 @@ export function viewerElms(state){
     var threadPart = getElm("DIV");
     threadPart.append(...threadBlocks(state));
     
-    return serviceWrap
+    return [serviceWrap
 ([historyBlock(state)], [
      indexPart,
      threadPart
-     ], [sourceBlock(state)]);
+     ], [sourceBlock(state)])];
 }
