@@ -9,8 +9,7 @@ import {
   selectDropDown,
   setHistoryControls,
   setToggleOnDisplay,
-  toggleNavEnd,
-  serviceWrap,
+  toggleNavEnd
 } from "../viewer/NxCommons.js";
 import {
   easeIn,
@@ -30,7 +29,6 @@ import { newData, newThread } from "./NxStarters.js";
 import { loadSrcFile } from "../core/load/NxData.js";
 import { dateInput, baseLabel, textareaInput, textInput, invalidSp, deleteLinkBtn, addBtn } from "./NxEditComps.js";
 import { convertToId, updateDistantDropdown, newState, resolveMediaType } from "./NxEditPrc.js";
-import { viewerElms } from "../viewer/NxViewer.js";
 
 
 const editBuffer = getBuffertime();
@@ -73,9 +71,6 @@ var authorInputs = {
 };
 var feedbackrun = null;
 var instanceBtn;
-
-var viewerInst;
-var editInst;
 
 
 function moveItem(from, to) {
@@ -923,18 +918,17 @@ function indexPart(){
   dv.append(landmarkElm("threads"), editIndex);
   return dv;
 }
-function editIndexBlock() {
-  setAuthorForm();
-  return blockWrap("index", null, [authorPart(),  indexPart(), addThreadBtn()], false);
-}
-function editLocalBlock() {
-  return blockWrap("local", null, [editLocal], false);
-}
-function editDistantBlock() {
-  return blockWrap("distant", null, [editDistant], false);
+
+function setThreadsForms() {
+  
+  editIndex = getElm("UL", "nx-edit-index");
+  editLocal = getElm("UL", "nx-edit-local");
+  editDistant = getElm("UL", "nx-edit-distant");
+  setThreads();
+
 }
 
-function setInstanceSwitch() {
+export function instanceSwitch(viewerInst, editInst) {
   instanceBtn = getElm("BUTTON", "nx-edit-switch");
   instanceBtn.textContent = "👁";
 
@@ -955,24 +949,14 @@ function setInstanceSwitch() {
 }
 
 
-function editMenu() {
+export function editMenu() {
   var dv = getElm("DIV", "nx-edit-menu");
 
   dv.append(editNav(), editActions());
   return dv;
 }
 
-
-function setThreadsForms() {
-  
-  editIndex = getElm("UL", "nx-edit-index");
-  editLocal = getElm("UL", "nx-edit-local");
-  editDistant = getElm("UL", "nx-edit-distant");
-  setThreads();
-
-}
-
-function setEditState(state){
+export function setEditState(state){
   var url= "nexus-tmp";
 
   if(state.dataUrl){
@@ -1002,27 +986,18 @@ function setEditState(state){
   }
 
  editState = newState(data, url, id, idx);
-
+ setThreadsForms();
 
 }
-export function editorElms(state){
-  setEditState(state);
-  setThreadsForms();
 
-  viewerInst = viewerElms(editState)[0];
-
- var indexPart = getElm("DIV");
- indexPart.append(editIndexBlock());
- var threadPart = getElm("DIV");
- threadPart.append(editLocalBlock(),editDistantBlock());
- 
- editInst = serviceWrap
-([editMenu()], [
-  indexPart,
-  threadPart
-  ], [], "edit");
-
-  setInstanceSwitch();
-  return [editInst, instanceBtn];
+export function editIndexBlock() {
+  setAuthorForm();
+  return blockWrap("index", null, [authorPart(),  indexPart(), addThreadBtn()], false);
+}
+export function editLocalBlock() {
+  return blockWrap("local", null, [editLocal], false);
+}
+export function editDistantBlock() {
+  return blockWrap("distant", null, [editDistant], false);
 }
 

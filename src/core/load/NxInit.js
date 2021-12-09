@@ -4,7 +4,7 @@ import { getOpt, getQuery, setOptions } from "../base/NxOptions.js";
 import { consoleLog, setLogMode } from "../logs/NxLog.js";
 import { resolveState, setOriginState } from "../state/NxUpdate.js";
 import { instanceWrap, errorPrgr } from "../../viewer/NxCommons.js";
-import { editorElms } from "../../editor/NxEdit.js";
+import { editorElms } from "../../editor/NxEditor.js";
 import { viewerElms } from "../../viewer/NxViewer.js";
 
 

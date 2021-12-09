@@ -11,7 +11,7 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'js/[name].[contenthash].js',
+        filename: 'js/[name].js',
     },
     optimization: {
         splitChunks: {
@@ -27,16 +27,16 @@ module.exports = {
                     name: 'NxCore',
                     chunks: 'all',
                 },
-                NxViewer: {
-                    test: /[\\/]viewer[\\/]/,
-                    name: 'NxViewer',
-                    chunks: 'all',
-                },
                 NxEditor: {
                     test: /[\\/]editor[\\/]/,
                     name: 'NxEditor',
                     chunks: 'all',
                 },
+                NxViewer: {
+                    test: /[\\/]viewer[\\/]/,
+                    name: 'NxViewer',
+                    chunks: 'all',
+                }
             }
         }
     },

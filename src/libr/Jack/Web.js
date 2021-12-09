@@ -170,7 +170,7 @@ export function conciseUrl(string, withPath = true) {
     }
     var last = base.pop();
     if (last.length > 18) {
-      last = "..." + last.substr(-15);
+      last = "..." + last.substring(-15);
     }
     string += "/" + last;
   }

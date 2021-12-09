@@ -300,7 +300,7 @@ export function mutationPromise(parent, child, placeAction, callback = null) {
     parent = document.body;
   }
 
-  var tmpclass = "m" + Math.random().toString(20).substr(2);
+  var tmpclass = "m" + Math.random().toString(20).substring(2);
   child.classList.add(tmpclass);
 
   return new Promise((resolve) => {

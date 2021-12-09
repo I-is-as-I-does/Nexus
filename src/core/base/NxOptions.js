@@ -6,11 +6,11 @@ import { defaultOpts } from "./NxDefaults.js";
 
 var opts = defaultOpts;
 var lc = window.location.href;
-var hostUrl = lc.substr(0,lc.lastIndexOf('/')+1);
+var hostUrl = lc.substring(0,lc.lastIndexOf('/')+1);
 var params = new URLSearchParams(window.location.search.slice(1));
 
 function autoComplete(options, key){
-    if(options.hasOwnProperty(key) && options[key].length && options[key].substr(0,4) !== "http"){
+    if(options.hasOwnProperty(key) && options[key].length && options[key].substring(0,4) !== "http"){
     options[key] = hostUrl+options[key];
 }
 }

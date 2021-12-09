@@ -8,7 +8,7 @@ export function randomInt(min, max) {
 
 export function charCut(string, limit) {
   if (string.length > limit) {
-    string = string.substr(0, limit - 5) + "(...)";
+    string = string.substring(0, limit - 5) + "(...)";
   }
   return string;
 }
@@ -20,9 +20,9 @@ export function randomString(length = 10){
   }
   var str = '';
  for(var i=0;i<rpt;i++){
-   str += Math.random().toString(36).substr(2,10);
+   str += Math.random().toString(36).substring(2,10);
  }
- return str.substr(0,length);
+ return str.substring(0,length);
 }
 
 export function waitForElmInDOM(elmSelector, parentElm = null) {
