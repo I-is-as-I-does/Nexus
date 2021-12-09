@@ -33,7 +33,7 @@ export const NxSchema = {
         "additionalItems": true,
         "items": {
               "type": "object",
-              "required": ["id", "title", "record"],
+              "required": ["id", "title", "content"],
               "properties": {
                 "id": {
                   "type": "string",
@@ -48,7 +48,7 @@ export const NxSchema = {
                   "type": "string",
                   "maxLength": charMinMax.description[1]
                 },
-                "record": {
+                "content": {
                   "type": "object",
                   "required": ["timestamp", "main"],
                   "properties": {

@@ -1,13 +1,13 @@
 import { splitFlap } from "../libr/Valva/Valva.js";
 import { registerUpdateEvt, triggerUpdate } from "../core/state/NxUpdate.js";
-import { authorMiniUrl, isThreadRecordUnseen } from "../core/storg/NxMemory.js";
+import { authorMiniUrl, isThreadContentUnseen } from "../core/storg/NxMemory.js";
 import { baseViewLink, getElm, setToggleOnDisplay } from "./NxCommons.js";
 
 function toggleUnseen(viewlk, state) {
   if (viewlk.classList.contains("nx-on-display")) {
     viewlk.classList.remove("nx-unseen");
     viewlk.lastChild.textContent = "";
-  } else if (isThreadRecordUnseen(state)) {
+  } else if (isThreadContentUnseen(state)) {
     viewlk.classList.add("nx-unseen");
     viewlk.lastChild.textContent = "*";
   }

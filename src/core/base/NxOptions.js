@@ -1,6 +1,5 @@
 import { isNonEmptyObj, isNonEmptyStr } from "../../libr/Jack/Check.js";
 import { isValidHttpUrl } from "../../libr/Jack/Web.js";
-import { setDebugMode } from "../logs/NxLog.js";
 import { setOriginLang } from "../transl/NxCoreTranslate.js";
 import { isValidId } from "../validt/NxStamper.js";
 import { defaultOpts } from "./NxDefaults.js";
@@ -39,18 +38,13 @@ export function setOptions(options) {
             setOriginLang(options.lang);
         }
 
-        ["history", "debug", "edit"].forEach(prop => {
-            if(params.has(prop)){
-                opts[prop] = true;
-              }
-            else if (options[prop] === "true" || options[prop] === true) {
-                opts[prop] = true;
-            }
-        });
-        if (opts.debug) {
-            setDebugMode(true);
-        }
+      
     }
+}
+
+
+export function getQuery(key){
+   return params.has(key);
 }
 
 export function getOpt(key) {

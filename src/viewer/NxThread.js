@@ -12,7 +12,7 @@ import { consoleLog } from "../core/logs/NxLog.js";
 
 var currentElm;
 var descrpElm;
-var recordElm;
+var contentElm;
 
 var slider;
 
@@ -31,10 +31,10 @@ var linkedCtrls = {
 function updateThreadBlocks(state) {
   var newThreadData = resolveThreadData(state);
 
-  var newRecord = threadRecord(newThreadData);
+  var newContent = threadContent(newThreadData);
   var newDescrpTxt = threadTextElm(newThreadData, ["description"]);
   replaceDiversion(descrpElm.firstChild, newDescrpTxt);
-  replaceDiversion(recordElm.firstChild, newRecord);
+  replaceDiversion(contentElm.firstChild, newContent);
 
   setDistantLinks(newThreadData);
 }
@@ -60,14 +60,14 @@ function distantThreadBlock(threadData) {
 function localThreadBlock(state, threadData) {
   var headerElm = threadTitleElm(state, true);
   setDescriptionElm(threadData);
-  setRecordElm(threadData);
+  setContentElm(threadData);
 
-  return blockWrap("local", [headerElm], [descrpElm, recordElm], true);
+  return blockWrap("local", [headerElm], [descrpElm, contentElm], true);
 }
 
-function setRecordElm(threadData) {
-  recordElm = getElm("DIV", "nx-local-record");
-  recordElm.append(threadRecord(threadData));
+function setContentElm(threadData) {
+  contentElm = getElm("DIV", "nx-local-content");
+  contentElm.append(threadContent(threadData));
 }
 
 function setDistantLinks(threadData){
@@ -136,7 +136,7 @@ function linkedElm(distantState){
 function setLinkedItems(threadData) {
 
   if (threadData != null && threadData.linked.length) {
-    var records = [];
+    var contents = [];
     var indexes = [];
     var done = [];
     var promises = [];
@@ -150,8 +150,8 @@ function setLinkedItems(threadData) {
             if (distantState.threadId == "/") {                 
               indexes.push(elm);
             } else {
-              elm.append(threadRecord(resolveThreadData(distantState)));
-              records.push(elm);
+              elm.append(threadContent(resolveThreadData(distantState)));
+              contents.push(elm);
             }
           }
           }).catch(err => {
@@ -162,10 +162,10 @@ function setLinkedItems(threadData) {
     });
     return Promise.all(promises).then(()=>{
      
-      if(!records.length && !indexes.length){
+      if(!contents.length && !indexes.length){
         linked = [noLink()];
       } else {
-        linked = records.concat(indexes);
+        linked = contents.concat(indexes);
       }
      
     });
@@ -182,24 +182,24 @@ function noLink(){
   return elm;
 }
 
-function threadRecord(threadData) {
-  var dv = getElm("DIV", "nx-record");
-  dv.append(dateElm(threadData), recordBody(threadData), mediaElm(threadData));
+function threadContent(threadData) {
+  var dv = getElm("DIV", "nx-content");
+  dv.append(dateElm(threadData), contentBody(threadData), mediaElm(threadData));
   return dv;
 }
 
-function recordBody(threadData) {
-  var bodydiv = getElm("DIV", "nx-record-body");
+function contentBody(threadData) {
+  var bodydiv = getElm("DIV", "nx-content-body");
   bodydiv.append(
-    threadTextElm(threadData, ["record", "main"]),
-    threadTextElm(threadData, ["record", "aside"])
+    threadTextElm(threadData, ["content", "main"]),
+    threadTextElm(threadData, ["content", "aside"])
   );
   return bodydiv;
 }
 
 function dateElm(threadData) {
-  var datediv = getElm("DIV", "nx-record-meta");
-  var rdate = threadTextElm(threadData, ["record", "timestamp"]);
+  var datediv = getElm("DIV", "nx-content-meta");
+  var rdate = threadTextElm(threadData, ["content", "timestamp"]);
   datediv.append(rdate);
   return datediv;
 }

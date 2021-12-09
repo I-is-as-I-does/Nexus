@@ -23,7 +23,7 @@ export function newThread(randomId){
       "id": randomId,
       "title": randomId,
       "description": "...",
-      "record": {
+      "content": {
         "timestamp": new Date().toISOString().substr(0,16),
         "main": "...",
         "aside": "",

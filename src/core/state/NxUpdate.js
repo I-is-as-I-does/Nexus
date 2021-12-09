@@ -1,7 +1,5 @@
-import { getOpt } from "../base/NxOptions.js";
 import { getSrcData } from "../load/NxData.js";
 import { registerThreadVisit } from "../storg/NxMemory.js";
-import { registerBrowserEvent, updateBrowserHistory } from "./NxBrowser.js";
 
 const bufferTime = 800;
 var currentState = {
@@ -13,11 +11,6 @@ var currentState = {
     
 var updateStore = { onChange: [], onSrcChange: [] };
 var updateRunning = false;
-
-    if(getOpt('history')){
-      registerBrowserEvent();
-    }
-
 
 function triggerCallbacks(triggerAll) {
   var ks = ["onChange"];
@@ -77,9 +70,6 @@ export function triggerUpdate(state, skipHistoryUpdate = false, forceTrigger = f
       updateRunning = true;
       if (!skipHistoryUpdate) {
         registerThreadVisit(currentState);
-        if (getOpt('history')) {
-          updateBrowserHistory(currentState);
-        }
       }
     
       currentState = state;

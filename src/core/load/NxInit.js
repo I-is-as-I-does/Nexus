@@ -1,16 +1,20 @@
 import { getHost, setContainer } from "../base/NxContainer.js";
 import { loadAppCss } from "./NxStyle.js";
-import { getOpt, setOptions } from "../base/NxOptions.js";
-import { consoleLog } from "../logs/NxLog.js";
+import { getOpt, getQuery, setOptions } from "../base/NxOptions.js";
+import { consoleLog, setLogMode } from "../logs/NxLog.js";
 import { resolveState, setOriginState } from "../state/NxUpdate.js";
 import { instanceWrap, errorPrgr } from "../../viewer/NxCommons.js";
-import { editorElms } from "../../editor/NxEditorInstance.js";
-import { viewerElms } from "../../viewer/NxViewerInstance.js";
+import { editorElms } from "../../editor/NxEdit.js";
+import { viewerElms } from "../../viewer/NxViewer.js";
 
 
 export function initPage(containerSelector = null, options = null){
   setContainer(containerSelector);
   setOptions(options);
+
+  if(getQuery('log')){
+    setLogMode(true);
+}
 
   return loadAppCss().then(()=> {
    
@@ -24,7 +28,7 @@ export function initPage(containerSelector = null, options = null){
       setOriginState(state);    
     }
     var elms;
-    if(getOpt("edit")){
+    if(getQuery("edit")){
       elms = editorElms(state);
     } else {
       elms = viewerElms(state);

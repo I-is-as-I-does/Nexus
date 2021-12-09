@@ -118,18 +118,18 @@ export function charLimits(catg) {
     return false;
   }
 
-  export function validRecord(record) {
+  export function validContent(content) {
     if (
-      hasValidType(record, "record", true) &&
-      isValidTimestamp(record.timestamp) &&
-      hasValidType(record.main, "main", true)
+      hasValidType(content, "content", true) &&
+      isValidTimestamp(content.timestamp) &&
+      hasValidType(content.main, "main", true)
     ) {
-      record.main = validLenghtStr(record.main, "main");
+      content.main = validLenghtStr(content.main, "main");
 
-      if (record.main) {
-        record.aside = validLenghtStr(record.aside, "aside");
-        record.media = validMedia(record.media);
-        return record;
+      if (content.main) {
+        content.aside = validLenghtStr(content.aside, "aside");
+        content.media = validMedia(content.media);
+        return content;
       }
     }
 
@@ -242,9 +242,9 @@ export function charLimits(catg) {
       hasValidType(thread, "threads.item", true) &&
       isValidId(thread.id)
     ) {
-      thread.record = validRecord(thread.record);
+      thread.content = validContent(thread.content);
 
-      if (thread.record != null) {
+      if (thread.content != null) {
         thread.title = validLenghtStr(thread.title, "title");
         thread.description = validLenghtStr(
           thread.description,

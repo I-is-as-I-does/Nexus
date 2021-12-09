@@ -12,15 +12,15 @@ var mediaWrap;
 
 
 function threadMediaCaption(threadData) {
-  return threadTextElm(threadData, ["record", "media", "caption"]);
+  return threadTextElm(threadData, ["content", "media", "caption"]);
 }
 
 function setThreadMedia(threadData) {
  
-  if (threadData && threadData.record.media.type) {
+  if (threadData && threadData.content.media.type) {
     mediaPromise(
-      threadData.record.media.type,
-      threadData.record.media.url
+      threadData.content.media.type,
+      threadData.content.media.url
     );
   }
 }
@@ -116,7 +116,7 @@ function imageElm(url) {
 }
 
 export function mediaElm(threadData) {
-  var mediadiv = getElm("DIV", "nx-record-media");
+  var mediadiv = getElm("DIV", "nx-content-media");
   mediaWrap = getElm("DIV");
   setThreadMedia(threadData);
   mediadiv.append(mediaWrap, threadMediaCaption(threadData));

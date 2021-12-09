@@ -17,11 +17,18 @@ function actionLink(action, text) {
   lk.textContent = text;
   return lk;
 }
-
+function resolveSrc(state){
+  var src = state.dataUrl;
+  if(getOpt('edit')){
+    src = "#temp";
+  }
+  return src;
+}
 function jsonContent(state) {
   if(state.dataUrl){
+
   return (
-    '{"url": "' + state.dataUrl + '", "id": "' + state.threadId + '"}'
+    '{"url": "' + resolveSrc(state) + '", "id": "' + state.threadId + '"}'
   );
 }
 return "";
@@ -130,17 +137,12 @@ return JSON.stringify(state.srcData);
 function embedContent(state) {
 
   if(state.dataUrl){
-    var src = state.dataUrl;
-    var id = state.threadId;
-    if(getOpt('edit')){
-      src = "";
-      id = "/";
-    }
+
   return (
     '<div id="Nexus" data-src="' +
-    src +
+    resolveSrc(state) +
     '" data-id="' +
-    id +
+    state.threadId +
     '" data-style="' +
     getOpt('style') +
     '" data-lang="' +

@@ -144,7 +144,7 @@
 
 .nx .nx-select-list {
     position: absolute;
-    max-height: 154px;
+    max-height: 150px;
     overflow-y: scroll;
 }
 
@@ -230,22 +230,22 @@
     font-size: 1.2rem;
 }
 
-.nx .nx-record {
+.nx .nx-content {
     margin-top: 2rem;
 }
 
-.nx .nx-record-aside {
+.nx .nx-content-aside {
     margin-top: 0.5em;
     font-size: 0.85em;
 }
 
-.nx .nx-record-timestamp {
+.nx .nx-content-timestamp {
     margin-bottom: 10px;
     font-family: "Inconsolata", "Courier New", Courier, monospace;
     font-size: 0.85em;
 }
 
-.nx .nx-record-media-caption {
+.nx .nx-content-media-caption {
     font-size: 0.85em;
     margin-top: 6px;
     color: #b3b3b3;
@@ -306,7 +306,9 @@
     position: relative;
     top: -1px;
 }
-
+.nx .nx-history-list .nx-thread-title{
+padding-left:6px;
+}
 .nx section .nx-view-link .nx-thread-title,
 .nx section a.nx-author-link {
     text-decoration: underline 1px solid;
@@ -434,21 +436,21 @@
     padding-left: 4px;
 }
 
-.nx .nx-record-media a.nx-external-link {
+.nx .nx-content-media a.nx-external-link {
     text-decoration: underline dotted #444 1px;
 }
 
-.nx .nx-record-media a.nx-external-link:after {
+.nx .nx-content-media a.nx-external-link:after {
     content: "↗";
     padding-left: 2px;
     font-size: 0.8em;
 }
 
-.nx .nx-record-media {
+.nx .nx-content-media {
     margin-top: 1rem;
 }
 
-.nx .nx-record-media :not(a):not(p) {
+.nx .nx-content-media :not(a):not(p) {
     width: 340px;
     max-height: 340px;
     object-fit: cover;
@@ -460,22 +462,8 @@
     display: block;
 }
 
-.nx .nx-edit-category-indent {
-    padding-left: 2px;
-}
-
-.nx .nx-edit-category span:last-of-type {
-    padding-left: 4px;
-}
-
-.nx .nx-edit-title,
-.nx .nx-edit-category {
+.nx .nx-edit-title {
     text-transform: capitalize;
-}
-
-.nx .nx-edit-category {
-    margin-bottom: 1em;
-    font-family: "Inconsolata", "Courier New", Courier, monospace;
 }
 
 .nx .nx-edit-title {
@@ -530,25 +518,25 @@
     font-style: italic;
 }
 
-.nx .nx-edit-record-aside .nx-edit-textarea,
+.nx .nx-edit-content-aside .nx-edit-textarea,
 .nx .nx-edit-media-caption .nx-edit-textarea {
     font-size: 0.85em;
 }
 
 .nx .nx-edit-author-about textarea,
-.nx .nx-edit-record-aside textarea,
+.nx .nx-edit-content-aside textarea,
 .nx .nx-edit-threads-description textarea {
-    min-height: 60px;
+    min-height: 80px;
     max-height: 200px;
 }
 
-.nx .nx-edit-record-main textarea {
+.nx .nx-edit-content-main textarea {
     min-height: 100px;
     max-height: 400px;
 }
 
 .nx .nx-edit-media-caption textarea {
-    min-height: 60px;
+    min-height: 80px;
     max-height: 90px;
 }
 
@@ -561,12 +549,14 @@
 .nx .nx-edit-linked-id ul {
     background-color: white;
     width: 100%;
-    border: 1px solid #dedede;
+    border-bottom: 1px solid #dedede;
+    border-left: 1px solid #dedede;
+    border-right: 1px solid #dedede;
     box-shadow: 0px 2px 4px 2px #ebebeb;
 }
 
-.nx .nx-edit-media-type li,
-.nx .nx-edit-linked-id li {
+.nx .nx-edit-media-type li:not(:first-child),
+.nx .nx-edit-linked-id li:not(:first-child) {
     border-top: 1px solid #dedede
 }
 
@@ -625,8 +615,8 @@
 }
 
 .nx .nx-edit-distant-link,
-.nx .nx-edit-author-form,
-.nx .nx-edit-list,
+.nx .nx-edit-author,
+.nx .nx-edit-index,
 .nx .nx-thread-local-form fieldset {
     border-left: 3px solid #dedede;
     padding: 12px 0 8px 12px;
@@ -699,9 +689,10 @@
 
 .nx .nx-edit-nav {
     text-align: center;
+
 }
 
-.nx .nx-save:disabled {
+.nx .nx-save:disabled, .nx .nx-reset:disabled {
     cursor: default;
     color: #b3b3b3
 }
@@ -712,4 +703,27 @@
 }
 .nx form .nx-select-toggle {
     border-bottom: 1px solid #dedede;
+    border-left: 1px solid #dedede;
+}
+.nx .nx-open-menu {
+    text-align: left;
+    width: 340px;
+    height: 120px;
+   border: 1px solid #dedede;
+   margin:0 auto;
+   padding: 0.8em;
+   font-size: 0.85em;
+   resize: vertical;
+   font-family: "Inconsolata", "Courier New", Courier, monospace;
+   overflow-y: scroll;
+
+}
+.nx .nx-open-menu a:not(.nx-on-display) {
+    text-decoration: underline solid #444 1px;
+}
+.nx .nx-edit-close-menu {
+    cursor:pointer;
+    font-size: 0.85rem;
+    position: fixed;
+    left:calc(50% + 165px)
 }

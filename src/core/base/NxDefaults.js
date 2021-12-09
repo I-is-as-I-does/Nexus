@@ -6,8 +6,5 @@ export const defaultOpts = {
     src: null,
     id: "/",
     style: defaultCss,
-    lang: "en",
-    history: false,
-    debug: false,
-    edit: false
+    lang: "en"
 };

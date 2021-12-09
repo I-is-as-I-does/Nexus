@@ -11,7 +11,7 @@ export const typesMap = {
   id: "String",
   title: "String",
   description: "String",
-  record: "Object",
+  content: "Object",
   timestamp: "String",
   main: "String",
   aside: "String",
@@ -21,7 +21,7 @@ export const typesMap = {
   linked: "Array",
   "linked.item": "Object",
 };
-export const required = ["nexus","author","threads","handle", "url", "id", "title", "record","timestamp", "main", "type"];
+export const required = ["nexus","author","threads","handle", "url", "id", "title", "content","timestamp", "main", "type"];
 export const charMinMax = {
     handle: [3, 30],
     about: [0, 400],

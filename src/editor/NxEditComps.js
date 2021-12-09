@@ -2,20 +2,6 @@ import { getTxt } from "../core/transl/NxCoreTranslate.js";
 import { registerTranslElm } from "../core/transl/NxElmTranslate.js";
 import { getElm } from "../viewer/NxCommons.js";
 
-export function formCategory(name, subcount = 1) {
-    var p = getElm("P", "nx-edit-category");
-  
-    for (var i = 0; i < subcount; i++) {
-      var sp = getElm("SPAN", "nx-edit-category-indent");
-      sp.textContent = "|";
-      p.append(sp);
-    }
-    var txtsp = getElm("SPAN");
-    txtsp.textContent = getTxt(name);
-  registerTranslElm(txtsp, name);
-    p.append(txtsp);
-    return p;
-  }
   export function textInput(val) {
     var inp = getElm("INPUT", "nx-edit-text");
     inp.type = "text";

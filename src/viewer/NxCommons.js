@@ -251,12 +251,9 @@ export function selectDropDown(list, toggleElm, actionCallback = null, switchCla
 }
 
 
-export function setToggleOnDisplay(viewlk, state, currentState = null) {
- 
-  if(!currentState){
-    currentState = getCurrentState();
-  }
-  toggleOnDisplay(viewlk, state, currentState);
+export function setToggleOnDisplay(viewlk, state) {
+
+  toggleOnDisplay(viewlk, state, getCurrentState());
  registerUpdateEvt(function (newState) {
     toggleOnDisplay(viewlk, state, newState);
   });

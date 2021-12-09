@@ -41,9 +41,9 @@ export function updateDistantDropdown(inputs, elms, url, valid){
       if(!id || !items.includes(id)){
         inputs.id.value = '/';
       }
-      if(id !='/'){
+
         items.unshift('/');
-      }      
+            
       inputs.id.pattern = "("+items.join("|")+")";
      
       var ndropdown = selectDropDown(items,inputs.id,null,"nx-edit-linked-id");
@@ -65,7 +65,7 @@ export function updateDistantDropdown(inputs, elms, url, valid){
   }
 
   
-  export function newState(data, url = "new", id = "/", idx = -1){
+  export function newState(data, url = "nexus-tmp", id = "/", idx = -1){
     return {
       dataUrl: url,
       srcData: data,

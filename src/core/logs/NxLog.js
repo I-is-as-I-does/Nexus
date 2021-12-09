@@ -1,16 +1,16 @@
 import { isNonEmptyStr } from "../../libr/Jack/Check.js";
 
 var errMsgs = [];
-var debugMode = false;
+var logMode = false;
 
 export function consoleLog(msg) {
-        if (debugMode) {
+        if (logMode) {
           console.log(msg);
         }
       }
 
-      export function setDebugMode(isOn = true){
-        debugMode =isOn;
+      export function setLogMode(isOn = true){
+        logMode =isOn;
       }
       export function clearErr(){
         errMsgs = [];
