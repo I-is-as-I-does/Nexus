@@ -9,6 +9,7 @@ import {
 import { mediaElm } from "./NxMedia.js";
 import { blockWrap, getElm,  setHistoryControls,  threadTitleElm, toggleNavEnd } from "./NxCommons.js";
 import { consoleLog } from "../core/logs/NxLog.js";
+import { strHasValidMaxLength } from "../core/validt/NxStamper.js";
 
 var currentElm;
 var descrpElm;
@@ -211,6 +212,10 @@ function threadFieldText(threadData, ref = []) {
       data = data[ref[r]];
     }
     if (isNonEmptyStr(data)) {
+     
+      if(ref.includes("timestamp") && data.includes('T')){
+data = data.replace('T'," ");
+      }
       return data;
     }
   }

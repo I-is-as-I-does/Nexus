@@ -24,7 +24,7 @@ export function newThread(randomId){
       "title": randomId,
       "description": "...",
       "content": {
-        "timestamp": new Date().toISOString().substr(0,16),
+        "timestamp": new Date().toISOString().substring(0,16),
         "main": "...",
         "aside": "",
         "media": {

@@ -42,7 +42,7 @@ var editState = {
   threadId: "/",
   threadIndex: -1,
 };
-var originData;
+var originData = null;
 
 
 var upDownEvent = new CustomEvent("IndexChange");
@@ -198,7 +198,7 @@ var typeInp = inputElm(["threads", idx, "content", "media", "type"]);
 function addThreadBtn() {
   var btn = addBtn();
   btn.addEventListener('click', function () {
-
+   
     var randomId = randomString(10);
     var idx = editState.srcData.index.length;
     editState.srcData.threads.push(newThread(randomId));
@@ -217,7 +217,7 @@ function addThreadBtn() {
     }
     insertDiversion(map.index.parent, map.index.child, false, true, 200, callb);
     saveBtn.disabled = false;
-   
+
   });
 
   return btn;
@@ -305,11 +305,11 @@ function threadLi(id, form) {
   if (editState.threadId != id) {
     li.style.display = "none";
   }
-  registerUpdateEvt(function (newState) {
+  registerUpdateEvt(function (nState) {
 
-    if (newState.dataUrl == editState.dataUrl) {
-      editState = newState;
-      if (newState.threadId == id) {
+    if (nState.dataUrl == editState.dataUrl) {
+      editState = nState;
+      if (nState.threadId == id) {
         setTimeout(function () {
           easeIn(li, 200);
         }, 200);
@@ -524,7 +524,8 @@ function setLinkedValue(ref, value) {
 }
 
 function setNewValue(ref, value) {
-  if (!editState.srcData) {
+
+  if (editState.srcData === null) {
     editState.srcData = {};
   }
   if (ref[0] == "author") {
@@ -719,32 +720,41 @@ function setSaveBtn() {
   saveBtn.disabled = true;
   saveBtn.addEventListener('click', function () {
     if (!saveBtn.disabled) {
-      registerEditData(editState.dataUrl, editState.srcData);
-      saveBtn.disabled = true;
+      
+      registerEditData(editState.dataUrl, editState.srcData);    
       displayFeedback("saved");
+      saveBtn.disabled = true;
       setResetStatus();
-     
     }
   });
 
 }
 
 function setResetStatus(){
-  if(!originData ||JSON.stringify(editState.srcData) == JSON.stringify(originData)){
-    resetBtn.disabled = true;
-  } else {
-    resetBtn.disabled = false;
+  var disb = true;
+
+  if(originData != JSON.stringify(editState.srcData)){
+    disb = false;
+  } 
+  if(resetBtn.disabled !== disb){
+    resetBtn.disabled = disb;
   }
+
 }
 
 function setResetBtn(){
 resetBtn = getElm('BUTTON', 'nx-reset');
   resetBtn.type = "button";
   resetBtn.textContent = "⭯";
+
   setResetStatus();
   resetBtn.addEventListener('click', function () {
+
     if(!resetBtn.disabled){
-      resetData(originData);
+
+      resetData(JSON.parse(originData));
+      resetBtn.disabled = true;
+
     }
    
   });
@@ -766,7 +776,7 @@ function downloadBtn() {
     var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(data);
     var anchor = getElm('A');
     anchor.setAttribute("href", dataStr);
-    anchor.setAttribute("download", "nexus");
+    anchor.setAttribute("download", "nexus.json");
     getHost().appendChild(anchor);
     anchor.click();
     anchor.remove();
@@ -783,11 +793,11 @@ function resetAuthorForm() {
 function resetData(nData) {
   var prevData = Object.assign({}, editState.srcData);
 
-  if(!nData){
+  if(nData === null){
     nData = newData();
   }
 
-  var change = function (data) {
+  var act = function (redo) {
     if (editState.srcData.threads.length) {
       [editIndex, editLocal, editDistant].forEach(parent => {
         Array.from(parent.childNodes).forEach(child => {
@@ -797,20 +807,20 @@ function resetData(nData) {
         })
       });
     }
-
-    editState = newState(data, editState.dataUrl, data.index[0], 0);
+    if (redo) {
+      editState.srcData = nData;
+    } else {
+      editState.srcData = prevData;
+    }
+    
+    editState.threadIndex = 0;
+    editState.threadId =editState.srcData.threads[0].id;
 
     resetAuthorForm();
     setThreads(true);
+   
   };
 
-  var act = function (redo) {
-    if (redo) {
-      change(nData);
-    } else {
-      change(prevData);
-    }
-  };
   setLastAction(act);
   act(true);
 
@@ -893,6 +903,7 @@ function editActions() {
 }
 
 function setThreads(ease =false) {
+
   var items = editState.srcData.index;
   if (items.length) {
     for (var i = 0; i < items.length; i++) {
@@ -966,30 +977,33 @@ function setEditState(state){
 
   if(state.dataUrl){
     url =state.dataUrl;
-    if(state.srcData){
-      originData = state.srcData;
-    }
   }
   var data = getStoredEditData(url);
-  if (!data) {
-    if(originData) {
-      data = originData;
+  if (data === null) {
+    if(state.srcData !== null) {
+      data =state.srcData;
     } else {
-      originData = null;
       data = newData();
         }
   registerEditData(url, data);
   } 
 
+  if(state.srcData !== null){
+    originData = JSON.stringify(state.srcData);
+  } else {
+    originData = JSON.stringify(data);
+  }
+
   var id = data.threads[0].id;
   var idx = 0;
-  if(state && state.threadId != '/'){
+  if(state && state.threadId != '/' && data.index.includes(state.threadId)){
     id = state.threadId;
-    idx = state.threadIndex;
+    idx = data.index.indexOf(state.threadId);
   }
-  
+
  editState = newState(data, url, id, idx);
-  
+
+
 }
 export function editorElms(state){
   setEditState(state);
