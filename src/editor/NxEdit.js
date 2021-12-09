@@ -29,6 +29,7 @@ import { newData, newThread } from "./NxStarters.js";
 import { loadSrcFile } from "../core/load/NxData.js";
 import { dateInput, baseLabel, textareaInput, textInput, invalidSp, deleteLinkBtn, addBtn } from "./NxEditComps.js";
 import { convertToId, updateDistantDropdown, newState, resolveMediaType } from "./NxEditPrc.js";
+import { getQuery } from "../core/base/NxOptions.js";
 
 
 const editBuffer = getBuffertime();
@@ -958,11 +959,16 @@ export function editMenu() {
 
 export function setEditState(state){
   var url= "nexus-tmp";
+  var data;
+  if(getQuery("new")){
+    data = newData();
+    state = {};
+  }  else {
 
   if(state.dataUrl){
     url =state.dataUrl;
   }
-  var data = getStoredEditData(url);
+  data = getStoredEditData(url);
   if (data === null) {
     if(state.srcData !== null) {
       data =state.srcData;
@@ -971,7 +977,7 @@ export function setEditState(state){
         }
   registerEditData(url, data);
   } 
-
+  }
   if(state.srcData !== null){
     originData = JSON.stringify(state.srcData);
   } else {

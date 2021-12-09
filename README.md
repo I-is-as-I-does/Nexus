@@ -27,10 +27,11 @@ No dep. at all.
 - [x] Base translations : En/Fr
 - [x] **Editor** (webpack output strategy headache)
 - [x] Viewer distant records slider
+- [x] Editor reset feature
+- [x] Check for unused CSS
  
 To do:
 
-- [ ] Check for unused CSS
 - [ ] Check for unused translations
 - [ ] Regenerate css templates for other themes
 - [ ] Files reorg (lost some pre-Editor code somewhere...)

@@ -172,5 +172,27 @@ export function menuCategory(name, subcount = 1) {
     text-transform: capitalize;
 }
 
+.nx .nx-open-menu {
+    text-align: left;
+    width: 340px;
+    height: 120px;
+   border: 1px solid #dedede;
+   margin:0 auto;
+   padding: 0.8em;
+   font-size: 0.85em;
+   resize: vertical;
+   font-family: "Inconsolata", "Courier New", Courier, monospace;
+   overflow-y: scroll;
+
+}
+.nx .nx-open-menu a:not(.nx-on-display) {
+    text-decoration: underline solid #444 1px;
+}
+.nx .nx-edit-close-menu {
+    cursor:pointer;
+    font-size: 0.85rem;
+    position: fixed;
+    left:calc(50% + 165px)
+}
 
 */

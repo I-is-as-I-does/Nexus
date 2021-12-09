@@ -8,9 +8,9 @@
     "threads": [
       {
         "id": "Nexus-I",
-        "name": "Nexus I",
+        "title": "Nexus I",
         "description": "...",
-        "record": {
+        "content": {
           "timestamp": "2021-11-01T12:00",
           "main": "...",
           "aside": "",
