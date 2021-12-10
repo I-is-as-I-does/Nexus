@@ -12,11 +12,8 @@ import {
   toggleNavEnd
 } from "../viewer/NxCommons.js";
 import {
-  diversionToggle,
   easeIn,
   easeOut,
-  fadeIn,
-  fadeOut,
   insertDiversion,
   replaceDiversion,
   splitFlap,

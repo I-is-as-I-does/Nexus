@@ -1,3 +1,5 @@
+/* Jack Js | (c) 2021 I-is-as-I-does | MIT License */
+
 export function getLocalStorage() {
   if (isStorageAvailable("localStorage")) {
     return localStorage;

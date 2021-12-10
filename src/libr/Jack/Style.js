@@ -1,3 +1,5 @@
+/* Jack Js | (c) 2021 I-is-as-I-does | MIT License */
+
 export function nonRenderedElmHeight(elm) {
   var clone = elm.cloneNode(true);
   clone.style.visibility = "hidden";

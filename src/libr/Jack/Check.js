@@ -1,3 +1,5 @@
+/* Jack Js | (c) 2021 I-is-as-I-does | MIT License */
+
 export function isNonEmptyArr(it) {
   return Array.isArray(it) && it.length;
 }

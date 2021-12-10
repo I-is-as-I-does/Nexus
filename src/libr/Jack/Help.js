@@ -1,3 +1,5 @@
+/* Jack Js | (c) 2021 I-is-as-I-does | MIT License */
+
 export function ucFirst(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }

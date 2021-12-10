@@ -1,3 +1,5 @@
+/* Vâlvă | (c) 2021 I-is-as-I-does | MIT License */
+
 export function slideUp(elm, duration = 200, callback = null) {
   elm.style.transitionProperty = "height, margin, padding";
   elm.style.transitionDuration = duration + "ms";
@@ -89,6 +91,7 @@ export function fadeOut(elm, callback = null) {
   (function fade() {
     if ((elm.style.opacity -= 0.1) < 0) {
       elm.style.display = "none";
+      elm.style.opacity = 1;
       if (typeof callback === "function") {
         callback();
       }
