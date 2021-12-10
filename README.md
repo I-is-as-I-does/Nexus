@@ -1,16 +1,15 @@
 # Nexus
 
 Is it a web ring 3.0? a Json feed? or a [twtxt](https://github.com/buckket/twtxt) fork?  
-No! It's NEXUS! A minimal peer-to-peer quality content sharing app and protocol!  
-(and its name might change)
+No! It's NEXUS! A minimal peer-to-peer Micro Social Network! 
 
 ## Status
 
-Stamper / Viewer / Editor prototype 0.3.0  
-all 46.0ko dist.
-viewer only 33.4ko dist. 
-+ 9.5ko css
-No dep. at all.
+Stamper / Viewer / Editor prototype 1.0.0  
+all 47.9ko dist.
+viewer only 34.6ko dist. 
++ 9.4ko css
+No dep.
 
 [Demo Site](https://i-is-as-i-does.github.io/Nexus/)
 
@@ -30,12 +29,12 @@ No dep. at all.
 - [x] Editor reset feature
 - [x] Check for unused CSS
 - [x] Check for unused translations
-- [x] Regenerate css templates for other themes
+- [x] Regenerate css template for other themes
 - [x] Files reorg (lost some pre-Editor code somewhere...)
 
 To do:
 
-- [ ] github starter kit
+- [ ] Github starter kit
 - [ ] Additional translations (Es, It, De)
 - [ ] **Docs** for 1/ everyone 2/ dev
 - [ ] **Php app** for easy admin (WIP)
