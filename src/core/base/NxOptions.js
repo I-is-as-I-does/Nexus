@@ -36,14 +36,15 @@ export function setOptions(options) {
         if (isNonEmptyStr(options.lang)) {
             opts.lang = options.lang;
             setOriginLang(options.lang);
-        }
-
-      
+        }   
     }
 }
 
 
 export function getQuery(key){
+    if(key == "edit" && params.has("edit") || params.has("new")){
+        return true;
+    }
    return params.has(key);
 }
 
