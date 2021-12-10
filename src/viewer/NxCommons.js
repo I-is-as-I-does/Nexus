@@ -53,11 +53,10 @@ main.append(...serviceElms);
 return main;
 }
 
-
 export function getElm(tag, classList) {
   var elm = document.createElement(tag);
   if (classList) {
-    elm.className = classList;
+    elm.className = classList; 
   }
   return elm;
 }
@@ -106,7 +105,7 @@ export function blockWrap(
 }
 
 export function landmarkElm(name) {
-  var lndmrk = getElm("SPAN", "nx-landmark nx-landmark-" + name);
+  var lndmrk = getElm("SPAN", "nx-landmark nx-landmark-"+name.replace(" ", "-"));
   lndmrk.textContent = getTxt(name);
 registerTranslElm(lndmrk, name);
   return lndmrk;

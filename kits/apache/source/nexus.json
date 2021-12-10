@@ -1,5 +1,5 @@
 {
-    "nexus": "https://github.com/I-is-as-I-does/Nexus",
+    "nexus": "https://nexus-dock.github.io/",
     "author": {
       "handle":"Anonymous",
       "url":"https://website.zyx",
@@ -11,7 +11,7 @@
         "title": "Nexus I",
         "description": "...",
         "content": {
-          "timestamp": "2021-11-01T12:00",
+          "timestamp": "2021-12-01T12:00",
           "main": "...",
           "aside": "",
           "media": {

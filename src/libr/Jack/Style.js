@@ -65,9 +65,6 @@ export function cssExtract(strength = 2) {
     });
   };
 
-  document.addEventListener(
-    "DOMContentLoaded",
-    function () {
       setTimeout(function () {
         loopcall([document.querySelector("html"), document.body]);
         for (let [k, v] of Object.entries(s)) {
@@ -80,9 +77,6 @@ export function cssExtract(strength = 2) {
         outputElm.textContent = fs;
         document.body.append(outputElm);
       }, 3000);
-    },
-    false
-  );
 }
 
 export function autoScrollToBottom(elm) {

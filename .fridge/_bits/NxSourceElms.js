@@ -28,31 +28,6 @@ export function embedCheckbox(embedInput) {
   }
 
   
-export function partialHistoryItm(dataSrc, threadId){
-  var itm = document.createElement("LI");
-  itm.append(historyViewLink(dataSrc, threadId));
-    itm.classList.add("nx-history-child");
-    return itm;
-}
-
-export function slashElm() {
-  var slashsp = document.createElement("SPAN");
-  slashsp.classList.add("nx-slash");
-  slashsp.textContent = "/";
-  return slashsp;
-}
-export function articleElm(contents){
-  var art = document.createElement('ARTICLE');
-  art.append(...contents);
-  return art;
-}
-
-
-export function navElm(contents){
-  var nav = document.createElement('NAV');
-  nav.append(...contents);
-  return nav;
-}
 export function srcLink(dataSrc) {
   var srcLink = actionLink("open", "↗", dataSrc);
   srcLink.target = "_blank";

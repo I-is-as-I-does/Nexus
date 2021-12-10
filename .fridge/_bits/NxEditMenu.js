@@ -1,54 +1,10 @@
-import { conciseUrl } from "../libr/Jack/Web.js";
 import { registerTranslElm } from "../core/transl/NxElmTranslate.js";
-
-
-export function getEditDataList(){
-    return getStorageKeys('local', editprefix);
-
-  }
-
-  export function getStorageKeys(storage = 'local', prefix = null){
-    var store = resolveStore(storage);
-    var keys = [];
-    if (store != null) {
-      keys = Object.keys(store);
-  
-      if(prefix){
-        var len = prefix.length;
-        keys = keys.filter((k)=>
-  k.substr(0,len) == prefix);
-      }
-  
-    }
-   return keys;
-  }
-  
   
 
 var serverListElm;
 var serverSrcList = {};
 var serverAuth = false;
 
-
-function storedList(){
-  var keys = getEditDataList();
-  var list = getElm("UL","nx-open-list nx-open-browser-list");
-
-  keys.forEach(k => {
-    var name = k.substr(8);
-    var li = fileListItm(list, name, function(){
-      resetData(getStoredEditData(name));  
-    });
-    list.append(li);
-  });
-  if(!keys.includes("nx-edit#nexus-tmp")){
-    var li = fileListItm(list, "nexus-tmp", function(){
-      resetData(newData());  
-    });
-    list.append(li);
-  }
-  return list;
-}
 
 function serverList(){
   serverListElm = getElm("UL","nx-open-list nx-open-server-list");
@@ -140,6 +96,50 @@ function setEditName(url){
 
 
 
+function storedList(){
+  var keys = getEditDataList();
+  var list = getElm("UL","nx-open-list nx-open-browser-list");
+
+  keys.forEach(k => {
+    var name = k.substr(8);
+    var li = fileListItm(list, name, function(){
+      resetData(getStoredEditData(name));  
+    });
+    list.append(li);
+  });
+  if(!keys.includes("nx-edit#nexus-tmp")){
+    var li = fileListItm(list, "nexus-tmp", function(){
+      resetData(newData());  
+    });
+    list.append(li);
+  }
+  return list;
+}
+
+
+
+export function getEditDataList(){
+    return getStorageKeys('local', editprefix);
+
+  }
+
+  export function getStorageKeys(storage = 'local', prefix = null){
+    var store = resolveStore(storage);
+    var keys = [];
+    if (store != null) {
+      keys = Object.keys(store);
+  
+      if(prefix){
+        var len = prefix.length;
+        keys = keys.filter((k)=>
+  k.substring(0,len) == prefix);
+      }
+  
+    }
+   return keys;
+  }
+  
+
 export function menuCategory(name, subcount = 1) {
     var p = getElm("P", "nx-edit-category");
   
@@ -155,12 +155,11 @@ export function menuCategory(name, subcount = 1) {
     return p;
   }
 
-/*
+/* CSS
+
 .nx .nx-edit-category-indent {
     padding-left: 2px;
 }
-
-
 
 .nx .nx-edit-category span:last-of-type {
     padding-left: 4px;

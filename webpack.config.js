@@ -1,7 +1,6 @@
 const path = require('path');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const webpack = require('webpack');
-
+const TerserPlugin = require('terser-webpack-plugin');
 const license = 'Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license';
 
 module.exports = {
@@ -14,6 +13,9 @@ module.exports = {
         filename: 'js/[name].js',
     },
     optimization: {
+        minimizer: [new TerserPlugin({
+            extractComments: false,
+          })],
         splitChunks: {
             chunks: 'all',
             cacheGroups: {
@@ -40,15 +42,8 @@ module.exports = {
             }
         }
     },
-    module: {
-        rules: [{
-            test: /\.css$/i,
-            use: [MiniCssExtractPlugin.loader, "css-loader"],
-        }, ]
-    },
     plugins: [
         new webpack.optimize.ModuleConcatenationPlugin(),
-        new MiniCssExtractPlugin({ filename: "css/NexusI.css" }),
         new webpack.BannerPlugin({
             banner: license,
         })

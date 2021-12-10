@@ -1,17 +1,9 @@
-class ssituDragDropper {
-  /*
-ssitu-login-pass = drag-dropper-input-wrap
-login-pass = drag-dropper-file
-ssitu-drag-trigger = drag-dropper-overlay
+export class ssituDragDropper {
 
-option = {
-    wrapid:"drag-dropper", accept:"application/json", loadCallback:function(file){console.log(file);}, lang:'en', width:250, height:150
-}
-    */
   constructor(options) {
     var defaults = {
       wrapid: "drag-dropper",
-      accept: "application/json",
+      accept: "application/json,image/jpeg,image/gif,image/png,image/x-icon,image/svg+xml,image/tiff,image/webp,image/bmp",
       loadCallback: function (file) {
         this.autoDisplay(file);
       }.bind(this),
@@ -34,7 +26,7 @@ option = {
     this.wrap = document.getElementById(options.wrapid);
     if (this.wrap) {
       this.options = options;
-      this.accepted = options.accept.split(",");
+      this.accepted = options.accept.replace(' ', '').split(",");
       this.#load();
     } else {
       console.log("ssituDragDropper require wrap element");
@@ -107,7 +99,7 @@ option = {
     .ssitu-drag-drop section {
         width: 100%;
         height: 100%;  
-        display: block;  
+        display: flex;  
         position: absolute;
         top: 0;
         left: 0;
@@ -115,11 +107,17 @@ option = {
         transition:all 0.2s linear;
       }
       .ssitu-drag-drop section p {
-        text-align:center;
+        margin:auto;
+        font-family:'Lucida Console', Monaco, 'Courier New', Courier, monospace;
+        font-size:12px; 
       }
     .drag-dropper-over, .ssitu-drag-drop section:hover {
         background-color: rgb(225 225 225 / 45%);
- 
+      }
+      .ssitu-drag-drop img {
+        margin:auto;
+        max-width:${this.options.width}px;
+        max-height:${this.options.height}px;
       }
       `;
   }

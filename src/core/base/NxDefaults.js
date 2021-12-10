@@ -1,7 +1,7 @@
 export const defaultSelector = "#Nexus";
-export const defaultIO = "https://cdn.jsdelivr.net/gh/I-is-as-I-does/Nexus-Prototype@latest/dist/js/NxIO.js";
+export const defaultIO = "https://cdn.jsdelivr.net/gh/I-is-as-I-does/Nexus@latest/dist/js/NxIO.js";
 export const defaultCss =
-    "https://cdn.jsdelivr.net/gh/I-is-as-I-does/Nexus-Prototype@latest/dist/css/NexusI.min.css";
+    "https://cdn.jsdelivr.net/gh/I-is-as-I-does/Nexus@latest/dist/css/NexusI.min.css";
 export const defaultOpts = {
     src: null,
     id: "/",

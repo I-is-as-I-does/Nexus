@@ -29,13 +29,14 @@ No dep. at all.
 - [x] Viewer distant records slider
 - [x] Editor reset feature
 - [x] Check for unused CSS
- 
+- [x] Check for unused translations
+- [x] Regenerate css templates for other themes
+- [x] Files reorg (lost some pre-Editor code somewhere...)
+
 To do:
 
-- [ ] Check for unused translations
-- [ ] Regenerate css templates for other themes
-- [ ] Files reorg (lost some pre-Editor code somewhere...)
-- [ ] More translations (Es, It, De)
+- [ ] github starter kit
+- [ ] Additional translations (Es, It, De)
 - [ ] **Docs** for 1/ everyone 2/ dev
 - [ ] **Php app** for easy admin (WIP)
 - [ ] **Web workers** for some minimal offine support

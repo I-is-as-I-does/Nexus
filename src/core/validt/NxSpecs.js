@@ -1,4 +1,4 @@
-export const appUrl = "https://github.com/I-is-as-I-does/Nexus-Prototype";
+export const appUrl = "https://nexus-dock.github.io/";
 export const typesMap = {
   data: "Object",
   nexus: "String",
