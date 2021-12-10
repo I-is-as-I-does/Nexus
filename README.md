@@ -6,12 +6,12 @@ No! It's NEXUS! A minimal peer-to-peer Micro Social Network!
 ## Status
 
 Stamper / Viewer / Editor prototype 1.0.0  
-all 47.9ko dist.
-viewer only 34.6ko dist. 
-+ 9.4ko css
-No dep.
+all 47.9ko dist.  
+viewer only 34.6ko dist.  
++ 9.4ko css  
+No dep.  
 
-[Demo Viewer](https://i-is-as-i-does.github.io/Nexus/)
+[Demo Viewer](https://i-is-as-i-does.github.io/Nexus/)  
 [Demo Editor](https://i-is-as-i-does.github.io/Nexus/?edit)
 
 - [x] Project blueprints and first prototypes (too many)
