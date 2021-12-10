@@ -15,14 +15,14 @@
         "main": "We are like rain drops",
         "aside": "--for we are many",
         "media": {
-          "url": "https://i-is-as-i-does.github.io/Nexus-Prototype/files/rain.mp3",
+          "url": "https://i-is-as-i-does.github.io/Nexus/files/rain.mp3",
           "type": "audio",
           "caption": "This is us --as local sound"
         }
       },
       "linked": [
         {
-          "url": "https://i-is-as-i-does.github.io/Nexus-Prototype/source/edi-ida.json",
+          "url": "https://i-is-as-i-does.github.io/Nexus/source/edi-ida.json",
           "id": "Prototype-II"
         }
       ]
@@ -52,14 +52,14 @@
         "main": "Sunrised",
         "aside": "",
         "media": {
-          "url": "https://i-is-as-i-does.github.io/Nexus-Prototype/files/sunrised.webm",
+          "url": "https://i-is-as-i-does.github.io/Nexus/files/sunrised.webm",
           "type": "video",
           "caption": "Locally Found Footage"
         }
       },
       "linked": [
         {
-          "url": "https://i-is-as-i-does.github.io/Nexus-Prototype/source/legion.json",
+          "url": "https://i-is-as-i-does.github.io/Nexus/source/legion.json",
           "id": "gestalt-consciousness"
         }
       ]
