@@ -12,8 +12,11 @@ import {
   toggleNavEnd
 } from "../viewer/NxCommons.js";
 import {
+  diversionToggle,
   easeIn,
   easeOut,
+  fadeIn,
+  fadeOut,
   insertDiversion,
   replaceDiversion,
   splitFlap,
@@ -341,17 +344,7 @@ function indexLink(idx, id) {
   return indLk;
 }
 
-function setThread(idx, id,ease = false) {
-  var map = threadElms(idx, id);
-    for(let [k, elmSet] of Object.entries(map)){
-      if(ease  && (k == "index" ||  id == editState.threadId)){
-        insertDiversion(elmSet.parent, elmSet.child,false, true,200);
-            }else {
-              elmSet.parent.append(elmSet.child);
-            }
-           
-    }
-}
+
 function threadElms(idx, id) {
   var map = {
     'index': { "parent": editIndex, "child": null, "link": null, "del": null },
@@ -794,15 +787,17 @@ function resetData(nData) {
   }
 
   var act = function (redo) {
+
     if (editState.srcData.threads.length) {
-      [editIndex, editLocal, editDistant].forEach(parent => {
+    [editIndex, editLocal, editDistant].forEach(parent => {
         Array.from(parent.childNodes).forEach(child => {
-          easeOut(child, 200, function () {
+          easeOut(child, 150,function () {
             child.remove();
           })
         })
       });
     }
+
     if (redo) {
       editState.srcData = nData;
     } else {
@@ -814,7 +809,7 @@ function resetData(nData) {
 
     resetAuthorForm();
     setThreads(true);
-   
+
   };
 
   setLastAction(act);
@@ -908,15 +903,28 @@ function setThreads(ease =false) {
   }
 }
 
+function setThread(idx, id,ease = false) {
+  var map = threadElms(idx, id);
+    for(let [k, elmSet] of Object.entries(map)){
+      if(ease  && (k == "index" ||  id == editState.threadId)){
+
+        insertDiversion(elmSet.parent, elmSet.child,false, true,200);
+            }else {
+              elmSet.parent.append(elmSet.child);
+            }
+           
+    }
+}
+
 function authorPart(){
- 
+  setAuthorForm();
   var dv = getElm('DIV', "nx-edit-author-form");
   dv.append(landmarkElm("author"), authorForm);
   return dv;
 }
 function indexPart(){
   var dv = getElm('DIV', "nx-edit-list");
-  dv.append(landmarkElm("threads"), editIndex);
+  dv.append(landmarkElm("threads"), editIndex, addThreadBtn());
   return dv;
 }
 
@@ -997,8 +1005,8 @@ export function setEditState(state){
 }
 
 export function editIndexBlock() {
-  setAuthorForm();
-  return blockWrap("index", null, [authorPart(),  indexPart(), addThreadBtn()], false);
+ 
+  return blockWrap("index", null, [authorPart(),  indexPart()], false);
 }
 export function editLocalBlock() {
   return blockWrap("local", null, [editLocal], false);
