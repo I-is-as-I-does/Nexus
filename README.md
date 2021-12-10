@@ -11,7 +11,8 @@ viewer only 34.6ko dist.
 + 9.4ko css
 No dep.
 
-[Demo Site](https://i-is-as-i-does.github.io/Nexus/)
+[Demo Viewer](https://i-is-as-i-does.github.io/Nexus/)
+[Demo Editor](https://i-is-as-i-does.github.io/Nexus/?edit)
 
 - [x] Project blueprints and first prototypes (too many)
 - [x] Final cut on data structure (ONE json file, ONE record per thread, no mess, no information overload, incite quality content and promote links to distant nexuses),
