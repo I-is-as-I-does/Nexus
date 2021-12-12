@@ -424,7 +424,7 @@ padding-left:6px;
 .nx .nx-content-media a.nx-external-link:after {
     content: "↗";
     padding-left: 2px;
-    font-size: 0.8em;
+    font-size: 0.8rem;
 }
 
 .nx .nx-content-media {
