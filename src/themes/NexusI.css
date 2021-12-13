@@ -31,7 +31,6 @@
     font-weight: normal;
     line-height: 1.2;
     -webkit-text-size-adjust: 100%;
-    background: white;
     color: #444;
     min-width: 360px;
     width: calc(1020px + 10vw);
@@ -39,7 +38,6 @@
     margin: 2vh auto;
     position: relative;
     padding: 0 1vw;
-
 }
 
 .nx section {

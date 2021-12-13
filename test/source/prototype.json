@@ -1,0 +1,63 @@
+{
+  "nexus": "https://nexus-dock.github.io/",
+  "author": {
+    "handle": "Prototype",
+    "about": "I'm a paragraph about the author.",
+    "url": "https://nexus-dock.github.io/"
+  },
+  "threads": [
+    {
+      "id": "Thread-I",
+      "title": "I'm a Thread Title",
+      "description": "Thread description comes here.",
+      "content": {
+        "timestamp": "2021-12-12T00:12",
+        "main": "Main field of the thread content.",
+        "aside": "Aside field of the thread content.",
+        "media": {
+          "url": "https://en.wikipedia.org/wiki/Prototype",
+          "type": "page",
+          "caption": "This is the media caption field."
+        }
+      },
+      "linked": [
+        {
+          "url": "http://127.0.0.1:5500/test/source/legion.json",
+          "id": "gestalt-consciousness"
+        },
+        {
+          "url": "http://127.0.0.1:5500/test/source/legion.json",
+          "id": "meditation"
+        },
+        {
+          "url": "http://127.0.0.1:5500/test/source/legion.json",
+          "id": "ffu65-25PKdd"
+        },
+        {
+          "url": "http://127.0.0.1:5500/test/source/legion.json",
+          "id": "/"
+        }
+      ]
+    },
+    {
+      "id": "Thread-II",
+      "title": "Another Thread Title",
+      "description": "Another thread description.",
+      "content": {
+        "timestamp": "2021-12-10T00:01",
+        "main": "Thread content: main field.",
+        "aside": "Thread content: aside field.",
+        "media": {
+          "url": "http://127.0.0.1:5500/test/media/ssitu.png",
+          "type": "image",
+          "caption": "I'm the caption of this image."
+        }
+      },
+      "linked": [
+        {
+
+        }
+      ]
+    }
+  ]
+}
