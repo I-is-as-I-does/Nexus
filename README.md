@@ -12,7 +12,7 @@ Github Pages starter kit: [I-is-as-I-does/Nexus-Github-starter](https://github.c
 
 ## App Status
 
-Stamper / Viewer / Editor prototype 1.0.0  
+Stamper / Viewer / Editor prototype 1.0.1  
 all 47.9ko dist.  
 viewer only 34.6ko dist. + 9.4ko css  
 No dep.  
