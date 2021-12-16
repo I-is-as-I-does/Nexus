@@ -9,7 +9,7 @@ Demo: [nexus-dock.github.io/instance](https://nexus-dock.github.io/instance)
 Editor: [nexus-dock.github.io/instance/?new](https://nexus-dock.github.io/instance/?new)  
   
 Apache starter kit: [I-is-as-I-does/Nexus-Apache-starter](https://github.com/I-is-as-I-does/Nexus-Apache-starter)  
-Github Pages starter kit: [I-is-as-I-does/Nexus-Github-starter](https://github.com/I-is-as-I-does/Nexus-Github-starter) [to be done]
+GitHub Pages starter kit: [I-is-as-I-does/Nexus-Github-starter](https://github.com/I-is-as-I-does/Nexus-Github-starter)
 
 ## App Status
 
@@ -55,11 +55,10 @@ Fork, clone, `npm install`
 - [x] Files reorg (lost some pre-Editor code somewhere...)
 - [x] Repositories spliting
 - [x] Apache Starter kit
+- [x] Github starter kit
 - [x] **Documentation**
 
 To do:
-- [ ] Apache Starter kit doc
-- [ ] Github starter kit
 - [ ] Visual schema
 
 <a href='https://ko-fi.com/I2I17EOYP' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi2.png?v=3' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>

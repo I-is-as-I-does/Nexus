@@ -35,7 +35,7 @@
     min-width: 360px;
     width: calc(1020px + 10vw);
     max-width: 100%;
-    margin: 2vh auto;
+    margin: 2vh auto 0;
     position: relative;
     padding: 0 1vw;
 }
