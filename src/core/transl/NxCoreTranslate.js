@@ -1,3 +1,4 @@
+/*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
 import { isNonEmptyObj, isNonEmptyStr } from "../../libr/Jack/Check.js";
 import { getStoredLang, setStoredLang } from "../storg/NxMemory.js";
 import { NxTranslations } from "./NxTranslations.js";

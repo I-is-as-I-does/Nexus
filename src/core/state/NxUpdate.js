@@ -1,3 +1,4 @@
+/*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
 import { getSrcData } from "../load/NxData.js";
 import { registerThreadVisit } from "../storg/NxMemory.js";
 

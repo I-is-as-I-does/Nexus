@@ -1,3 +1,4 @@
+/*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
 import { loadCss } from "../../libr/Jack/Web.js";
 import { consoleLog, logErr } from "../logs/NxLog.js";
 import { getOpt } from "../base/NxOptions.js";

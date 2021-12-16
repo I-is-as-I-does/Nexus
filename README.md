@@ -6,6 +6,7 @@ This is the code repository of the project.
 Documentation: [nexus-dock.github.io](https://nexus-dock.github.io/)  
 Documentation repository: [nexus-dock/nexus-dock.github.io](https://github.com/nexus-dock/nexus-dock.github.io)  
 Demo: [nexus-dock.github.io/instance](https://nexus-dock.github.io/instance)  
+Editor: [nexus-dock.github.io/instance/?new](https://nexus-dock.github.io/instance/?new)  
   
 Apache starter kit: [I-is-as-I-does/Nexus-Apache-starter](https://github.com/I-is-as-I-does/Nexus-Apache-starter)  
 Github Pages starter kit: [I-is-as-I-does/Nexus-Github-starter](https://github.com/I-is-as-I-does/Nexus-Github-starter) [to be done]

@@ -1,3 +1,4 @@
+/*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
 import { splitFlap } from "../libr/Valva/Valva.js";
 import { registerUpdateEvt, triggerUpdate } from "../core/state/NxUpdate.js";
 import { authorMiniUrl, isThreadContentUnseen } from "../core/storg/NxMemory.js";

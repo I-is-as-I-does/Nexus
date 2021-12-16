@@ -1,3 +1,4 @@
+/*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
 import { getTxt } from "../core/transl/NxCoreTranslate.js";
 import { registerTranslElm } from "../core/transl/NxElmTranslate.js";
 import { getElm } from "../viewer/NxCommons.js";

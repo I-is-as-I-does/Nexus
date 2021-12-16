@@ -1,5 +1,4 @@
-
-
+/*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
 import { charMinMax, idPattern, distantIdPattern, supportedMediaTypes, urlPattern } from "../core/validt/NxSpecs.js";
 import {
   landmarkElm,

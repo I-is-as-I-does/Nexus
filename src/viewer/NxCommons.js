@@ -1,3 +1,4 @@
+/*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
 import { splitFlap } from "../libr/Valva/Valva.js";
 import { getErr } from "../core/logs/NxLog.js";
 import { isCssLoaded } from "../core/load/NxStyle.js";

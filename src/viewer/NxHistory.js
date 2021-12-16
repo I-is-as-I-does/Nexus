@@ -1,3 +1,4 @@
+/*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
 import { easeIn, easeOut, insertDiversion } from "../libr/Valva/Valva.js";
 import { blockWrap, getElm, setHistoryControls, toggleNavEnd,setToggleOnDisplay,
   baseViewLink } from "./NxCommons.js";

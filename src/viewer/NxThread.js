@@ -1,3 +1,4 @@
+/*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
 import { isNonEmptyStr } from "../libr/Jack/Check.js";
 import {insertDiversion, replaceDiversion } from "../libr/Valva/Valva.js";
 import { registerUpdateEvt, resolveState } from "../core/state/NxUpdate.js";

@@ -1,3 +1,4 @@
+/*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
 import { getElm, serviceWrap } from "../viewer/NxCommons.js";
 import { viewerElms } from "../viewer/NxViewer.js";
 import { editDistantBlock, editIndexBlock, editLocalBlock, editMenu, setEditState, instanceSwitch } from "./NxEdit.js";

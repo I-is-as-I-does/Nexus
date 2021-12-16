@@ -1,3 +1,4 @@
+/*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
 import { loadJson } from "../../libr/Jack/Web.js";
 import { clearErr, consoleLog, getErr, logErr } from "../logs/NxLog.js";
 import { getStoredData, registerData } from "../storg/NxMemory.js";

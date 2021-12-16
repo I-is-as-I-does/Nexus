@@ -1,3 +1,4 @@
+/*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
 import { isNonEmptyObj, isNonEmptyStr } from "../../libr/Jack/Check.js";
 import { isValidHttpUrl } from "../../libr/Jack/Web.js";
 import { setOriginLang } from "../transl/NxCoreTranslate.js";

@@ -1,3 +1,4 @@
+/*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
 import { charMinMax, idPattern, supportedMediaTypes, timestampPattern, urlPattern } from "./NxSpecs.js";
 
 export const NxSchema = {
