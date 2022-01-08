@@ -216,9 +216,6 @@
     font-size: 1.05rem;
 }
 
-.nx footer a.nx-source-snippets {
-    font-size: 1rem;
-}
 
 .nx .nx-content {
     margin-top: 2rem;
@@ -345,20 +342,11 @@ padding-left:6px;
     background: transparent;
 }
 
-.nx .nx-embed-snippet,
-.nx .nx-json-snippet {
-    margin-top: 2px;
-}
-
 .nx .nx-history-drawer {
     overflow-y: scroll;
     position: relative;
     margin-top: 7px;
     height: 120px;
-}
-
-.nx .nx-history-drawer,
-.nx .nx-source textarea {
     border: 1px solid #dedede;
     color: #444;
     padding: 0.8em;
@@ -367,14 +355,6 @@ padding-left:6px;
     font-family: "Inconsolata", "Courier New", Courier, monospace;
     width: 100%;
     max-width: 100%;
-}
-
-.nx .nx-json-snippet textarea {
-    height: 60px;
-}
-
-.nx .nx-embed-snippet textarea {
-    height: 120px;
 }
 
 .nx .nx-source-drawer,
@@ -386,10 +366,16 @@ padding-left:6px;
 .nx .nx-source-drawer {
     padding-bottom: 2rem;
 }
-
-.nx .nx-source textarea {
-    margin-top: 5px;
-    outline: none;
+.nx .nx-instance-url{
+    font-family: Inconsolata,"Courier New",Courier,monospace;
+    font-size: .85em;
+display: block;
+color:#444;
+width: 100%;
+border:1px solid #dedede;
+outline: none;
+height: 20px;
+    padding: 4px;
 }
 
 .nx .nx-source-toggle,
@@ -684,4 +670,38 @@ padding-left:6px;
 .nx form .nx-select-toggle {
     border-bottom: 1px solid #dedede;
     border-left: 1px solid #dedede;
+}
+/* @todo elm now in editor only */
+
+
+.nx .nx-source textarea {
+    margin-top: 5px;
+    outline: none;
+}
+
+.nx footer a.nx-source-snippets {
+    font-size: 1rem;
+}
+.nx .nx-json-snippet textarea {
+    height: 60px;
+}
+
+.nx .nx-embed-snippet textarea {
+    height: 120px;
+}
+
+.nx .nx-embed-snippet,
+.nx .nx-json-snippet {
+    margin-top: 2px;
+}
+
+.nx .nx-source textarea {
+    border: 1px solid #dedede;
+    color: #444;
+    padding: 0.8em;
+    font-size: 0.85em;
+    resize: vertical;
+    font-family: "Inconsolata", "Courier New", Courier, monospace;
+    width: 100%;
+    max-width: 100%;
 }

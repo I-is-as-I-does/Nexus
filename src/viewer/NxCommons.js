@@ -3,8 +3,8 @@ import { splitFlap } from "../libr/Valva/Valva.js";
 import { getErr } from "../core/logs/NxLog.js";
 import { isCssLoaded } from "../core/load/NxStyle.js";
 import { getCurrentState, registerUpdateEvt } from "../core/state/NxUpdate.js";
-import { registerTranslElm, triggerTranslate } from "../core/transl/NxElmTranslate.js";
-import { getTxt, getAvailableLangs, getLang } from "../core/transl/NxCoreTranslate.js";
+import { registerTranslElm } from "../core/transl/NxElmTranslate.js";
+import { getTxt } from "../core/transl/NxCoreTranslate.js";
 import { appUrl } from "../core/validt/NxSpecs.js";
 
 
@@ -28,9 +28,10 @@ function toggleOnDisplay(viewlk, givenState, newState) {
 
 function appHeader() {
   var header = getElm('HEADER');
-  header.append(appLink(), langDropDown());
+  header.append(appLink());
   return header;
 }
+
 
 function appLink() {
   var link = getElm("A", "nx-app-link nx-external-link");
@@ -40,13 +41,7 @@ function appLink() {
   link.textContent = "Nexus";
   return link;
 }
-function langDropDown() {
-  var toggle = getElm('P');
-  toggle.textContent = getLang();
-  return selectDropDown(getAvailableLangs(), toggle, function(nlang){
-    triggerTranslate(nlang);
-  }, "nx-lang-switch");
-}
+
 
 function appMain(serviceElms){
 var main = getElm('MAIN');
@@ -92,7 +87,7 @@ export function blockWrap(
 ) {
   var dv = getElm("DIV", "nx-" + blockName + " nx-block");
   if (landmark) {
-    dv.append(landmarkElm(blockName));
+    dv.append(landmark);
   }
   if (headerElms) {
     var header = getElm("DIV","nx-thread-header");
@@ -250,6 +245,9 @@ export function selectDropDown(list, toggleElm, actionCallback = null, switchCla
   return swtch;
 }
 
+export function convertLineBreaks(text){
+  return text.replace(/(\r\n|\n|\r)/gm, "<br>");
+}
 
 export function setToggleOnDisplay(viewlk, state) {
 

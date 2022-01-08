@@ -20,23 +20,10 @@
           "caption": "This is the media caption field."
         }
       },
-      "linked": [
-        {
-          "url": "http://127.0.0.1:5500/test/source/legion.json",
-          "id": "gestalt-consciousness"
-        },
-        {
-          "url": "http://127.0.0.1:5500/test/source/legion.json",
-          "id": "meditation"
-        },
-        {
-          "url": "http://127.0.0.1:5500/test/source/legion.json",
-          "id": "ffu65-25PKdd"
-        },
-        {
-          "url": "http://127.0.0.1:5500/test/source/legion.json",
-          "id": "/"
-        }
+      "linked": ["http://127.0.0.1:5500/test/source/legion.json#gestalt-consciousness",
+        "http://127.0.0.1:5500/test/source/legion.json#meditation",
+        "http://127.0.0.1:5500/test/source/legion.json#ffu65-25PKdd",
+        "http://127.0.0.1:5500/test/source/legion.json"
       ]
     },
     {
@@ -54,9 +41,6 @@
         }
       },
       "linked": [
-        {
-
-        }
       ]
     }
   ]

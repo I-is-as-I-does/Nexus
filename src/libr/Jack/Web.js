@@ -221,3 +221,10 @@ export function searchUrlParam(name) {
     return results[1] || 0;
   }
 }
+
+export function toLastSlash(url){
+  if(url.lastIndexOf('/') < 8 && url.substring(0,4) == "http"){
+url += "/";
+  }
+ return url.substring(0,url.lastIndexOf('/')+1);
+}
