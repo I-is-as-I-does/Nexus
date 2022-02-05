@@ -1,8 +1,10 @@
 /*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
-import { getSrcData } from "../load/NxData.js";
+
+import { getSrcData } from "../load/NxSrc.js";
 import { registerThreadVisit } from "../storg/NxMemory.js";
 
-const bufferTime = 800;
+
+const bufferTime = 400;
 var currentState = {
       dataUrl: null,
       srcData: null,
@@ -13,7 +15,7 @@ var currentState = {
 var updateStore = { onChange: [], onSrcChange: [] };
 var updateRunning = false;
 
-function triggerCallbacks(triggerAll) {
+function triggerCallbacks(state,triggerAll) {
   var ks = ["onChange"];
   if (triggerAll) {
     ks.push("onSrcChange");
@@ -22,7 +24,7 @@ function triggerCallbacks(triggerAll) {
   ks.forEach((k) => {
     if (updateStore[k].length) {
      updateStore[k].forEach((callback) => {
-        callback(currentState);
+        callback(state);
       });
     }
   });
@@ -54,8 +56,6 @@ export function resolveState(dataUrl, threadId) {
   });
 }
 
-
-
 export function registerUpdateEvt(callback, onSrcChange = false) {
   var k = "onChange";
   if (onSrcChange) {
@@ -67,21 +67,21 @@ export function registerUpdateEvt(callback, onSrcChange = false) {
 export function triggerUpdate(state, skipHistoryUpdate = false, forceTrigger = false) {
   if (!updateRunning) {
     var srcChanged = state.dataUrl != currentState.dataUrl;
+
     if (forceTrigger || srcChanged || state.threadId != currentState.threadId) {
       updateRunning = true;
       if (!skipHistoryUpdate) {
         registerThreadVisit(currentState);
       }
     
-      currentState = state;
       var resetIndex = srcChanged || forceTrigger;
+      currentState = Object.assign({},state);
 
-      triggerCallbacks(resetIndex);
+      triggerCallbacks(state, resetIndex);
       updateTimeout();
     }
   }
 }
-
 
 export function getCurrentState() {
   return currentState;
@@ -98,3 +98,5 @@ export function setOriginState(state) {
 export function getBuffertime(){
   return bufferTime;
 }
+
+

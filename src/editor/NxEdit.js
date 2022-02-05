@@ -221,9 +221,8 @@ function addThreadBtn() {
 
 function appendLinkInputs(form, idx, i) {
   var linkwrap = getElm("DIV", "nx-edit-distant-link");
-  var elms = { url: null, id: null, list: getElm('DIV', 'nx-distant-ids') };
-  var inputs = { id: null, url: null };
-  elms["id"] = inputElm(["threads", idx, "linked", i, "id"], null, inputs);
+  var elms = { url: null, list: getElm('DIV', 'nx-distant-ids') };
+  var inputs = { url: null };
   elms["url"] = inputElm(["threads", idx, "linked", i, "url"], function (val, valid) {
     updateDistantDropdown(inputs, elms, val, valid);
   }, inputs);
@@ -284,7 +283,7 @@ function threadDistantForm(idx, id) {
   addBtnElm.addEventListener("click", () => {
     var idx = editState.srcData.index.indexOf(id);
     var i = editState.srcData.threads[idx].linked.length;
-    editState.srcData.threads[idx].linked.push({ url: "", id: "/" });
+    editState.srcData.threads[idx].linked.push("https://");
     appendLinkInputs(form, idx, i);
   });
 

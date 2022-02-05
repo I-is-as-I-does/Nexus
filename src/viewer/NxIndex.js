@@ -6,7 +6,7 @@ import {
 } from "../libr/Valva/Valva.js";
 import { registerUpdateEvt } from "../core/state/NxUpdate.js";
 import { authorHandle, authorUrl, viewLink } from "./NxIdent.js";
-import { blockWrap, getElm } from "./NxCommons.js";
+import { blockWrap, convertLineBreaks, getElm, landmarkElm } from "./NxCommons.js";
 
 var indexList = null;
 
@@ -23,7 +23,7 @@ function aboutElm(state) {
 function aboutParagraph(state) {
   var p = getElm("P");
   if(state.srcData){
-  p.textContent = state.srcData.author.about;
+  p.textContent = convertLineBreaks(state.srcData.author.about);
 }
   return p;
 }
@@ -93,5 +93,5 @@ export function indexBlock(state) {
   setIndexList(state);
   var headerElms = [authorHandle(state, true), authorUrl(state, true)];
   var contentElms = [aboutElm(state), indexList];
-  return blockWrap("index", headerElms, contentElms, true);
+  return blockWrap("index", headerElms, contentElms, landmarkElm("index"));
 }

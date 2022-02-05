@@ -92,22 +92,9 @@ export const NxSchema = {
                   "type": "array",
                   "uniqueItems": true,
                   "additionalItems": true,
-                  "items": {
-       
-                        "type": "object",
-                        "required": ["url", "id"],
-                        "properties": {
-                          "url": {
-                            "type": "string",
-                            "pattern": urlPattern
-                          },
-                          "id": {
-                            "type": "string",
-                            "pattern": idPattern
-                          }
-                        },
-                        "additionalProperties": false
-             
+                  "items": {      
+                        "type": "string",
+                        "pattern": urlPattern         
                   }
                 }
               },

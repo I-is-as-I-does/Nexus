@@ -43,7 +43,7 @@ export function charLimits(catg) {
       return true;
     }
 
-    logErr("Invalid media type", type);
+    logErr("Invalid media type", mediaType);
     return false;
   }
 
@@ -178,6 +178,22 @@ export function charLimits(catg) {
     return false;
   }
 
+  export function extractId(url){
+    var rt =  {
+      "url":url,
+      "id":"/"
+    };
+    if(url.includes('#')){
+      var sp = url.split('#');
+      var id = sp.pop();
+      rt.url = sp.join('#');
+      if (id && isValidId(id)) {     
+        rt.id = id;
+      }
+}
+return rt;
+  }
+
   export function isValidId(id, distant = false) {
     var pattern;
     if(distant){
@@ -188,9 +204,11 @@ export function charLimits(catg) {
     if (hasValidType(id, "id", true) && id.match(pattern)) {
       return true;
     }
+
     logErr("Invalid thread id", id);
     return false;
   }
+
 
   export function isValidUrl(url) {
     if (isValidHttpUrl(url)) {
@@ -203,8 +221,7 @@ export function charLimits(catg) {
   export function isValidLinkItm(link) {
     if (
       hasValidType(link, "linked.item", true) &&
-      isValidUrl(link.url) &&
-      isValidId(link.id,true)
+      isValidUrl(link)
     ) {
       return true;
     }
@@ -213,25 +230,22 @@ export function charLimits(catg) {
   }
 
   export function validLinks(linked) {
-   
+
     linked.slice(0, itmLimits("linked")[1]);
-
-
+   
     var done = [];
     for (var i = 0; i < linked.length; i++) {
       if (isValidLinkItm(linked[i])) {
-        var concat = linked[i].url + " " + linked[i].id;
-
-        if (!done.includes(concat)) {
-          done.push(concat);
+        if (!done.includes(linked[i])) {
+          done.push(linked[i]);
           continue;
         }
-        logErr("Duplicate linked thread", concat);
+        logErr("Duplicate linked thread", linked[i]);
       }
       linked.splice(i, 1);
     }
 
-    if (linked.length) {
+    if (linked.length) { 
       linked.sort((a, b) => (a.url < b.url ? 1 : -1));
     }
 

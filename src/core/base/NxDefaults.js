@@ -5,7 +5,7 @@ export const defaultCss =
     "https://cdn.jsdelivr.net/gh/I-is-as-I-does/Nexus@latest/dist/css/NexusI.min.css";
 export const defaultOpts = {
     src: null,
-    id: "/",
+    id:"/",
     style: defaultCss,
     lang: "en"
 };

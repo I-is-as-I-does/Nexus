@@ -1,6 +1,6 @@
 /*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
 import { isNonEmptyStr } from "../libr/Jack/Check.js";
-import {insertDiversion, replaceDiversion } from "../libr/Valva/Valva.js";
+import {easeOut, fadeIn, fadeOut, insertDiversion, replaceDiversion } from "../libr/Valva/Valva.js";
 import { registerUpdateEvt, resolveState } from "../core/state/NxUpdate.js";
 import {
   authorIndexLink,
@@ -8,9 +8,9 @@ import {
   viewLink,
 } from "./NxIdent.js";
 import { mediaElm } from "./NxMedia.js";
-import { blockWrap, getElm,  setHistoryControls,  threadTitleElm, toggleNavEnd } from "./NxCommons.js";
+import { blockWrap, convertLineBreaks, getElm,  landmarkElm,  setHistoryControls,  threadTitleElm, toggleNavEnd } from "./NxCommons.js";
 import { consoleLog } from "../core/logs/NxLog.js";
-import { strHasValidMaxLength } from "../core/validt/NxStamper.js";
+import { extractId } from "../core/validt/NxStamper.js";
 
 var currentElm;
 var descrpElm;
@@ -26,7 +26,14 @@ var linkedCtrls = {
     "next": {"symbol":"⊻", "elm":null}
   },
    position:0,
-   count:1
+   count:0
+ }
+
+ var distantLandmark;
+
+ function setDistantLandmark(){
+  distantLandmark = landmarkElm("distant");
+  distantLandmark.style.display ="none";
  }
 
 
@@ -38,7 +45,7 @@ function updateThreadBlocks(state) {
   replaceDiversion(descrpElm.firstChild, newDescrpTxt);
   replaceDiversion(contentElm.firstChild, newContent);
 
-  setDistantLinks(newThreadData);
+  resetDistantLinks(newThreadData);
 }
 
 function setDescriptionElm(threadData) {
@@ -54,9 +61,10 @@ function resolveThreadData(state) {
   return threadData;
 }
 function distantThreadBlock(threadData) {
+  setDistantLandmark();
   setDistantSlider();
-  setDistantLinks(threadData);
-  return blockWrap("distant", null, [slider], true);
+  setLinkedItems(threadData);
+  return blockWrap("distant", null, [slider], distantLandmark);
 }
 
 function localThreadBlock(state, threadData) {
@@ -64,7 +72,7 @@ function localThreadBlock(state, threadData) {
   setDescriptionElm(threadData);
   setContentElm(threadData);
 
-  return blockWrap("local", [headerElm], [descrpElm, contentElm], true);
+  return blockWrap("local", [headerElm], [descrpElm, contentElm], landmarkElm("local"));
 }
 
 function setContentElm(threadData) {
@@ -72,15 +80,23 @@ function setContentElm(threadData) {
   contentElm.append(threadContent(threadData));
 }
 
-function setDistantLinks(threadData){
-  setLinkedItems(threadData).then(() =>  {
+function hideDistantNav(){
+  toggleNavEnd(linkedCtrls);
+ 
+  linkedCtrls.ctrls["next"].elm.style.visibility = 'hidden';
+  linkedCtrls.ctrls["prev"].elm.style.visibility = 'hidden';
+}
 
-    linkedCtrls.position = 0;
-    linkedCtrls.count = linked.length;
-    toggleNavEnd(linkedCtrls); //@todo:test: useful?
-    setCurrentLink();
-  });
+function resetDistantLinks(threadData){
 
+  linked = [];
+   linkedCtrls.position = 0;
+  linkedCtrls.count = 0;
+
+  hideDistantNav();
+  removeDistantContent();
+  toggleDistantLandmark(false);
+  setLinkedItems(threadData);
 }
 
 function setPrevCtrlVisb(){
@@ -94,33 +110,53 @@ function setPrevCtrlVisb(){
 
 function nextCtrlCallb(){
   linkedCtrls.ctrls["next"].elm.style.visibility = 'hidden';
+    return restr;
+  
+}
 
-  var restr = null;
+function restr(){
   if((linkedCtrls.position + 1) !== linkedCtrls.count){
-    restr = function(){
-      linkedCtrls.ctrls["next"].elm.style.visibility = 'visible';
-    };
+  linkedCtrls.ctrls["next"].elm.style.visibility = 'visible';
   }
- return restr;
+}
+
+function removeDistantContent(){
+  var prevElm = currentElm.firstChild;
+  if(prevElm){
+    easeOut(prevElm,200,function(){
+      prevElm.remove();
+    });
+
+  }
+}
+
+function setFirstDistantContent(){
+  toggleDistantLandmark(true);
+  insertDiversion(currentElm, linked[0], false, true, 200, restr);
 }
 
 function setCurrentLink(){
-  var nw = linked[linkedCtrls.position];
-  var prevElm = currentElm.firstChild;
   setPrevCtrlVisb();
   var restr = nextCtrlCallb();
-  if(prevElm){
-    replaceDiversion(prevElm, nw, restr);
+
+  if(linked.length){
+   var  nw = linked[linkedCtrls.position];
+
+  if(currentElm.firstChild){
+    replaceDiversion(currentElm.firstChild, nw, restr);
   } else {
     insertDiversion(currentElm, nw, false, true, 200, restr);
   }
-
+} else {
+  removeDistantContent();
+}
 }
 
 function setDistantSlider(){
 slider = getElm("DIV");
  currentElm = getElm("DIV","nx-distant-link");
  setHistoryControls(linkedCtrls, setCurrentLink);
+ hideDistantNav();
  slider.append(linkedCtrls.ctrls["prev"].elm, currentElm, linkedCtrls.ctrls["next"].elm);
 
 }
@@ -135,17 +171,29 @@ function linkedElm(distantState){
   elm.append(...linkedAuthor);
   return elm;
 }
+
+function toggleDistantLandmark(hasLinks){
+
+  var hidden = distantLandmark.style.display == "none";
+  if(hasLinks && hidden){
+    fadeIn(distantLandmark);
+  }else if(!hasLinks && !hidden){
+    fadeOut(distantLandmark);
+  }
+}
 function setLinkedItems(threadData) {
 
+
   if (threadData != null && threadData.linked.length) {
-    var contents = [];
     var indexes = [];
     var done = [];
     var promises = [];
-    threadData.linked.forEach((item) => {
-      if(item.url){
-         var prc =  resolveState(item.url, item.id).then((distantState) => {
+    threadData.linked.forEach((url) => {
+      if(url){
+        var extract = extractId(url);
+         var prc = resolveState(extract.url, extract.id).then((distantState) => {
             var key = distantState.dataUrl+"#"+distantState.threadId;
+    
             if(!done.includes(key)){
               done.push(key);
               var elm = linkedElm(distantState);
@@ -153,7 +201,14 @@ function setLinkedItems(threadData) {
               indexes.push(elm);
             } else {
               elm.append(threadContent(resolveThreadData(distantState)));
-              contents.push(elm);
+              linked.push(elm);
+
+
+              if(linkedCtrls.count === 0){
+setFirstDistantContent();
+              }
+              linkedCtrls.count++;
+              toggleNavEnd(linkedCtrls); 
             }
           }
           }).catch(err => {
@@ -162,27 +217,22 @@ function setLinkedItems(threadData) {
           promises.push(prc);
     }
     });
-    return Promise.all(promises).then(()=>{
+   Promise.all(promises).then(()=>{
      
-      if(!contents.length && !indexes.length){
-        linked = [noLink()];
-      } else {
-        linked = contents.concat(indexes);
-      }
+      if(indexes.length){
+        linked = linked.concat(indexes);
+        if(linkedCtrls.count === 0){
+          setFirstDistantContent();
+        }
+        linkedCtrls.count = linked.length;
+        toggleNavEnd(linkedCtrls); 
+      } 
      
     });
   
-  } 
-   return Promise.resolve(noLink()).then((elm)=> {
-    linked = [elm];
-   });
+  }
 }
 
-function noLink(){
-  var elm = getElm("DIV");
-  elm.textContent = "...";
-  return elm;
-}
 
 function threadContent(threadData) {
   var dv = getElm("DIV", "nx-content");
@@ -216,6 +266,8 @@ function threadFieldText(threadData, ref = []) {
      
       if(ref.includes("timestamp") && data.includes('T')){
 data = data.replace('T'," ");
+      }else if(["description", "main", "aside", "caption"].includes(ref[ref.length-1])){
+        data = convertLineBreaks(data);
       }
       return data;
     }
