@@ -43,7 +43,7 @@ export function charLimits(catg) {
       return true;
     }
 
-    logErr("Invalid media type", type);
+    logErr("Invalid media type", mediaType);
     return false;
   }
 
