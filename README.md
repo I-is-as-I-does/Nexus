@@ -11,9 +11,9 @@ Editor: [nexus-dock.github.io/instance/?new](https://nexus-dock.github.io/instan
 Apache starter kit: [I-is-as-I-does/Nexus-Apache-starter](https://github.com/I-is-as-I-does/Nexus-Apache-starter)  
 GitHub Pages starter kit: [I-is-as-I-does/Nexus-Github-starter](https://github.com/I-is-as-I-does/Nexus-Github-starter)
 
-New!
-Toolkit repository for Nexus related apps: [I-is-as-I-does/Nexus Core](https://github.com/I-is-as-I-does/Nexus-Core)
-Nexus Folio, reader-only Vue app: [I-is-as-I-does/Nexus-Folio](https://github.com/I-is-as-I-does/Nexus-Folio)
+New!  
+Toolkit repository for Nexus related apps: [I-is-as-I-does/Nexus Core](https://github.com/I-is-as-I-does/Nexus-Core)  
+Nexus Folio, reader-only Vue app: [I-is-as-I-does/Nexus-Folio](https://github.com/I-is-as-I-does/Nexus-Folio)  
 
 ## App Status
 
