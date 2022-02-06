@@ -1,11 +1,11 @@
 /*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
-import { splitFlap } from "../libr/Valva/Valva.js";
-import { getErr } from "../core/logs/NxLog.js";
-import { isCssLoaded } from "../core/load/NxStyle.js";
-import { getCurrentState, registerUpdateEvt } from "../core/state/NxUpdate.js";
-import { registerTranslElm } from "../core/transl/NxElmTranslate.js";
-import { getTxt } from "../core/transl/NxCoreTranslate.js";
-import { appUrl } from "../core/validt/NxSpecs.js";
+import { splitFlap } from "@i-is-as-i-does/valva/src/modules/aliases.js";
+import { getErr } from "@i-is-as-i-does/nexus-core/src/logs/NxLog.js";
+import { isCssLoaded } from "@i-is-as-i-does/nexus-core/src/load/NxStyle.js";
+import { getCurrentState, registerUpdateEvt } from "../NxState.js";
+import { registerTranslElm } from "@i-is-as-i-does/nexus-core/src/transl/NxElmTranslate.js";
+import { getTxt } from "@i-is-as-i-does/nexus-core/src/transl/NxCoreTranslate.js";
+import { appUrl } from "@i-is-as-i-does/nexus-core/src/validt/NxSpecs.js";
 
 
 function resolveThreadTitle(state) {

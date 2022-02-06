@@ -5,11 +5,17 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack"
+    
   },
   "keywords": [],
   "author": "I-is-as-I-does",
   "license": "AGPLv3",
   "description": "",
+  "dependencies": {
+    "@i-is-as-i-does/jack-js": "^1.0.10",
+    "@i-is-as-i-does/nexus-core": "^2.0.16",
+    "@i-is-as-i-does/valva": "^1.2.0"
+  },
   "devDependencies": {
     "banner-plugin": "^1.0.10",
     "webpack": "^5.64.2",

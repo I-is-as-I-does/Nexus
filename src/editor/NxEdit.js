@@ -16,9 +16,9 @@ import {
   insertDiversion,
   replaceDiversion,
   splitFlap,
-} from "../libr/Valva/Valva.js";
-import { randomString } from "../libr/Jack/Help.js";
-import { getBuffertime, registerUpdateEvt, triggerUpdate } from "../core/state/NxUpdate.js";
+} from "@i-is-as-i-does/valva/src/modules/aliases.js";
+import { randomString } from "@i-is-as-i-does/jack-js/src/modules/Help.js";
+import { getBuffertime, registerUpdateEvt, triggerUpdate } from "../NxState.js";
 
 import { getTxt } from "../core/transl/NxCoreTranslate.js";
 import { getStoredEditData, registerEditData } from "../core/storg/NxMemory.js";

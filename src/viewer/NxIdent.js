@@ -1,20 +1,31 @@
 /*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
-import { splitFlap } from "../libr/Valva/Valva.js";
-import { registerUpdateEvt, triggerUpdate } from "../core/state/NxUpdate.js";
-import { authorMiniUrl, isThreadContentUnseen } from "../core/storg/NxMemory.js";
+import { splitFlap } from "@i-is-as-i-does/valva/src/modules/aliases.js";
+import { registerUpdateEvt, triggerUpdate, isStateUnseen } from "../NxState.js";
 import { baseViewLink, getElm, setToggleOnDisplay } from "./NxCommons.js";
+import { getStoredItem, storeItem } from '@i-is-as-i-does/nexus-core/src/storg/NxStorage.js'
+import { miniUrl } from "@i-is-as-i-does/jack-js/src/modules/Web.js";
+
+var urlStore = {}
+
+function authorMiniUrl(authorUrl) {
+  var url = getStoredItem(authorUrl,"local",urlStore, false);
+  if(!url){
+    url = miniUrl(authorUrl);
+    storeItem(authorUrl, url, "local", urlStore,false);
+  }
+  return url;
+}
+
 
 function toggleUnseen(viewlk, state) {
   if (viewlk.classList.contains("nx-on-display")) {
     viewlk.classList.remove("nx-unseen");
     viewlk.lastChild.textContent = "";
-  } else if (isThreadContentUnseen(state)) {
+  } else if (isStateUnseen(state)) {
     viewlk.classList.add("nx-unseen");
     viewlk.lastChild.textContent = "*";
   }
 }
-
-
 
 export function authorHandle(state, update = false) {
   var hnd = getElm("SPAN", "nx-handle");

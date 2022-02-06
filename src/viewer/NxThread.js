@@ -1,7 +1,7 @@
 /*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
-import { isNonEmptyStr } from "../libr/Jack/Check.js";
-import {easeOut, fadeIn, fadeOut, insertDiversion, replaceDiversion } from "../libr/Valva/Valva.js";
-import { registerUpdateEvt, resolveState } from "../core/state/NxUpdate.js";
+import { isNonEmptyStr } from "@i-is-as-i-does/jack-js/src/modules/Check.js";
+import {easeOut, fadeIn, fadeOut, insertDiversion, replaceDiversion } from "@i-is-as-i-does/valva/src/modules/aliases.js";
+import { registerUpdateEvt, resolveState } from "../NxState.js";
 import {
   authorIndexLink,
   authorUrl,
@@ -9,8 +9,8 @@ import {
 } from "./NxIdent.js";
 import { mediaElm } from "./NxMedia.js";
 import { blockWrap, convertLineBreaks, getElm,  landmarkElm,  setHistoryControls,  threadTitleElm, toggleNavEnd } from "./NxCommons.js";
-import { consoleLog } from "../core/logs/NxLog.js";
-import { extractId } from "../core/validt/NxStamper.js";
+import { logErr } from "@i-is-as-i-does/nexus-core/src/logs/NxLog.js";
+import { splitUrlAndId } from "@i-is-as-i-does/nexus-core/src/validt/NxStamper.js";
 
 var currentElm;
 var descrpElm;
@@ -190,7 +190,7 @@ function setLinkedItems(threadData) {
     var promises = [];
     threadData.linked.forEach((url) => {
       if(url){
-        var extract = extractId(url);
+        var extract = splitUrlAndId(url);
          var prc = resolveState(extract.url, extract.id).then((distantState) => {
             var key = distantState.dataUrl+"#"+distantState.threadId;
     
@@ -205,14 +205,14 @@ function setLinkedItems(threadData) {
 
 
               if(linkedCtrls.count === 0){
-setFirstDistantContent();
+            setFirstDistantContent();
               }
               linkedCtrls.count++;
               toggleNavEnd(linkedCtrls); 
             }
           }
           }).catch(err => {
-            consoleLog(err);
+            logErr(err.message);
           });
           promises.push(prc);
     }

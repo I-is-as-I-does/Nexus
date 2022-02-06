@@ -1,5 +1,5 @@
 /*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
-import { escapeRegExp, replaceDiacritics } from "../libr/Jack/Help.js";
+import { escapeRegExp, replaceDiacritics } from "@i-is-as-i-does/jack-js/src/modules/Help.js";
 import { getSrcData } from "../core/load/NxData.js";
 import { selectDropDown } from "../viewer/NxCommons.js";
 import { urlPattern } from "../core/validt/NxSpecs.js";

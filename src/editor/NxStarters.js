@@ -1,5 +1,5 @@
 /*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
-import { randomInt, randomString } from "../libr/Jack/Help.js";
+import { randomInt, randomString } from "@i-is-as-i-does/jack-js/src/modules/Help.js";
 import { appUrl } from "../core/validt/NxSpecs.js";
 
 

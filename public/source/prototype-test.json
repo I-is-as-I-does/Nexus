@@ -1,0 +1,374 @@
+{
+    "nexus": "https://nexus-dock.github.io/",
+    "author": {
+        "handle": "Prototype",
+        "about": "I'm a paragraph\n about \nthe \nauthor, \ndah<script>alert('Boo!');</script>",
+        "url": "https://nexus-dock.github.io/"
+    },
+    "threads": [
+        {
+            "id": "Thread-I",
+            "title": "I'm a Thread Title",
+            "description": "Thread description comes here.",
+            "content": {
+                "timestamp": "2021-12-12T00:12",
+                "main": "Main field of the thread content.",
+                "aside": "Aside field of the thread content.",
+                "media": {
+                    "url": "https://en.wikipedia.org/wiki/Special:Random",
+                    "type": "page",
+                    "caption": "Caption field"
+                }
+            },
+            "linked": ["http://localhost:8080/nexus/source/limits-test.json#lots-of-lots"]
+        },
+        {
+            "id": "Self-linking-Test",
+            "title": "Self Linking Test",
+            "description": "self linking test is self linking test",
+            "content": {
+                "timestamp": "2021-12-12T00:12",
+                "main": "Much self linking",
+                "aside": "Self linked threads can be excluded by client",
+                "media": {
+                    "url": "",
+                    "type": "",
+                    "caption": ""
+                }
+            },
+            "linked": [
+                "http://localhost:8080/nexus/source/prototype-test.json#lots-of-linked-test"
+            ]
+        },
+        {
+            "id": "bad-links-Test",
+            "title": "Bad Links Test",
+            "description": "bad link test is bad link test",
+            "content": {
+                "timestamp": "2021-12-12T00:12",
+                "main": "Much bad link",
+                "aside": "",
+                "media": {
+                    "url": "",
+                    "type": "",
+                    "caption": ""
+                }
+            },
+            "linked": [
+                "http://localhost:0000/nexus/source/prototype-test.json#lots-of-linked-test"
+            ]
+        },
+        {
+            "id": "lots-of-linked-test",
+            "title": "Lots of Linked Threads Test and",
+            "description": "lots of linked threads test is lots of linked threads test",
+            "content": {
+                "timestamp": "2021-12-12T00:12",
+                "main": "Much linked threads test",
+                "aside": "",
+                "media": {
+                    "url": "",
+                    "type": "",
+                    "caption": ""
+                }
+            },
+            "linked": [
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-2",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-3",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-4",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-5",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-6",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-7",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-8",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-9",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-10",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-11",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-12",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-13",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-14",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-15",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-16",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-17",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-18",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-19",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-20",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-21",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-22",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-23",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-24",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-25",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-26",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-27",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-28",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-29",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-30",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-31",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-32",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-33",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-34",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-35",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-36",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-37",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-38",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-39",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-40",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-41",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-42",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-43",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-44",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-45",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-46",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-47",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-48",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-49",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-50",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-51",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-52",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-53",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-54",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-55",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-56",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-57",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-58",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-59",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-60",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-61",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-62",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-63",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-64",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-65",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-66",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-67",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-68",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-69",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-70",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-71",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-72",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-73",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-74",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-75",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-76",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-77",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-78",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-79",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-80",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-81",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-82",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-83",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-84",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-85",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-86",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-87",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-88",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-89",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-90",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-91",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-92",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-93",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-94",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-95",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-96",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-97",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-98",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-99",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-100",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-101",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-102",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-103",
+                "http://localhost:8080/nexus/source/limits-test.json#lots-of-lots-104"
+            ]
+        },
+        {
+            "id": "img-test",
+            "title": "Image Test Thread",
+            "description": "img test is img test",
+            "content": {
+                "timestamp": "2021-12-12T00:12",
+                "main": "Much img test",
+                "aside": "",
+                "media": {
+                    "url": "http://localhost:8080/nexus/media/test-image.gif",
+                    "type": "image",
+                    "caption": "such img"
+                }
+            },
+            "linked": []
+        },
+        {
+            "id": "audio-test",
+            "title": "Audio Test Thread",
+            "description": "audio test is audio test",
+            "content": {
+                "timestamp": "2021-12-12T00:12",
+                "main": "Much audio test",
+                "aside": "",
+                "media": {
+                    "url": "http://localhost:8080/nexus/media/test-audio.mp3",
+                    "type": "audio",
+                    "caption": "such audio"
+                }
+            },
+            "linked": []
+        },
+        {
+            "id": "video-test",
+            "title": "Video Test Thread",
+            "description": "video test is video test",
+            "content": {
+                "timestamp": "2021-12-12T00:12",
+                "main": "Much video test",
+                "aside": "",
+                "media": {
+                    "url": "http://localhost:8080/nexus/media/test-video.mp4",
+                    "type": "video",
+                    "caption": "such video"
+                }
+            },
+            "linked": []
+        },
+        {
+            "id": "youtube-test",
+            "title": "Youtube Test Thread",
+            "description": "youtube test is youtube test",
+            "content": {
+                "timestamp": "2021-12-12T00:12",
+                "main": "Much youtube test",
+                "aside": "",
+                "media": {
+                    "url": "https://www.youtube.com/watch?v=hLGGBmRdDvA",
+                    "type": "youtube",
+                    "caption": "such youtube"
+                }
+            },
+            "linked": []
+        },
+        {
+            "id": "soundcloud-test",
+            "title": "Soundcloud Test Thread",
+            "description": "soundcloud test is soundcloud test",
+            "content": {
+                "timestamp": "2021-12-12T00:12",
+                "main": "Much soundcloud test",
+                "aside": "",
+                "media": {
+                    "url": "https://soundcloud.com/user-837989009/levels-of-detail-0",
+                    "type": "soundcloud",
+                    "caption": "such soundcloud"
+                }
+            },
+            "linked": []
+        },
+        {
+            "id": "vimeo-test",
+            "title": "Vimeo Test Thread",
+            "description": "vimeo test is vimeo test",
+            "content": {
+                "timestamp": "2021-12-12T00:12",
+                "main": "Much vimeo test",
+                "aside": "",
+                "media": {
+                    "url": "https://vimeo.com/149493636",
+                    "type": "vimeo",
+                    "caption": "such vimeo"
+                }
+            },
+            "linked": []
+        },
+        {
+            "id": "img-fail-test",
+            "title": "Image Fail Test Thread",
+            "description": "img fail test is img fail test",
+            "content": {
+                "timestamp": "2021-12-12T00:12",
+                "main": "Much img fail test",
+                "aside": "",
+                "media": {
+                    "url": "http://localhost:8080/nexus/media/no-no.png",
+                    "type": "image",
+                    "caption": "such img fail"
+                }
+            },
+            "linked": []
+        },
+        {
+            "id": "audio-fail-test",
+            "title": "Audio Fail Test Thread",
+            "description": "audio fail test is audio fail test",
+            "content": {
+                "timestamp": "2021-12-12T00:12",
+                "main": "Much audio fail test",
+                "aside": "",
+                "media": {
+                    "url": "http://localhost:8080/nexus/media/no-no.mp3",
+                    "type": "audio",
+                    "caption": "such audio fail"
+                }
+            },
+            "linked": []
+        },
+        {
+            "id": "video-fail-test",
+            "title": "Video Fail Test Thread",
+            "description": "video fail test is video fail test",
+            "content": {
+                "timestamp": "2021-12-12T00:12",
+                "main": "Much video fail test",
+                "aside": "",
+                "media": {
+                    "url": "http://localhost:8080/nexus/media/no-no.mp4",
+                    "type": "image",
+                    "caption": "such video fail"
+                }
+            },
+            "linked": []
+        },
+        {
+            "id": "oembed-fail-test",
+            "title": "Oembed Fail Test Thread",
+            "description": "oembed fail test is oembed fail test",
+            "content": {
+                "timestamp": "2021-12-12T00:12",
+                "main": "Much oembed fail test",
+                "aside": "",
+                "media": {
+                    "url": "https://www.youtube.com/no-no",
+                    "type": "youtube",
+                    "caption": "such oembed fail"
+                }
+            },
+            "linked": []
+        },
+        {
+            "id": "wrong-video-type-test",
+            "title": "Wrong Video Type Test",
+            "description": "type 'video' will actually accepts audio files",
+            "content": {
+                "timestamp": "2021-12-12T00:12",
+                "main": "Much resiliency",
+                "aside": "",
+                "media": {
+                    "url": "http://localhost:8080/nexus/media/test-audio.mp3",
+                    "type": "video",
+                    "caption": "video type can play audio"
+                }
+            },
+            "linked": []
+        },
+        {
+            "id": "wrong-media-type-test",
+            "title": "Wrong Media Type Test",
+            "description": "wrong media type test is wrong media type test",
+            "content": {
+                "timestamp": "2021-12-12T00:12",
+                "main": "Much wrong media type",
+                "aside": "",
+                "media": {
+                    "url": "http://localhost:8080/nexus/media/test-image.gif",
+                    "type": "video",
+                    "caption": "such media type fail"
+                }
+            },
+            "linked": []
+        }
+    ]
+}
