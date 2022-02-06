@@ -2,8 +2,8 @@
 import { getErr } from "@i-is-as-i-does/nexus-core/src/logs/NxLog.js";
 import { isCssLoaded } from "@i-is-as-i-does/nexus-core/src/load/NxStyle.js";
 import { getCurrentState, registerUpdateEvt } from "../browser/NxState.js";
-import { registerTranslElm } from "@i-is-as-i-does/nexus-core/src/transl/NxElmTranslate.js";
-import { getTxt } from "@i-is-as-i-does/nexus-core/src/transl/NxCoreTranslate.js";
+import { registerTranslElm, triggerTranslate } from "@i-is-as-i-does/nexus-core/src/transl/NxElmTranslate.js";
+import { getAvailableLangs, getLang, getTxt } from "@i-is-as-i-does/nexus-core/src/transl/NxCoreTranslate.js";
 import { appUrl } from "@i-is-as-i-does/nexus-core/src/validt/NxSpecs.js";
 import { splitOnLineBreaks } from "@i-is-as-i-does/jack-js/src/modules/Help.js";
 import { splitFlap } from "@i-is-as-i-does/valva/src/legacy/Valva-v1.js";
@@ -25,11 +25,12 @@ function toggleOnDisplay(viewlk, givenState, newState) {
   }
 }
 
-
-function appHeader() {
-  var header = getElm('HEADER');
-  header.append(appLink());
-  return header;
+function langDropDown() {
+  var toggle = getElm('P');
+  toggle.textContent = getLang()
+  return selectDropDown(getAvailableLangs(), toggle, function(nlang){
+    triggerTranslate(nlang);
+  }, "nx-lang-switch");
 }
 
 
@@ -49,6 +50,21 @@ main.append(...serviceElms);
 return main;
 }
 
+
+
+export function appHeader() {
+  var header = getElm('HEADER');
+  header.append(appLink());
+  return header;
+}
+
+export function appHeaderWithLang() {
+  var header = appHeader()
+  header.append(langDropDown());
+  return header;
+}
+
+
 export function getElm(tag, classList) {
   var elm = document.createElement(tag);
   if (classList) {
@@ -57,9 +73,9 @@ export function getElm(tag, classList) {
   return elm;
 }
 
-export function instanceWrap(serviceElms){
+export function instanceWrap(appHeader, serviceElms){
   var inst = getElm("DIV", "nx-instance");
-  inst.append(appHeader(), appMain(serviceElms));
+  inst.append(appHeader, appMain(serviceElms));
   return inst;
 }
 
@@ -270,20 +286,6 @@ export function threadTitleElm(state, update = false) {
   }
 
   return sp;
-}
-
-
-export function viewerInstance(state){
-  var indexPart = getElm("DIV");
-  indexPart.append(indexBlock(state));
-  var threadPart = getElm("DIV");
-  threadPart.append(...threadBlocks(state));
-  
-  return serviceWrap
-([appBlock(), historyBlock(state)], [
-   indexPart,
-   threadPart
-   ], [sourceBlock(state)]);
 }
 
 export function lines(text) {

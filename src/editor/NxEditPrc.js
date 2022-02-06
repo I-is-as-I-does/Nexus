@@ -1,9 +1,8 @@
-/*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
+/*! Nexus | (c) 2021-22 I-is-as-I-does | AGPLv3 license */
 import { escapeRegExp, replaceDiacritics } from "@i-is-as-i-does/jack-js/src/modules/Help.js";
-import { getSrcData } from "../core/load/NxData.js";
+import { getSrcData, getThreadsList } from "@i-is-as-i-does/nexus-core/src/load/NxSrc.js";
 import { selectDropDown } from "../viewer/NxCommons.js";
-import { urlPattern } from "../core/validt/NxSpecs.js";
-
+import { urlPattern } from "@i-is-as-i-does/nexus-core/src/validt/NxSpecs.js";
 
 const providers = ["youtube", "vimeo", "soundcloud"];
 const guessMap = {
@@ -32,24 +31,13 @@ export function convertToId(title) {
     return replaceDiacritics(title.trim().replace(/[\s_]/, "-"));
   }
 
-  
-
-export function updateDistantDropdown(inputs, elms, url, valid){
+  /*
+export function updateDistantDropdown(input, url, valid){
  
-    var prc = function(items = []){
-  
-      var id = inputs.id.value;
-      if(!id || !items.includes(id)){
-        inputs.id.value = '/';
-      }
-
-        items.unshift('/');
-            
-      inputs.id.pattern = "("+items.join("|")+")";
-     
-      var ndropdown = selectDropDown(items,inputs.id,null,"nx-edit-linked-id");
-      elms.id.lastChild.replaceWith(ndropdown);
-  
+    var prc = function(items = []){  
+      var ndropdown = selectDropDown(items,input,null,"nx-edit-select-linked");
+     // input.nextSibling.replaceWith(ndropdown.lastChild);
+      console.log()
     };
  
     if(!url || !valid){
@@ -57,14 +45,13 @@ export function updateDistantDropdown(inputs, elms, url, valid){
       return;
       }
     getSrcData(url).then((data)=> {
-
-      prc(Array.from(data.index));
+      prc(getThreadsList(data));
     }).catch(() => {
-      inputs.url.pattern = urlPattern+"(?<!"+escapeRegExp(url)+")";
-      inputs.url.dispatchEvent(new window.Event('change'));
+      input.pattern = urlPattern+"(?<!"+escapeRegExp(url)+")";
+      input.dispatchEvent(new window.Event('change'));
     });
   }
-
+*/
   
   export function newState(data, url = "nexus-tmp", id = "/", idx = -1){
     return {

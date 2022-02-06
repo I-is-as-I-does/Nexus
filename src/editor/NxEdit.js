@@ -1,5 +1,5 @@
 /*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
-import { charMinMax, idPattern, distantIdPattern, supportedMediaTypes, urlPattern } from "../core/validt/NxSpecs.js";
+import { charMinMax, idPattern, supportedMediaTypes, urlPattern } from "@i-is-as-i-does/nexus-core/src/validt/NxSpecs.js";
 import {
   landmarkElm,
   baseViewLink,
@@ -20,20 +20,20 @@ import {
 import { randomString } from "@i-is-as-i-does/jack-js/src/modules/Help.js";
 import { getBuffertime, registerUpdateEvt, triggerUpdate } from "../browser/NxState.js";
 
-import { getTxt } from "../core/transl/NxCoreTranslate.js";
-import { getStoredEditData, registerEditData } from "../core/storg/NxMemory.js";
-import { validData } from "../core/validt/NxStamper.js";
-import { getHost } from "../core/base/NxContainer.js";
+import { getTxt } from "@i-is-as-i-does/nexus-core/src/transl/NxCoreTranslate.js";
+import { getStoredEditData, registerEditData } from "@i-is-as-i-does/nexus-core/src/storg/NxMemory.js";
+import { validData } from "@i-is-as-i-does/nexus-core/src/validt/NxStamper.js";
 import { newData, newThread } from "./NxStarters.js";
-import { loadSrcFile } from "../core/load/NxData.js";
+import { getThreadsList, loadSrcFile } from "@i-is-as-i-does/nexus-core/src/load/NxSrc.js";
 import { dateInput, baseLabel, textareaInput, textInput, invalidSp, deleteLinkBtn, addBtn } from "./NxEditComps.js";
-import { convertToId, updateDistantDropdown, newState, resolveMediaType } from "./NxEditPrc.js";
-import { getQuery } from "../core/base/NxOptions.js";
+import { convertToId, newState, resolveMediaType } from "./NxEditPrc.js";
+import { getQuery } from "@i-is-as-i-does/nexus-core/src/base/NxHost.js";
+import { logErr } from "@i-is-as-i-does/nexus-core/src/logs/NxLog";
 
-
+var hostElm
 const editBuffer = getBuffertime();
 const editHistoryMax = 10;
-
+var editMenu
 var editState = {
   dataUrl: "nexus-tmp",
   srcData: null,
@@ -221,26 +221,9 @@ function addThreadBtn() {
 
 function appendLinkInputs(form, idx, i) {
   var linkwrap = getElm("DIV", "nx-edit-distant-link");
-  var elms = { url: null, list: getElm('DIV', 'nx-distant-ids') };
-  var inputs = { url: null };
-  elms["url"] = inputElm(["threads", idx, "linked", i, "url"], function (val, valid) {
-    updateDistantDropdown(inputs, elms, val, valid);
-  }, inputs);
+  var elm = inputElm(["threads", idx, "linked", i]);
 
-  Object.values(elms).forEach((elm) => {
-    if (elm) {
-
-      insertDiversion(
-        linkwrap,
-        elm,
-        false,
-        true,
-        200
-      );
-
-    }
-  });
-
+  insertDiversion(linkwrap,elm,false,true,200);
 
   var dltBtn = deleteLinkBtn();
   var delwrap = getElm('DIV', 'nx-distant-link-action');
@@ -253,7 +236,7 @@ function appendLinkInputs(form, idx, i) {
           linkwrap.remove();
         });
       } else {
-        if (i == editState.srcData.threads[idx].linked.length - 1) {
+        if (i === editState.srcData.threads[idx].linked.length - 1) {
           insertDiversion(form, linkwrap, false, true, 200);
         } else {
           var nextSibling = form.childNodes[i];
@@ -273,19 +256,19 @@ function threadDistantForm(idx, id) {
 
   var linked = editState.srcData.threads[idx].linked;
 
-  if (linked.length) {
-    for (var i = 0; i < linked.length; i++) {
-      appendLinkInputs(form, idx, i);
-    }
+if (linked.length) {
+  for (var i = 0; i < linked.length; i++) {
+  //  appendLinkInputs(form, idx, i);
   }
-  var formCnt = getElm("DIV");
-  var addBtnElm = addBtn();
-  addBtnElm.addEventListener("click", () => {
-    var idx = editState.srcData.index.indexOf(id);
-    var i = editState.srcData.threads[idx].linked.length;
-    editState.srcData.threads[idx].linked.push("https://");
-    appendLinkInputs(form, idx, i);
-  });
+}
+var formCnt = getElm("DIV");
+var addBtnElm = addBtn();
+addBtnElm.addEventListener("click", () => {
+  var idx = editState.srcData.index.indexOf(id);
+  var i = editState.srcData.threads[idx].linked.length;
+  editState.srcData.threads[idx].linked.push("https://");
+  appendLinkInputs(form, idx, i);
+});
 
   formCnt.append(landmarkElm("linked threads"),form, addBtnElm);
   return formCnt;
@@ -370,8 +353,6 @@ function threadElms(idx, id) {
 }
 
 
-
-
 function setLastAction(callback) {
   if (actCtrls.position != actCtrls.count - 1) {
     lastAction.splice(actCtrls.position);
@@ -385,6 +366,7 @@ function setLastAction(callback) {
 
   lastAction.push(callback);
   actCtrls.position = actCtrls.count - 1;
+
   toggleNavEnd(actCtrls);
   saveBtn.disabled = false;
 }
@@ -500,12 +482,14 @@ function setLinkedValue(ref, value) {
   if (!editState.srcData.threads[ref[1]].linked) {
     editState.srcData.threads[ref[1]].linked = [];
   } else if (
-    typeof editState.srcData.threads[ref[1]].linked[ref[3]] === "undefined"
+    editState.srcData.threads[ref[1]].linked.indexOf(ref[3]) === -1
   ) {
-    editState.srcData.threads[ref[1]].linked[ref[3]] = {};
+    editState.srcData.threads[ref[1]].linked.push(value)
+  } else {
+    editState.srcData.threads[ref[1]].linked[ref[3]] = value;
   }
-  editState.srcData.threads[ref[1]].linked[ref[3]][ref[4]] = value;
-}
+  }
+ 
 
 function setNewValue(ref, value) {
 
@@ -542,7 +526,7 @@ function fieldValue(ref) {
       }
       return editState.srcData.threads[ref[1]].content.media[ref[4]];
     }
-    return editState.srcData.threads[ref[1]].linked[ref[3]][ref[4]];
+    return editState.srcData.threads[ref[1]].linked[ref[3]];
   }
   return "";
 }
@@ -552,11 +536,12 @@ function fieldValue(ref) {
 function inputElm(ref, callback = null, store = null) {
   var val = fieldValue(ref);
 
-  var field = ref[ref.length - 1];
-  var parent = ref[ref.length - 2];
-  if (Number.isInteger(parent)) {
-    parent = ref[ref.length - 3];
+  var pos = ref.length - 1
+  if (Number.isInteger(ref[pos])) {
+    pos--
   }
+  var field = ref[pos];
+
   var inp;
   if (["about", "description", "main", "aside", "caption"].includes(field)) {
     inp = textareaInput(val);
@@ -570,27 +555,28 @@ function inputElm(ref, callback = null, store = null) {
   inp.id = hook;
   inp.name = hook;
   if (
-    ["handle", "title", "main", "id", "url", "type", "timestamp"].includes(field)
+    ["handle", "title", "main", "id", "url", "type", "timestamp", "linked"].includes(field)
   ) {
     inp.required = true;
   }
+  var ident = field
+  if(field === 'linked'){
+    ident = 'url'
+  }
 
-  var lb = baseLabel(field);
+  var lb = baseLabel(ident);
   var indc = getElm("SPAN", "nx-edit-indication");
   var fdbck = invalidSp();
   lb.append(indc, fdbck);
 
-  switch (field) {
+
+  switch (ident) {
     case "url":
       indc.textContent = "[http]";
       inp.pattern = urlPattern;
       break;
     case "id":
-      if (ref.includes('linked')) {
-        inp.pattern = distantIdPattern;
-      } else {
-        inp.pattern = idPattern;
-      }
+      inp.pattern = idPattern;
       break;
     case "type":
       inp.pattern = "(" + supportedMediaTypes.join("|") + ")";
@@ -608,19 +594,11 @@ function inputElm(ref, callback = null, store = null) {
     store[field] = inp;
   }
 
-  var wrap = getElm("DIV", "nx-edit-input nx-edit-" + parent + "-" + field);
+  var wrap = getElm("DIV", "nx-edit-input nx-edit-select-" + field);
   wrap.append(lb);
-  if (field == "type" || (field == "id" && ref[2] == "linked")) {
-
-    var items = [];
-    if (field == "type") {
-      items = supportedMediaTypes;
-    } else {
-      items = ['/'];
-      if (val != '/') {
-        items.push(val);
-      }
-    }
+  if (field === "type") {
+// || field === "linked"
+    var items = supportedMediaTypes;
     wrap.append(
       selectDropDown(items, inp, null, "nx-edit-" + ref[2] + "-" + field)
     );
@@ -761,7 +739,7 @@ function downloadBtn() {
     var anchor = getElm('A');
     anchor.setAttribute("href", dataStr);
     anchor.setAttribute("download", "nexus.json");
-    getHost().appendChild(anchor);
+    hostElm.appendChild(anchor);
     anchor.click();
     anchor.remove();
   });
@@ -842,8 +820,10 @@ function fileInput(){
   inp.accept = "application/json";
   inp.addEventListener('change', function (evt) {
     loadSrcFile(evt).then(data => {
-      resetData(data);
-    }).catch(() => {
+      data.index = getThreadsList(data)
+     resetData(data);
+    }).catch((err) => {
+      logErr(err.message)
       displayFeedback('Invalid source');
     })
   });
@@ -891,6 +871,7 @@ function editActions() {
 function setThreads(ease =false) {
 
   var items = editState.srcData.index;
+
   if (items.length) {
     for (var i = 0; i < items.length; i++) {
       setThread(i, items[i], ease);
@@ -931,6 +912,16 @@ function setThreadsForms() {
   setThreads();
 
 }
+function setEditMenu() {
+  editMenu= getElm("DIV", "nx-edit-menu");
+
+  editMenu.append(editNav(), editActions());
+  
+}
+
+export function getEditMenu(){
+  return editMenu
+}
 
 export function instanceSwitch(viewerInst, editInst) {
   instanceBtn = getElm("BUTTON", "nx-edit-switch");
@@ -953,19 +944,16 @@ export function instanceSwitch(viewerInst, editInst) {
 }
 
 
-export function editMenu() {
-  var dv = getElm("DIV", "nx-edit-menu");
 
-  dv.append(editNav(), editActions());
-  return dv;
-}
+export function setEditState(state, nxelm){
 
-export function setEditState(state){
+  hostElm = nxelm
   var url= "nexus-tmp";
   var data;
+
   if(getQuery("new")){
     data = newData();
-    state = {};
+    state = null;
   }  else {
 
   if(state.dataUrl){
@@ -981,7 +969,12 @@ export function setEditState(state){
   registerEditData(url, data);
   } 
   }
-  if(state.srcData !== null){
+
+  if(!data.index){
+    data.index = getThreadsList(data)
+  }
+
+  if(state !== null && state.srcData !== null){
     originData = JSON.stringify(state.srcData);
   } else {
     originData = JSON.stringify(data);
@@ -989,12 +982,14 @@ export function setEditState(state){
 
   var id = data.threads[0].id;
   var idx = 0;
-  if(state && state.threadId != '/' && data.index.includes(state.threadId)){
+
+  if(state && state.threadId !== '/' && data.index.includes(state.threadId)){
     id = state.threadId;
     idx = data.index.indexOf(state.threadId);
   }
 
  editState = newState(data, url, id, idx);
+ setEditMenu()
  setThreadsForms();
 
 }

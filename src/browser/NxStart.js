@@ -4,9 +4,9 @@ import { getQuery } from "@i-is-as-i-does/nexus-core/src/base/NxHost.js";
 import { setOriginLang } from "@i-is-as-i-does/nexus-core/src/transl/NxCoreTranslate.js";
 import { logErr } from "@i-is-as-i-does/nexus-core/src/logs/NxLog.js";
 import { dataToState, setOriginState } from './NxState.js'
-// import { editorElms } from "./editor/NxEditor.js";
+import { editorElms } from "./../editor/NxEditor.js";
 import { viewerElms } from "./../viewer/NxViewer.js";
-import { instanceWrap, errorPrgr } from "./../viewer/NxCommons.js";
+import { errorPrgr } from "./../viewer/NxCommons.js";
 import { appDefaultCss } from "./NxAppDefaults.js";
 
 
@@ -25,14 +25,13 @@ export function init(){
         var elm;
         seed.editMode = false
         if(getQuery("edit") || getQuery("new")){
-         // elms = editorElms(state);
-         seed.editMode = true
-         elm = viewerElms(seed);
+          seed.editMode = true
+         elm = editorElms(seed);
         } else {
          elm = viewerElms(seed);
         }
 
-      mountApp(seed.nxelm, instanceWrap(elm))
+      mountApp(seed.nxelm, elm)
 
     }).catch((err)=> {
       console.log(err)

@@ -1,24 +1,28 @@
 /*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
-import { getElm, serviceWrap } from "../viewer/NxCommons.js";
+import { appHeaderWithLang, getElm, instanceWrap, serviceWrap } from "../viewer/NxCommons.js";
 import { viewerElms } from "../viewer/NxViewer.js";
-import { editDistantBlock, editIndexBlock, editLocalBlock, editMenu, setEditState, instanceSwitch } from "./NxEdit.js";
+import { editDistantBlock, editIndexBlock, editLocalBlock, getEditMenu, setEditState, instanceSwitch } from "./NxEdit.js";
 
-export function editorElms(state){
-    setEditState(state);
+export function editorElms(seed){
 
-    var viewerInst = viewerElms(state)[0];
+    setEditState(seed.state, seed.nxelm);
+
+    var viewerInst = viewerElms(seed);
   
    var indexPart = getElm("DIV");
    indexPart.append(editIndexBlock());
    var threadPart = getElm("DIV");
    threadPart.append(editLocalBlock(),editDistantBlock());
    
-   var editInst = serviceWrap
-  ([editMenu()], [
+   var editInst = instanceWrap(appHeaderWithLang(),[serviceWrap
+  ([getEditMenu()], [
     indexPart,
     threadPart
-    ], [], "edit");
-  
-    return [editInst, instanceSwitch(viewerInst, editInst)];
+    ], [], "edit")]);
+
+    var editor = getElm('DIV','nx-editor')
+    editor.append(editInst, instanceSwitch(viewerInst, editInst))
+    
+    return editor
   }
   

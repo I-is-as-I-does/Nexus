@@ -1,6 +1,6 @@
 /*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
-import { getTxt } from "../core/transl/NxCoreTranslate.js";
-import { registerTranslElm } from "../core/transl/NxElmTranslate.js";
+import { getTxt } from "@i-is-as-i-does/nexus-core/src/transl/NxCoreTranslate.js";
+import { registerTranslElm } from "@i-is-as-i-does/nexus-core/src/transl/NxElmTranslate.js";
 import { getElm } from "../viewer/NxCommons.js";
 
   export function textInput(val) {

@@ -387,7 +387,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /*! Nexus | (c) 2021-22 I-is-as-I-does | AGPLv3 license */
 class Spinner {
-  constructor(spinContainer, spinStates = [], speed = 150) {
+  constructor(spinContainer, spinStates = [], speed = 100) {
     this.spinContainer = spinContainer
     if(!spinStates.length){
         spinStates = ["", "/", "–", "\\", "|"]
@@ -407,6 +407,7 @@ class Spinner {
     this.spinPosition = 0
     var f = window.setInterval(function(){
         if (this.spinPosition === -1) {
+            this.spinContainer.textContent = ''
             clearInterval(f)
           } else {
             this.spinContainer.textContent = this.spinStates[this.spinPosition]
@@ -968,6 +969,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var txts = _NxTranslations_js__WEBPACK_IMPORTED_MODULE_2__.NxTranslations
 var availableLangs = Object.keys(txts)
+availableLangs.push('en')
 
 var storedLang = (0,_storg_NxMemory_js__WEBPACK_IMPORTED_MODULE_1__.getStoredLang)()
 if (storedLang != null && !langIsAvailable(storedLang)) {

@@ -32,16 +32,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _i_is_as_i_does_nexus_core_src_transl_NxCoreTranslate_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/transl/NxCoreTranslate.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/transl/NxCoreTranslate.js");
 /* harmony import */ var _i_is_as_i_does_nexus_core_src_logs_NxLog_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/logs/NxLog.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/logs/NxLog.js");
 /* harmony import */ var _NxState_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./NxState.js */ "./src/browser/NxState.js");
-/* harmony import */ var _viewer_NxViewer_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./../viewer/NxViewer.js */ "./src/viewer/NxViewer.js");
-/* harmony import */ var _viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./../viewer/NxCommons.js */ "./src/viewer/NxCommons.js");
-/* harmony import */ var _NxAppDefaults_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./NxAppDefaults.js */ "./src/browser/NxAppDefaults.js");
+/* harmony import */ var _editor_NxEditor_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./../editor/NxEditor.js */ "./src/editor/NxEditor.js");
+/* harmony import */ var _viewer_NxViewer_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./../viewer/NxViewer.js */ "./src/viewer/NxViewer.js");
+/* harmony import */ var _viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./../viewer/NxCommons.js */ "./src/viewer/NxCommons.js");
+/* harmony import */ var _NxAppDefaults_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./NxAppDefaults.js */ "./src/browser/NxAppDefaults.js");
 /*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
 
 
 
 
 
-// import { editorElms } from "./editor/NxEditor.js";
+
 
 
 
@@ -55,26 +56,25 @@ function mountApp(nxElm, appElm){
 }
 
 function init(){
-    (0,_i_is_as_i_does_nexus_core_src_load_NxInit_js__WEBPACK_IMPORTED_MODULE_0__.initAll)({appDefaultLang: 'en', appDefaultCss: _NxAppDefaults_js__WEBPACK_IMPORTED_MODULE_7__.appDefaultCss}).then(seed => {
+    (0,_i_is_as_i_does_nexus_core_src_load_NxInit_js__WEBPACK_IMPORTED_MODULE_0__.initAll)({appDefaultLang: 'en', appDefaultCss: _NxAppDefaults_js__WEBPACK_IMPORTED_MODULE_8__.appDefaultCss}).then(seed => {
         (0,_i_is_as_i_does_nexus_core_src_transl_NxCoreTranslate_js__WEBPACK_IMPORTED_MODULE_2__.setOriginLang)(seed.request.lang)
         seed.state = (0,_NxState_js__WEBPACK_IMPORTED_MODULE_4__.dataToState)(seed.request.url, seed.request.id, seed.nxdata)
         ;(0,_NxState_js__WEBPACK_IMPORTED_MODULE_4__.setOriginState)(seed.state)
         var elm;
         seed.editMode = false
         if((0,_i_is_as_i_does_nexus_core_src_base_NxHost_js__WEBPACK_IMPORTED_MODULE_1__.getQuery)("edit") || (0,_i_is_as_i_does_nexus_core_src_base_NxHost_js__WEBPACK_IMPORTED_MODULE_1__.getQuery)("new")){
-         // elms = editorElms(state);
-         seed.editMode = true
-         elm = (0,_viewer_NxViewer_js__WEBPACK_IMPORTED_MODULE_5__.viewerElms)(seed);
+          seed.editMode = true
+         elm = (0,_editor_NxEditor_js__WEBPACK_IMPORTED_MODULE_5__.editorElms)(seed);
         } else {
-         elm = (0,_viewer_NxViewer_js__WEBPACK_IMPORTED_MODULE_5__.viewerElms)(seed);
+         elm = (0,_viewer_NxViewer_js__WEBPACK_IMPORTED_MODULE_6__.viewerElms)(seed);
         }
 
-      mountApp(seed.nxelm, (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_6__.instanceWrap)(elm))
+      mountApp(seed.nxelm, elm)
 
     }).catch((err)=> {
       console.log(err)
         ;(0,_i_is_as_i_does_nexus_core_src_logs_NxLog_js__WEBPACK_IMPORTED_MODULE_3__.logErr)(err.message);
-        mountApp((0,_i_is_as_i_does_nexus_core_src_load_NxInit_js__WEBPACK_IMPORTED_MODULE_0__.retrieveNxElm)(), (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_6__.errorPrgr)())
+        mountApp((0,_i_is_as_i_does_nexus_core_src_load_NxInit_js__WEBPACK_IMPORTED_MODULE_0__.retrieveNxElm)(), (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_7__.errorPrgr)())
       })
 }
 
@@ -249,6 +249,8 @@ function getBuffertime(){
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "appHeader": () => (/* binding */ appHeader),
+/* harmony export */   "appHeaderWithLang": () => (/* binding */ appHeaderWithLang),
 /* harmony export */   "getElm": () => (/* binding */ getElm),
 /* harmony export */   "instanceWrap": () => (/* binding */ instanceWrap),
 /* harmony export */   "serviceWrap": () => (/* binding */ serviceWrap),
@@ -261,7 +263,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "setToggleOnDisplay": () => (/* binding */ setToggleOnDisplay),
 /* harmony export */   "baseViewLink": () => (/* binding */ baseViewLink),
 /* harmony export */   "threadTitleElm": () => (/* binding */ threadTitleElm),
-/* harmony export */   "viewerInstance": () => (/* binding */ viewerInstance),
 /* harmony export */   "lines": () => (/* binding */ lines),
 /* harmony export */   "spinContainer": () => (/* binding */ spinContainer)
 /* harmony export */ });
@@ -300,11 +301,12 @@ function toggleOnDisplay(viewlk, givenState, newState) {
   }
 }
 
-
-function appHeader() {
-  var header = getElm('HEADER');
-  header.append(appLink());
-  return header;
+function langDropDown() {
+  var toggle = getElm('P');
+  toggle.textContent = (0,_i_is_as_i_does_nexus_core_src_transl_NxCoreTranslate_js__WEBPACK_IMPORTED_MODULE_4__.getLang)()
+  return selectDropDown((0,_i_is_as_i_does_nexus_core_src_transl_NxCoreTranslate_js__WEBPACK_IMPORTED_MODULE_4__.getAvailableLangs)(), toggle, function(nlang){
+    ;(0,_i_is_as_i_does_nexus_core_src_transl_NxElmTranslate_js__WEBPACK_IMPORTED_MODULE_3__.triggerTranslate)(nlang);
+  }, "nx-lang-switch");
 }
 
 
@@ -324,6 +326,21 @@ main.append(...serviceElms);
 return main;
 }
 
+
+
+function appHeader() {
+  var header = getElm('HEADER');
+  header.append(appLink());
+  return header;
+}
+
+function appHeaderWithLang() {
+  var header = appHeader()
+  header.append(langDropDown());
+  return header;
+}
+
+
 function getElm(tag, classList) {
   var elm = document.createElement(tag);
   if (classList) {
@@ -332,9 +349,9 @@ function getElm(tag, classList) {
   return elm;
 }
 
-function instanceWrap(serviceElms){
+function instanceWrap(appHeader, serviceElms){
   var inst = getElm("DIV", "nx-instance");
-  inst.append(appHeader(), appMain(serviceElms));
+  inst.append(appHeader, appMain(serviceElms));
   return inst;
 }
 
@@ -545,20 +562,6 @@ function threadTitleElm(state, update = false) {
   }
 
   return sp;
-}
-
-
-function viewerInstance(state){
-  var indexPart = getElm("DIV");
-  indexPart.append(indexBlock(state));
-  var threadPart = getElm("DIV");
-  threadPart.append(...threadBlocks(state));
-  
-  return serviceWrap
-([appBlock(), historyBlock(state)], [
-   indexPart,
-   threadPart
-   ], [sourceBlock(state)]);
 }
 
 function lines(text) {
@@ -1603,11 +1606,11 @@ __webpack_require__.r(__webpack_exports__);
 
 function viewerElms(seed){
 
-    return [(0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_2__.serviceWrap)
+    return (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_2__.instanceWrap)((0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_2__.appHeader)(), [(0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_2__.serviceWrap)
    ([(0,_NxHistory_js__WEBPACK_IMPORTED_MODULE_0__.historyBlock)(seed.state)], [
     (0,_NxIndex_js__WEBPACK_IMPORTED_MODULE_1__.mainIndexBlock)(seed.state),
     (0,_NxThread_js__WEBPACK_IMPORTED_MODULE_4__.mainThreadBlock)(seed.state)
-     ], [(0,_NxSource_js__WEBPACK_IMPORTED_MODULE_3__.sourceBlock)(seed.state, seed.styleUrl, seed.editMode)])];
+     ], [(0,_NxSource_js__WEBPACK_IMPORTED_MODULE_3__.sourceBlock)(seed.state, seed.styleUrl, seed.editMode)])]);
 }
 
 /***/ })
