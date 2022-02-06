@@ -16,9 +16,9 @@ import {
   insertDiversion,
   replaceDiversion,
   splitFlap,
-} from "@i-is-as-i-does/valva/src/modules/aliases.js";
+} from "@i-is-as-i-does/valva/src/legacy/Valva-v1.js";
 import { randomString } from "@i-is-as-i-does/jack-js/src/modules/Help.js";
-import { getBuffertime, registerUpdateEvt, triggerUpdate } from "../NxState.js";
+import { getBuffertime, registerUpdateEvt, triggerUpdate } from "../browser/NxState.js";
 
 import { getTxt } from "../core/transl/NxCoreTranslate.js";
 import { getStoredEditData, registerEditData } from "../core/storg/NxMemory.js";
@@ -857,9 +857,9 @@ function displayFeedback(msg) {
 if(feedbackrun){
   clearTimeout(feedbackrun);
 }
-    splitFlap(actionFdbck, txt, 20);
+    splitFlap(actionFdbck, txt, 25);
     feedbackrun = setTimeout(function () {
-      splitFlap(actionFdbck, "", 20);
+      splitFlap(actionFdbck, "",25);
     }, 2000 + (txt.length * 20));
 }
 

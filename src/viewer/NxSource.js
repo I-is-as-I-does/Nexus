@@ -1,13 +1,16 @@
 /*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
 import { copyToClipboard } from "@i-is-as-i-does/jack-js/src/modules/Stock.js";
-import { timedFadeToggle, easeOut, easeIn } from "@i-is-as-i-does/valva/src/modules/aliases.js";
+import { timedFadeToggle, easeOut, easeIn } from "@i-is-as-i-does/valva/src/legacy/Valva-v1.js";
 import { blockWrap, getElm } from "./NxCommons.js";
 import { registerTranslElm } from "@i-is-as-i-does/nexus-core/src/transl/NxElmTranslate.js";
-import { registerUpdateEvt } from "../NxState.js";
-import { getTxt } from "@i-is-as-i-does/nexus-core/src/transl/NxCoreTranslate.js";
+import { concatSrc, registerUpdateEvt } from "../browser/NxState.js";
+import { getLang } from "@i-is-as-i-does/nexus-core/src/transl/NxCoreTranslate.js";
+import { getSnippet } from "@i-is-as-i-does/nexus-core/src/data/NxSnippet.js";
+import { appDefaultCss, appIO } from "../browser/NxAppDefaults.js";
 
 var drawerElm = null;
 var editMode = false;
+var currentStyle = null
 
 function actionLink(action, text) {
   var lk = getElm("A", "nx-source-" + action);
@@ -15,6 +18,22 @@ function actionLink(action, text) {
   return lk;
 }
 
+function resolveSrc(state){
+  var src
+  if(editMode){
+    src = "#temp";
+  } else  {
+    src = concatSrc(state)
+  }
+  return src;
+}
+
+function linkContent(state) {
+  if(state.dataUrl){
+  return resolveSrc(state)
+}
+return "";
+}
 
 function toolTip(className, text) {
   var tooltip = getElm("SPAN", className);
@@ -25,33 +44,10 @@ function toolTip(className, text) {
   return tooltip;
 }
 
-function resolveSrc(state){
-  var src = state.dataUrl;
-  if(editMode){
-    src = "edit";
-  }
-  if(state.threadId !== "/"){
-    src += "#"+state.threadId;
-  }
-  
-  return src;
-}
-function instanceUrl(state){
-  var elm = getElm("INPUT", "nx-instance-url");
-  elm.type="text";
-  elm.value = resolveSrc(state);
-
-registerUpdateEvt(function (newState) {
-  elm.value = resolveSrc(newState);
-  });
-  return elm;
-}
-
-
 function toggleLink() {
   var text = "</>";
   var altText = "< />";
-  var lk = actionLink("drawer", text);
+  var lk = actionLink("snippets", text);
 
   lk.addEventListener("click", () => {
     if (lk.textContent == altText) {
@@ -73,14 +69,13 @@ function toggleLink() {
   return lk;
 }
 
+function linkSource(state){
+  return codeElm("json", textAreaElm(state, linkContent));
+}
 
-
-function linkBundle(state) {
+function snippetsBundle(state) {
   drawerElm = getElm("DIV", "nx-source-drawer");
-  var url = instanceUrl(state);
-  var copylk = copyLink(url);
-    drawerElm.append(url, copylk);
-
+  drawerElm.append(linkSource(state), embedSnippet(state));
   drawerElm.style.display = "none";
 
   var tgg = getElm("DIV", "nx-source-toggle");
@@ -90,24 +85,54 @@ function linkBundle(state) {
   return [tgg, drawerElm];
 }
 
+function textAreaElm(state, callback) {
+  var snpInp = getElm("TEXTAREA");
+  snpInp.spellcheck = false;
+  snpInp.textContent = callback(state);
 
-function copyLink(elm) {
+ registerUpdateEvt(function (newState) {
+    snpInp.textContent = callback(newState);
+  });
+  return snpInp;
+}
+
+function copyLink(snpElm) {
   var copyLk = actionLink("copy", "⧉");
-  var copyTooltip = toolTip("nx-source-copy-tooltip",getTxt("copied"));
+  var copyTooltip = toolTip("nx-source-copy-tooltip",'c/c');
   copyLk.append(copyTooltip);
 
   copyLk.addEventListener("click", () =>
-    copyToClipboard(elm.textContent, () => {
+    copyToClipboard(snpElm.textContent, () => {
       timedFadeToggle(copyTooltip, 1000);
     })
   );
   return copyLk;
 }
 
+function codeElm(name, elm) {
+  var snp = getElm("DIV", "nx-" + name + "-snippet");
+  snp.append(elm, copyLink(elm));
+  return snp;
+}
 
-export function sourceBlock(state, editionSource = false) {
+function embedSnippet(state) {
+  return codeElm("embed", textAreaElm(state, embedContent));
+}
+
+function embedContent(state) {
+
+  if(state.dataUrl){
+    return getSnippet(resolveSrc(state), currentStyle, appIO, getLang())
+  }
+  return "";
+}
+
+export function sourceBlock(state, currentStyleUrl, editionSource = false) {
   if(editionSource){
     editMode = true;
   }
-  return blockWrap("source", null, linkBundle(state), false);
+  if(currentStyleUrl !== appDefaultCss){
+    currentStyle = currentStyleUrl
+  }
+  return blockWrap("source", null, snippetsBundle(state), false);
 }

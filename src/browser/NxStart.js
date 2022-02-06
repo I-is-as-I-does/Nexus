@@ -5,10 +5,10 @@ import { setOriginLang } from "@i-is-as-i-does/nexus-core/src/transl/NxCoreTrans
 import { logErr } from "@i-is-as-i-does/nexus-core/src/logs/NxLog.js";
 import { dataToState, setOriginState } from './NxState.js'
 // import { editorElms } from "./editor/NxEditor.js";
-import { viewerElms } from "./viewer/NxViewer.js";
-import { instanceWrap, errorPrgr } from "./viewer/NxCommons.js";
+import { viewerElms } from "./../viewer/NxViewer.js";
+import { instanceWrap, errorPrgr } from "./../viewer/NxCommons.js";
+import { appDefaultCss } from "./NxAppDefaults.js";
 
-const appDefaultCss = 'https://cdn.jsdelivr.net/gh/I-is-as-I-does/Nexus@latest/dist/css/NexusI.min.css'
 
 function mountApp(nxElm, appElm){
     var host = document.createElement('DIV');
@@ -20,20 +20,22 @@ function mountApp(nxElm, appElm){
 export function init(){
     initAll({appDefaultLang: 'en', appDefaultCss: appDefaultCss}).then(seed => {
         setOriginLang(seed.request.lang)
-        var state = dataToState(seed.request.url, seed.request.id, seed.nxdata)
-        setOriginState(state)
+        seed.state = dataToState(seed.request.url, seed.request.id, seed.nxdata)
+        setOriginState(seed.state)
         var elm;
-        if(getQuery("edit")){
+        seed.editMode = false
+        if(getQuery("edit") || getQuery("new")){
          // elms = editorElms(state);
-         elm = viewerElms(state);
+         seed.editMode = true
+         elm = viewerElms(seed);
         } else {
-         // elms = viewerElms(state);
-         elm = errorPrgr()
+         elm = viewerElms(seed);
         }
 
-      // mountApp(seed.nxelm, instanceWrap(elm))
-      mountApp(seed.nxelm, elm)
+      mountApp(seed.nxelm, instanceWrap(elm))
+
     }).catch((err)=> {
+      console.log(err)
         logErr(err.message);
         mountApp(retrieveNxElm(), errorPrgr())
       })

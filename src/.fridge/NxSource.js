@@ -4,7 +4,7 @@ import { timedFadeToggle, easeOut, easeIn } from "../libr/Valva/Valva.js";
 import { blockWrap, getElm } from "./NxCommons.js";
 import { getOpt } from "../core/base/NxOptions.js";
 import { registerTranslElm } from "../core/transl/NxElmTranslate.js";
-import { registerUpdateEvt } from "../NxState.js";
+import { registerUpdateEvt } from "../browser/NxState.js";
 import { getLang, getTxt } from "../core/transl/NxCoreTranslate.js";
 import { defaultIO } from "../core/base/NxDefaults.js";
 

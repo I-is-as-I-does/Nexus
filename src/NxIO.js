@@ -1,5 +1,5 @@
 (function () { 
-    import('./NxStart.js').then(NxStart => {
+    import('./browser/NxStart.js').then(NxStart => {
         NxStart.init()
     })
   })();

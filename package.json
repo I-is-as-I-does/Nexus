@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack"
-    
+    "build:prod": "webpack --mode=production",
+    "build:dev": "webpack --mode=development"
   },
   "keywords": [],
   "author": "I-is-as-I-does",
@@ -13,7 +13,7 @@
   "description": "",
   "dependencies": {
     "@i-is-as-i-does/jack-js": "^1.0.10",
-    "@i-is-as-i-does/nexus-core": "^2.0.16",
+    "@i-is-as-i-does/nexus-core": "^2.1.0",
     "@i-is-as-i-does/valva": "^1.2.0"
   },
   "devDependencies": {

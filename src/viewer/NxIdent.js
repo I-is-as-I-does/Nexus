@@ -1,6 +1,6 @@
 /*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
-import { splitFlap } from "@i-is-as-i-does/valva/src/modules/aliases.js";
-import { registerUpdateEvt, triggerUpdate, isStateUnseen } from "../NxState.js";
+import { vSplitFlap } from "@i-is-as-i-does/valva/src/modules/transitions";
+import { registerUpdateEvt, triggerUpdate, isStateUnseen } from "../browser/NxState.js";
 import { baseViewLink, getElm, setToggleOnDisplay } from "./NxCommons.js";
 import { getStoredItem, storeItem } from '@i-is-as-i-does/nexus-core/src/storg/NxStorage.js'
 import { miniUrl } from "@i-is-as-i-does/jack-js/src/modules/Web.js";
@@ -34,7 +34,7 @@ export function authorHandle(state, update = false) {
 }
   if (update) {
    registerUpdateEvt(function (newState) {
-      splitFlap(hnd, newState.srcData.author.handle, 20);
+      vSplitFlap(hnd, newState.srcData.author.handle, 25);
     }, true);
   }
   return hnd;
@@ -67,7 +67,7 @@ export function authorUrl(state, update = false) {
   if (update) {
    registerUpdateEvt(function (newState) {
       urla.href = newState.srcData.author.url;
-      splitFlap(urla, authorMiniUrl(newState.srcData.author.url), 20);
+      vSplitFlap(urla, authorMiniUrl(newState.srcData.author.url), 25);
     }, true);
   }
   return authorlksp;

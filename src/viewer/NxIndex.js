@@ -3,29 +3,29 @@ import {
   easeOut,
   insertDiversion,
   replaceDiversion,
-} from "@i-is-as-i-does/valva/src/modules/aliases.js";
-import { registerUpdateEvt } from "../NxState.js";
+} from "@i-is-as-i-does/valva/src/legacy/Valva-v1.js";
+import { registerUpdateEvt } from "../browser/NxState.js";
 import { authorHandle, authorUrl, viewLink } from "./NxIdent.js";
-import { blockWrap, convertLineBreaks, getElm, landmarkElm } from "./NxCommons.js";
+import { blockWrap, getElm, lines } from "./NxCommons.js";
 
 var indexList = null;
 
 function aboutElm(state) {
   var ab = getElm("DIV", "nx-about-author");
 
-  ab.append(aboutParagraph(state));
+  ab.append(aboutLines(state));
  registerUpdateEvt(function (newState) {
-    replaceDiversion(ab.firstChild, aboutParagraph(newState));
+    replaceDiversion(ab.firstChild, aboutLines(newState));
   }, true);
   return ab;
 }
 
-function aboutParagraph(state) {
-  var p = getElm("P");
-  if(state.srcData){
-  p.textContent = convertLineBreaks(state.srcData.author.about);
+function aboutLines(state) {
+  var text = null
+if(state.srcData && state.srcData.author.about){
+text = state.srcData.author.about
 }
-  return p;
+  return lines(text);
 }
 
 function setIndexList(state) {
@@ -89,9 +89,21 @@ function changeThreadsList(state) {
   }
 }
 
-export function indexBlock(state) {
+function indexHeader(state){
+  var header = getElm('DIV','nx-index-header')
+  header.append(authorHandle(state, true), authorUrl(state, true), aboutElm(state))
+  return header
+}
+
+function indexBlock(state){
   setIndexList(state);
-  var headerElms = [authorHandle(state, true), authorUrl(state, true)];
-  var contentElms = [aboutElm(state), indexList];
-  return blockWrap("index", headerElms, contentElms, landmarkElm("index"));
+  return blockWrap("threads-list", null, [indexList]);
+}
+
+export function mainIndexBlock(state) {
+
+  var mainBlock = getElm('DIV', 'nx-main-block nx-index')
+  var blocks = [indexHeader(state), indexBlock(state)];
+  mainBlock.append(...blocks)
+  return mainBlock
 }

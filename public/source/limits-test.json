@@ -20,7 +20,7 @@
                     "caption": "Disrupt literally tousled unicorn PBR&B, fashion axe palo santo etsy lomo aesthetic pok pok pug crucifix neutra. +1 typewriter affogato, fixie selvage intelligentsia cardigan banjo pug tbh bushwick iceland adaptogen selfies. Blue bottle chartreuse thundercats letterpress church-key, butcher chambray four loko biodiesel jianbing. Try-hard 8-bit quinoa microdosing, selfies pork belly knausgaard deep v +1 franzen activated charcoal messenger bag sartorial."
                 }
             },
-            "linked": ["http://localhost:8080/nexus/source/prototype-test.json#lots-of-linked-test"]
+            "linked": ["http://127.0.0.1:5500/public/source/prototype-test.json#lots-of-linked-test"]
         },
         {
             "id": "lots-of-lots",

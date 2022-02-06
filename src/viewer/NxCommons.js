@@ -1,12 +1,12 @@
 /*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
-import { splitFlap } from "@i-is-as-i-does/valva/src/modules/aliases.js";
 import { getErr } from "@i-is-as-i-does/nexus-core/src/logs/NxLog.js";
 import { isCssLoaded } from "@i-is-as-i-does/nexus-core/src/load/NxStyle.js";
-import { getCurrentState, registerUpdateEvt } from "../NxState.js";
+import { getCurrentState, registerUpdateEvt } from "../browser/NxState.js";
 import { registerTranslElm } from "@i-is-as-i-does/nexus-core/src/transl/NxElmTranslate.js";
 import { getTxt } from "@i-is-as-i-does/nexus-core/src/transl/NxCoreTranslate.js";
 import { appUrl } from "@i-is-as-i-does/nexus-core/src/validt/NxSpecs.js";
-
+import { splitOnLineBreaks } from "@i-is-as-i-does/jack-js/src/modules/Help.js";
+import { splitFlap } from "@i-is-as-i-does/valva/src/legacy/Valva-v1.js";
 
 function resolveThreadTitle(state) {
   var threadTitle = "/";
@@ -79,6 +79,7 @@ export function serviceWrap
   return wrap;
 }
 
+// @todo update, no use of headers nor landmark ?
 export function blockWrap(
   blockName,
   headerElms = null,
@@ -245,10 +246,6 @@ export function selectDropDown(list, toggleElm, actionCallback = null, switchCla
   return swtch;
 }
 
-export function convertLineBreaks(text){
-  return text.replace(/(\r\n|\n|\r)/gm, "<br>");
-}
-
 export function setToggleOnDisplay(viewlk, state) {
 
   toggleOnDisplay(viewlk, state, getCurrentState());
@@ -268,8 +265,7 @@ export function threadTitleElm(state, update = false) {
   sp.textContent = resolveThreadTitle(state);
   if (update) {
     registerUpdateEvt(function (newState) {
-      var newThreadTitle = resolveThreadTitle(newState);
-      splitFlap(sp, newThreadTitle, 15);
+      splitFlap(sp, resolveThreadTitle(newState), 15)
     });
   }
 
@@ -288,4 +284,23 @@ export function viewerInstance(state){
    indexPart,
    threadPart
    ], [sourceBlock(state)]);
+}
+
+export function lines(text) {
+  var dv = getElm("DIV", "nx-lines");
+  if(text){   
+    var sp = splitOnLineBreaks(text)
+    var ln = []
+    sp.forEach(l => {
+      var p = getElm('P')
+      p.textContent = l
+      ln.push(p)
+    })
+    dv.append(...ln);
+}
+  return dv;
+}
+export function spinContainer() {
+  var container = getElm("DIV", "nx-loading");
+  return container
 }

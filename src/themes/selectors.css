@@ -45,10 +45,17 @@
 .nx-external-link { }
 .nx-about-author { }
 .nx-index .nx-block { }
+.nx-index { }
+.nx-threads-list { }
 .nx-landmark .nx-landmark-index { }
+.nx-main-block { }
+.nx-thread { }
+.nx-index-header { }
 .nx-thread-header { }
 .nx-thread-description { }
 .nx-description { }
+.nx-lines { }
+.nx-loading { }
 .nx-local-content { }
 .nx-content { }
 .nx-content-meta { }
@@ -57,10 +64,13 @@
 .nx-content-main { }
 .nx-content-aside { }
 .nx-content-media { }
+.nx-media { }
 .nx-content-media-caption { }
 .nx-local .nx-block { }
 .nx-landmark .nx-landmark-local { }
 .nx-distant-link { }
+.nx-no-distant { }
+.nx-nx-distant-nav { }
 .nx-nav-ctrl .nx-nav-end { }
 .nx-distant .nx-block { }
 .nx-landmark .nx-landmark-distant { }

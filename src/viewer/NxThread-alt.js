@@ -1,6 +1,9 @@
 /*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
+
+// @doc: all linked threads are loaded and displayed; no slider
+
 import { isNonEmptyStr } from "@i-is-as-i-does/jack-js/src/modules/Check.js";
-import { easeIn, easeOut, insertDiversion, replaceDiversion } from "@i-is-as-i-does/valva/src/legacy/Valva-v1.js";
+import { easeIn, easeOut} from "@i-is-as-i-does/valva/src/legacy/Valva-v1.js";
 import { registerUpdateEvt, resolveState } from "../browser/NxState.js";
 import {
   authorIndexLink,
@@ -8,33 +11,22 @@ import {
   viewLink,
 } from "./NxIdent.js";
 import { mediaElm } from "./NxMedia.js";
-import { blockWrap, getElm,  landmarkElm,  lines,  setHistoryControls,  threadTitleElm, toggleNavEnd, spinContainer } from "./NxCommons.js";
+import { blockWrap, getElm,  landmarkElm,  lines,  threadTitleElm, spinContainer } from "./NxCommons.js";
 import { logErr } from "@i-is-as-i-does/nexus-core/src/logs/NxLog.js";
 import { splitUrlAndId } from "@i-is-as-i-does/nexus-core/src/validt/NxStamper.js";
 import { Spinner } from "@i-is-as-i-does/nexus-core/src/data/NxSpin.js";
 
 var threadBlocks
+var distantThreadsElm
 
-var currentElm;
 var descrpElm;
 var contentElm;
-var distantNav;
-
-var slider;
-var linked = [];
 
 var spinElm;
 var spinner;
 var ready = 0
 
-var linkedCtrls = {
-  "ctrls":{
-    "prev": {"symbol":"⊼", "elm":null},
-    "next": {"symbol":"⊻", "elm":null}
-  },
-   position:0,
-   count:0
- }
+var hasLinked = false
 
  var distantLandmark;
 
@@ -53,10 +45,8 @@ function countReady(){
 if(ready === 2){
   spinner.endSpin()
   spinElm.style.display = 'none'
-    if(linked.length){
-      linkedCtrls.count = linked.length;
-      toggleNavEnd(linkedCtrls); 
-      setFirstDistantContent(linked.length > 1);
+    if(hasLinked){
+      toggleDistantLandmark(true) 
     }
     easeIn(threadBlocks, 150)
 }
@@ -70,6 +60,7 @@ function updateThreadBlocks(state) {
     spinElm.style.display = 'block'
 
     var newThreadData = resolveThreadData(state);
+
     resetDistantLinks(newThreadData);
   
     var newContent = threadContent(newThreadData, false);
@@ -92,11 +83,12 @@ function resolveThreadData(state) {
   }
   return threadData;
 }
+
 function distantThreadBlock(threadData) {
   setDistantLandmark();
-  setDistantSlider();
   resolveLinkedThreads(threadData)
-  return blockWrap("distant", null, [slider], distantLandmark);
+  distantThreadsElm = getElm('DIV', 'nx-distant-threads')
+  return blockWrap("distant", null, [distantThreadsElm], distantLandmark);
 }
 
 function localThreadBlock(threadData) {
@@ -109,26 +101,11 @@ function setContentElm(threadData) {
   contentElm.append(threadContent(threadData, false));
 }
 
-function showDistantNav(){
-  distantNav.style.visibility = 'visible'
-}
-
-
-function hideDistantNav(){
-  distantNav.style.visibility = 'hidden'
-}
 
 function resetDistantLinks(threadData){
-
-  hideDistantNav()
+  hasLinked = false
+  distantThreadsElm.textContent = '';
   toggleDistantLandmark(false)
-  removeDistantContent(false);
-
-   linked = [];
-   linkedCtrls.position = 0;
-   linkedCtrls.count = 0;
-  toggleNavEnd(linkedCtrls);
-
   resolveLinkedThreads(threadData)
 }
 
@@ -140,64 +117,6 @@ function resolveLinkedThreads(threadData){
     }
 }
 
-function removeDistantContent(transition = false){
-  var prevElm = currentElm.firstChild;
-  if(prevElm){
-    if(transition){
-      easeOut(prevElm,150,function(){
-        prevElm.remove();
-      });
-    } else {
-      prevElm.remove();
-    }
-
-  }
-}
-
-function setFirstDistantContent(showNav = false){
-  /*  var callb = function(){
-      toggleDistantLandmark(true)
-      if(showNav){
-        showDistantNav()
-      }      
-    }
-  insertDiversion(currentElm, linked[0], false, true, 200, callb);*/
-  toggleDistantLandmark(true)
-      if(showNav){
-        showDistantNav()
-      }      
-  currentElm.append(linked[0])
-}
-
-function setCurrentLink(){
-  if(linked.length){
-   var nw = linked[linkedCtrls.position];
-
-  if(currentElm.firstChild){
-      replaceDiversion(currentElm.firstChild, nw)
-  } else {
-    insertDiversion(currentElm, nw, false, true, 150, callb);
-  }
-} else {
-  removeDistantContent(true);
-}
-}
-
-function distantNavElm(){
-  distantNav = getElm('NAV', 'nx-distant-nav')
-  distantNav.append(linkedCtrls.ctrls["prev"].elm, currentElm, linkedCtrls.ctrls["next"].elm)
-  hideDistantNav()
-  return distantNav
-}
-
-function setDistantSlider(){
-slider = getElm("DIV");
- currentElm = getElm("DIV","nx-distant-link");
- setHistoryControls(linkedCtrls, setCurrentLink);
- toggleNavEnd(linkedCtrls);
- slider.append(distantNavElm(), currentElm);
-
-}
 function linkedElm(distantState){
   
   var linkedAuthor = [
@@ -219,7 +138,7 @@ function toggleDistantLandmark(hasLinks){
   }
 }
 function setLinkedItems(threadData) {
-
+  var linked = []
     var indexes = [];
     var done = [];
     var promises = [];
@@ -247,8 +166,12 @@ function setLinkedItems(threadData) {
     });
    Promise.all(promises).then(()=>{
       if(indexes.length){
-        linked = linked.concat(indexes);
+        linked = linked.concat(indexes)
       }  
+      if(linked.length){
+        hasLinked = true
+        distantThreadsElm.append(...linked)
+      }
       countReady()   
     });
 }

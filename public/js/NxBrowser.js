@@ -1,11 +1,26 @@
-/*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
 "use strict";
-(self["webpackChunknexus"] = self["webpackChunknexus"] || []).push([["NxViewer"],{
+(self["webpackChunknexus"] = self["webpackChunknexus"] || []).push([["NxBrowser"],{
 
-/***/ "./src/NxStart.js":
-/*!************************!*\
-  !*** ./src/NxStart.js ***!
-  \************************/
+/***/ "./src/browser/NxAppDefaults.js":
+/*!**************************************!*\
+  !*** ./src/browser/NxAppDefaults.js ***!
+  \**************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "appIO": () => (/* binding */ appIO),
+/* harmony export */   "appDefaultCss": () => (/* binding */ appDefaultCss)
+/* harmony export */ });
+const appIO = 'https://cdn.jsdelivr.net/gh/I-is-as-I-does/Nexus@latest/dist/js/NxIO.js'
+const appDefaultCss = 'https://cdn.jsdelivr.net/gh/I-is-as-I-does/Nexus@latest/dist/css/NexusI.min.css'
+
+/***/ }),
+
+/***/ "./src/browser/NxStart.js":
+/*!********************************!*\
+  !*** ./src/browser/NxStart.js ***!
+  \********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -16,9 +31,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _i_is_as_i_does_nexus_core_src_base_NxHost_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/base/NxHost.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/base/NxHost.js");
 /* harmony import */ var _i_is_as_i_does_nexus_core_src_transl_NxCoreTranslate_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/transl/NxCoreTranslate.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/transl/NxCoreTranslate.js");
 /* harmony import */ var _i_is_as_i_does_nexus_core_src_logs_NxLog_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/logs/NxLog.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/logs/NxLog.js");
-/* harmony import */ var _NxState_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./NxState.js */ "./src/NxState.js");
-/* harmony import */ var _viewer_NxViewer_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./viewer/NxViewer.js */ "./src/viewer/NxViewer.js");
-/* harmony import */ var _viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./viewer/NxCommons.js */ "./src/viewer/NxCommons.js");
+/* harmony import */ var _NxState_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./NxState.js */ "./src/browser/NxState.js");
+/* harmony import */ var _viewer_NxViewer_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./../viewer/NxViewer.js */ "./src/viewer/NxViewer.js");
+/* harmony import */ var _viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./../viewer/NxCommons.js */ "./src/viewer/NxCommons.js");
+/* harmony import */ var _NxAppDefaults_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./NxAppDefaults.js */ "./src/browser/NxAppDefaults.js");
 /*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
 
 
@@ -29,7 +45,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const appDefaultCss = 'https://cdn.jsdelivr.net/gh/I-is-as-I-does/Nexus@latest/dist/css/NexusI.min.css'
+
 
 function mountApp(nxElm, appElm){
     var host = document.createElement('DIV');
@@ -39,33 +55,35 @@ function mountApp(nxElm, appElm){
 }
 
 function init(){
-    (0,_i_is_as_i_does_nexus_core_src_load_NxInit_js__WEBPACK_IMPORTED_MODULE_0__.initAll)({appDefaultLang: 'en', appDefaultCss: appDefaultCss}).then(seed => {
+    (0,_i_is_as_i_does_nexus_core_src_load_NxInit_js__WEBPACK_IMPORTED_MODULE_0__.initAll)({appDefaultLang: 'en', appDefaultCss: _NxAppDefaults_js__WEBPACK_IMPORTED_MODULE_7__.appDefaultCss}).then(seed => {
         (0,_i_is_as_i_does_nexus_core_src_transl_NxCoreTranslate_js__WEBPACK_IMPORTED_MODULE_2__.setOriginLang)(seed.request.lang)
-        var state = (0,_NxState_js__WEBPACK_IMPORTED_MODULE_4__.dataToState)(seed.request.url, seed.request.id, seed.nxdata)
-        ;(0,_NxState_js__WEBPACK_IMPORTED_MODULE_4__.setOriginState)(state)
+        seed.state = (0,_NxState_js__WEBPACK_IMPORTED_MODULE_4__.dataToState)(seed.request.url, seed.request.id, seed.nxdata)
+        ;(0,_NxState_js__WEBPACK_IMPORTED_MODULE_4__.setOriginState)(seed.state)
         var elm;
-        if((0,_i_is_as_i_does_nexus_core_src_base_NxHost_js__WEBPACK_IMPORTED_MODULE_1__.getQuery)("edit")){
+        seed.editMode = false
+        if((0,_i_is_as_i_does_nexus_core_src_base_NxHost_js__WEBPACK_IMPORTED_MODULE_1__.getQuery)("edit") || (0,_i_is_as_i_does_nexus_core_src_base_NxHost_js__WEBPACK_IMPORTED_MODULE_1__.getQuery)("new")){
          // elms = editorElms(state);
-         elm = (0,_viewer_NxViewer_js__WEBPACK_IMPORTED_MODULE_5__.viewerElms)(state);
+         seed.editMode = true
+         elm = (0,_viewer_NxViewer_js__WEBPACK_IMPORTED_MODULE_5__.viewerElms)(seed);
         } else {
-         // elms = viewerElms(state);
-         elm = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_6__.errorPrgr)()
+         elm = (0,_viewer_NxViewer_js__WEBPACK_IMPORTED_MODULE_5__.viewerElms)(seed);
         }
 
-      // mountApp(seed.nxelm, instanceWrap(elm))
-      mountApp(seed.nxelm, elm)
+      mountApp(seed.nxelm, (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_6__.instanceWrap)(elm))
+
     }).catch((err)=> {
-        (0,_i_is_as_i_does_nexus_core_src_logs_NxLog_js__WEBPACK_IMPORTED_MODULE_3__.logErr)(err.message);
+      console.log(err)
+        ;(0,_i_is_as_i_does_nexus_core_src_logs_NxLog_js__WEBPACK_IMPORTED_MODULE_3__.logErr)(err.message);
         mountApp((0,_i_is_as_i_does_nexus_core_src_load_NxInit_js__WEBPACK_IMPORTED_MODULE_0__.retrieveNxElm)(), (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_6__.errorPrgr)())
       })
 }
 
 /***/ }),
 
-/***/ "./src/NxState.js":
-/*!************************!*\
-  !*** ./src/NxState.js ***!
-  \************************/
+/***/ "./src/browser/NxState.js":
+/*!********************************!*\
+  !*** ./src/browser/NxState.js ***!
+  \********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -74,6 +92,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "getTimestamp": () => (/* binding */ getTimestamp),
 /* harmony export */   "isStateUnseen": () => (/* binding */ isStateUnseen),
 /* harmony export */   "dataToState": () => (/* binding */ dataToState),
+/* harmony export */   "setDefaultThread": () => (/* binding */ setDefaultThread),
 /* harmony export */   "resolveState": () => (/* binding */ resolveState),
 /* harmony export */   "registerUpdateEvt": () => (/* binding */ registerUpdateEvt),
 /* harmony export */   "triggerUpdate": () => (/* binding */ triggerUpdate),
@@ -154,10 +173,15 @@ function dataToState(dataUrl, threadId, data){
       threadIndex: data.index.indexOf(threadId)
     };
 
-    if (state.threadIndex === -1 && threadId !== "/") {
-      state.threadId = "/";
+    if (state.threadIndex === -1) {
+      setDefaultThread(state)
     }
     return state;
+}
+
+function setDefaultThread(state){
+  state.threadIndex = 0
+  state.threadId = state.srcData.index[0]
 }
 
 function resolveState(dataUrl, threadId) {
@@ -177,10 +201,13 @@ function registerUpdateEvt(callback, onSrcChange = false) {
 function triggerUpdate(state, skipHistoryUpdate = false, forceTrigger = false) {
   if (!updateRunning) {
     var srcChanged = state.dataUrl != currentState.dataUrl;
+    if(state.threadId === '/'){
+      setDefaultThread(state)
+    }
 
     if (forceTrigger || srcChanged || state.threadId != currentState.threadId) {
       updateRunning = true;
-      if (!skipHistoryUpdate && currentState.threadId !== '/') {
+      if (!skipHistoryUpdate) {
         (0,_i_is_as_i_does_nexus_core_src_storg_NxMemory_js__WEBPACK_IMPORTED_MODULE_1__.registerThreadVisit)(concatSrc(currentState), getTimestamp(currentState));
       }
     
@@ -231,19 +258,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "toggleNavEnd": () => (/* binding */ toggleNavEnd),
 /* harmony export */   "setHistoryControls": () => (/* binding */ setHistoryControls),
 /* harmony export */   "selectDropDown": () => (/* binding */ selectDropDown),
-/* harmony export */   "convertLineBreaks": () => (/* binding */ convertLineBreaks),
 /* harmony export */   "setToggleOnDisplay": () => (/* binding */ setToggleOnDisplay),
 /* harmony export */   "baseViewLink": () => (/* binding */ baseViewLink),
 /* harmony export */   "threadTitleElm": () => (/* binding */ threadTitleElm),
-/* harmony export */   "viewerInstance": () => (/* binding */ viewerInstance)
+/* harmony export */   "viewerInstance": () => (/* binding */ viewerInstance),
+/* harmony export */   "lines": () => (/* binding */ lines),
+/* harmony export */   "spinContainer": () => (/* binding */ spinContainer)
 /* harmony export */ });
-/* harmony import */ var _i_is_as_i_does_valva_src_modules_aliases_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @i-is-as-i-does/valva/src/modules/aliases.js */ "./node_modules/@i-is-as-i-does/valva/src/modules/aliases.js");
-/* harmony import */ var _i_is_as_i_does_nexus_core_src_logs_NxLog_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/logs/NxLog.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/logs/NxLog.js");
-/* harmony import */ var _i_is_as_i_does_nexus_core_src_load_NxStyle_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/load/NxStyle.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/load/NxStyle.js");
-/* harmony import */ var _NxState_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../NxState.js */ "./src/NxState.js");
-/* harmony import */ var _i_is_as_i_does_nexus_core_src_transl_NxElmTranslate_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/transl/NxElmTranslate.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/transl/NxElmTranslate.js");
-/* harmony import */ var _i_is_as_i_does_nexus_core_src_transl_NxCoreTranslate_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/transl/NxCoreTranslate.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/transl/NxCoreTranslate.js");
-/* harmony import */ var _i_is_as_i_does_nexus_core_src_validt_NxSpecs_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/validt/NxSpecs.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/validt/NxSpecs.js");
+/* harmony import */ var _i_is_as_i_does_nexus_core_src_logs_NxLog_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/logs/NxLog.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/logs/NxLog.js");
+/* harmony import */ var _i_is_as_i_does_nexus_core_src_load_NxStyle_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/load/NxStyle.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/load/NxStyle.js");
+/* harmony import */ var _browser_NxState_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../browser/NxState.js */ "./src/browser/NxState.js");
+/* harmony import */ var _i_is_as_i_does_nexus_core_src_transl_NxElmTranslate_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/transl/NxElmTranslate.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/transl/NxElmTranslate.js");
+/* harmony import */ var _i_is_as_i_does_nexus_core_src_transl_NxCoreTranslate_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/transl/NxCoreTranslate.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/transl/NxCoreTranslate.js");
+/* harmony import */ var _i_is_as_i_does_nexus_core_src_validt_NxSpecs_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/validt/NxSpecs.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/validt/NxSpecs.js");
+/* harmony import */ var _i_is_as_i_does_jack_js_src_modules_Help_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @i-is-as-i-does/jack-js/src/modules/Help.js */ "./node_modules/@i-is-as-i-does/jack-js/src/modules/Help.js");
+/* harmony import */ var _i_is_as_i_does_valva_src_legacy_Valva_v1_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @i-is-as-i-does/valva/src/legacy/Valva-v1.js */ "./node_modules/@i-is-as-i-does/valva/src/legacy/Valva-v1.js");
 /*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
 
 
@@ -282,7 +311,7 @@ function appHeader() {
 function appLink() {
   var link = getElm("A", "nx-app-link nx-external-link");
   link.target = "_blank";
-  link.href = _i_is_as_i_does_nexus_core_src_validt_NxSpecs_js__WEBPACK_IMPORTED_MODULE_6__.appUrl;
+  link.href = _i_is_as_i_does_nexus_core_src_validt_NxSpecs_js__WEBPACK_IMPORTED_MODULE_5__.appUrl;
   link.title = "Nexus";
   link.textContent = "Nexus";
   return link;
@@ -325,6 +354,7 @@ function serviceWrap
   return wrap;
 }
 
+// @todo update, no use of headers nor landmark ?
 function blockWrap(
   blockName,
   headerElms = null,
@@ -348,19 +378,19 @@ function blockWrap(
 
 function landmarkElm(name) {
   var lndmrk = getElm("SPAN", "nx-landmark nx-landmark-"+name.replace(" ", "-"));
-  lndmrk.textContent = (0,_i_is_as_i_does_nexus_core_src_transl_NxCoreTranslate_js__WEBPACK_IMPORTED_MODULE_5__.getTxt)(name);
-(0,_i_is_as_i_does_nexus_core_src_transl_NxElmTranslate_js__WEBPACK_IMPORTED_MODULE_4__.registerTranslElm)(lndmrk, name);
+  lndmrk.textContent = (0,_i_is_as_i_does_nexus_core_src_transl_NxCoreTranslate_js__WEBPACK_IMPORTED_MODULE_4__.getTxt)(name);
+(0,_i_is_as_i_does_nexus_core_src_transl_NxElmTranslate_js__WEBPACK_IMPORTED_MODULE_3__.registerTranslElm)(lndmrk, name);
   return lndmrk;
 }
 
 function errorPrgr() {
 
-    var errMsgs = (0,_i_is_as_i_does_nexus_core_src_logs_NxLog_js__WEBPACK_IMPORTED_MODULE_1__.getErr)();
+    var errMsgs = (0,_i_is_as_i_does_nexus_core_src_logs_NxLog_js__WEBPACK_IMPORTED_MODULE_0__.getErr)();
     if(!errMsgs.length){
       errMsgs = ["Init failed"];
     }
   var p = getElm("P");
-  if ((0,_i_is_as_i_does_nexus_core_src_load_NxStyle_js__WEBPACK_IMPORTED_MODULE_2__.isCssLoaded)()) {
+  if ((0,_i_is_as_i_does_nexus_core_src_load_NxStyle_js__WEBPACK_IMPORTED_MODULE_1__.isCssLoaded)()) {
     p.className = "nx-error";
   } else {
     p.style.margin = "0 auto";
@@ -374,8 +404,8 @@ function errorPrgr() {
     p.append(sp1, br);
     errMsgs.forEach((msg) => {
       var spx = getElm("SPAN");
-      spx.textContent = (0,_i_is_as_i_does_nexus_core_src_transl_NxCoreTranslate_js__WEBPACK_IMPORTED_MODULE_5__.getTxt)(msg);
-    (0,_i_is_as_i_does_nexus_core_src_transl_NxElmTranslate_js__WEBPACK_IMPORTED_MODULE_4__.registerTranslElm)(spx, msg);
+      spx.textContent = (0,_i_is_as_i_does_nexus_core_src_transl_NxCoreTranslate_js__WEBPACK_IMPORTED_MODULE_4__.getTxt)(msg);
+    (0,_i_is_as_i_does_nexus_core_src_transl_NxElmTranslate_js__WEBPACK_IMPORTED_MODULE_3__.registerTranslElm)(spx, msg);
       p.append(spx, br.cloneNode());
     });
   
@@ -491,14 +521,10 @@ function selectDropDown(list, toggleElm, actionCallback = null, switchClass = nu
   return swtch;
 }
 
-function convertLineBreaks(text){
-  return text.replace(/(\r\n|\n|\r)/gm, "<br>");
-}
-
 function setToggleOnDisplay(viewlk, state) {
 
-  toggleOnDisplay(viewlk, state, (0,_NxState_js__WEBPACK_IMPORTED_MODULE_3__.getCurrentState)());
- (0,_NxState_js__WEBPACK_IMPORTED_MODULE_3__.registerUpdateEvt)(function (newState) {
+  toggleOnDisplay(viewlk, state, (0,_browser_NxState_js__WEBPACK_IMPORTED_MODULE_2__.getCurrentState)());
+ (0,_browser_NxState_js__WEBPACK_IMPORTED_MODULE_2__.registerUpdateEvt)(function (newState) {
     toggleOnDisplay(viewlk, state, newState);
   });
 }
@@ -513,9 +539,8 @@ function threadTitleElm(state, update = false) {
   var sp = getElm("SPAN", "nx-thread-title");
   sp.textContent = resolveThreadTitle(state);
   if (update) {
-    (0,_NxState_js__WEBPACK_IMPORTED_MODULE_3__.registerUpdateEvt)(function (newState) {
-      var newThreadTitle = resolveThreadTitle(newState);
-      (0,_i_is_as_i_does_valva_src_modules_aliases_js__WEBPACK_IMPORTED_MODULE_0__.splitFlap)(sp, newThreadTitle, 15);
+    (0,_browser_NxState_js__WEBPACK_IMPORTED_MODULE_2__.registerUpdateEvt)(function (newState) {
+      (0,_i_is_as_i_does_valva_src_legacy_Valva_v1_js__WEBPACK_IMPORTED_MODULE_7__.splitFlap)(sp, resolveThreadTitle(newState), 15)
     });
   }
 
@@ -536,6 +561,24 @@ function viewerInstance(state){
    ], [sourceBlock(state)]);
 }
 
+function lines(text) {
+  var dv = getElm("DIV", "nx-lines");
+  if(text){   
+    var sp = (0,_i_is_as_i_does_jack_js_src_modules_Help_js__WEBPACK_IMPORTED_MODULE_6__.splitOnLineBreaks)(text)
+    var ln = []
+    sp.forEach(l => {
+      var p = getElm('P')
+      p.textContent = l
+      ln.push(p)
+    })
+    dv.append(...ln);
+}
+  return dv;
+}
+function spinContainer() {
+  var container = getElm("DIV", "nx-loading");
+  return container
+}
 
 /***/ }),
 
@@ -549,11 +592,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "historyBlock": () => (/* binding */ historyBlock)
 /* harmony export */ });
-/* harmony import */ var _i_is_as_i_does_valva_src_modules_aliases_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @i-is-as-i-does/valva/src/modules/aliases.js */ "./node_modules/@i-is-as-i-does/valva/src/modules/aliases.js");
+/* harmony import */ var _i_is_as_i_does_valva_src_legacy_Valva_v1_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @i-is-as-i-does/valva/src/legacy/Valva-v1.js */ "./node_modules/@i-is-as-i-does/valva/src/legacy/Valva-v1.js");
 /* harmony import */ var _NxCommons_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./NxCommons.js */ "./src/viewer/NxCommons.js");
 /* harmony import */ var _NxIdent_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./NxIdent.js */ "./src/viewer/NxIdent.js");
 /* harmony import */ var _i_is_as_i_does_jack_js_src_modules_Style_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @i-is-as-i-does/jack-js/src/modules/Style.js */ "./node_modules/@i-is-as-i-does/jack-js/src/modules/Style.js");
-/* harmony import */ var _NxState_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../NxState.js */ "./src/NxState.js");
+/* harmony import */ var _browser_NxState_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../browser/NxState.js */ "./src/browser/NxState.js");
 /*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
 
 
@@ -606,11 +649,11 @@ function historyToggleElm() {
     if (tggl.textContent == "≙") {
       tggl.textContent = "≚";
       tggl.classList.remove("nx-active");
-      (0,_i_is_as_i_does_valva_src_modules_aliases_js__WEBPACK_IMPORTED_MODULE_0__.easeOut)(historyElm, 200);
+      (0,_i_is_as_i_does_valva_src_legacy_Valva_v1_js__WEBPACK_IMPORTED_MODULE_0__.easeOut)(historyElm, 200);
     } else {
       tggl.textContent = "≙";
       tggl.classList.add("nx-active");
-      (0,_i_is_as_i_does_valva_src_modules_aliases_js__WEBPACK_IMPORTED_MODULE_0__.easeIn)(historyElm, 200);
+      (0,_i_is_as_i_does_valva_src_legacy_Valva_v1_js__WEBPACK_IMPORTED_MODULE_0__.easeIn)(historyElm, 200);
       (0,_i_is_as_i_does_jack_js_src_modules_Style_js__WEBPACK_IMPORTED_MODULE_3__.autoScrollToBottom)(historyList);
     }
   });
@@ -630,7 +673,7 @@ function setHistoryListElm(state) {
   historyElm = (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)("DIV", "nx-history-drawer");
   historyElm.append(historyList);
   historyElm.style.display = "none";
- (0,_NxState_js__WEBPACK_IMPORTED_MODULE_4__.registerUpdateEvt)(function (newState) {
+ (0,_browser_NxState_js__WEBPACK_IMPORTED_MODULE_4__.registerUpdateEvt)(function (newState) {
     historyEvent(newState);
   });
 
@@ -649,7 +692,7 @@ function historyEvent(state) {
 
     histCtrls.position = histCtrls.count-1;
     var itm = historyItm(state);
-    (0,_i_is_as_i_does_valva_src_modules_aliases_js__WEBPACK_IMPORTED_MODULE_0__.insertDiversion)(historyList, itm, false, true, 200, function () {
+    (0,_i_is_as_i_does_valva_src_legacy_Valva_v1_js__WEBPACK_IMPORTED_MODULE_0__.insertDiversion)(historyList, itm, false, true, 200, function () {
       (0,_i_is_as_i_does_jack_js_src_modules_Style_js__WEBPACK_IMPORTED_MODULE_3__.autoScrollToBottom)(historyList);
     });
 
@@ -676,7 +719,7 @@ function historyViewLink(state) {
 
   viewlk.addEventListener("click", () => {
     isHistoryEvent = true;
-    (0,_NxState_js__WEBPACK_IMPORTED_MODULE_4__.triggerUpdate)(state, true);
+    (0,_browser_NxState_js__WEBPACK_IMPORTED_MODULE_4__.triggerUpdate)(state, true);
     isHistoryEvent = false;
   });
   return viewlk;
@@ -705,8 +748,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "viewLink": () => (/* binding */ viewLink),
 /* harmony export */   "authorIndexLink": () => (/* binding */ authorIndexLink)
 /* harmony export */ });
-/* harmony import */ var _i_is_as_i_does_valva_src_modules_aliases_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @i-is-as-i-does/valva/src/modules/aliases.js */ "./node_modules/@i-is-as-i-does/valva/src/modules/aliases.js");
-/* harmony import */ var _NxState_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../NxState.js */ "./src/NxState.js");
+/* harmony import */ var _i_is_as_i_does_valva_src_modules_transitions__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @i-is-as-i-does/valva/src/modules/transitions */ "./node_modules/@i-is-as-i-does/valva/src/modules/transitions.js");
+/* harmony import */ var _browser_NxState_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../browser/NxState.js */ "./src/browser/NxState.js");
 /* harmony import */ var _NxCommons_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./NxCommons.js */ "./src/viewer/NxCommons.js");
 /* harmony import */ var _i_is_as_i_does_nexus_core_src_storg_NxStorage_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/storg/NxStorage.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/storg/NxStorage.js");
 /* harmony import */ var _i_is_as_i_does_jack_js_src_modules_Web_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @i-is-as-i-does/jack-js/src/modules/Web.js */ "./node_modules/@i-is-as-i-does/jack-js/src/modules/Web.js");
@@ -733,7 +776,7 @@ function toggleUnseen(viewlk, state) {
   if (viewlk.classList.contains("nx-on-display")) {
     viewlk.classList.remove("nx-unseen");
     viewlk.lastChild.textContent = "";
-  } else if ((0,_NxState_js__WEBPACK_IMPORTED_MODULE_1__.isStateUnseen)(state)) {
+  } else if ((0,_browser_NxState_js__WEBPACK_IMPORTED_MODULE_1__.isStateUnseen)(state)) {
     viewlk.classList.add("nx-unseen");
     viewlk.lastChild.textContent = "*";
   }
@@ -745,8 +788,8 @@ function authorHandle(state, update = false) {
   hnd.textContent = state.srcData.author.handle;
 }
   if (update) {
-   (0,_NxState_js__WEBPACK_IMPORTED_MODULE_1__.registerUpdateEvt)(function (newState) {
-      (0,_i_is_as_i_does_valva_src_modules_aliases_js__WEBPACK_IMPORTED_MODULE_0__.splitFlap)(hnd, newState.srcData.author.handle, 20);
+   (0,_browser_NxState_js__WEBPACK_IMPORTED_MODULE_1__.registerUpdateEvt)(function (newState) {
+      (0,_i_is_as_i_does_valva_src_modules_transitions__WEBPACK_IMPORTED_MODULE_0__.vSplitFlap)(hnd, newState.srcData.author.handle, 25);
     }, true);
   }
   return hnd;
@@ -777,9 +820,9 @@ function authorUrl(state, update = false) {
   authorlksp.append(urlBrck[0], urla, urlBrck[1]);
 
   if (update) {
-   (0,_NxState_js__WEBPACK_IMPORTED_MODULE_1__.registerUpdateEvt)(function (newState) {
+   (0,_browser_NxState_js__WEBPACK_IMPORTED_MODULE_1__.registerUpdateEvt)(function (newState) {
       urla.href = newState.srcData.author.url;
-      (0,_i_is_as_i_does_valva_src_modules_aliases_js__WEBPACK_IMPORTED_MODULE_0__.splitFlap)(urla, authorMiniUrl(newState.srcData.author.url), 20);
+      (0,_i_is_as_i_does_valva_src_modules_transitions__WEBPACK_IMPORTED_MODULE_0__.vSplitFlap)(urla, authorMiniUrl(newState.srcData.author.url), 25);
     }, true);
   }
   return authorlksp;
@@ -789,7 +832,7 @@ function authorUrl(state, update = false) {
 function setToggleUnseen(viewlk, state) {
   viewlk.append((0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_2__.getElm)("SPAN", "nx-new-tag"));
   toggleUnseen(viewlk, state);
- (0,_NxState_js__WEBPACK_IMPORTED_MODULE_1__.registerUpdateEvt)(function () {
+ (0,_browser_NxState_js__WEBPACK_IMPORTED_MODULE_1__.registerUpdateEvt)(function () {
     toggleUnseen(viewlk, state);
   });
 }
@@ -803,7 +846,7 @@ function viewLink(state, update = false) {
 
   viewlk.addEventListener("click", () => {
  
-    (0,_NxState_js__WEBPACK_IMPORTED_MODULE_1__.triggerUpdate)(state);
+    (0,_browser_NxState_js__WEBPACK_IMPORTED_MODULE_1__.triggerUpdate)(state);
   });
   return viewlk;
 }
@@ -819,7 +862,7 @@ function authorIndexLink(state, update = false) {
     threadIndex: -1
   };
   auth.addEventListener("click", function () {
-(0,_NxState_js__WEBPACK_IMPORTED_MODULE_1__.triggerUpdate)(newState, "/");
+(0,_browser_NxState_js__WEBPACK_IMPORTED_MODULE_1__.triggerUpdate)(newState, "/");
   });
 
   return auth;
@@ -836,10 +879,10 @@ function authorIndexLink(state, update = false) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "indexBlock": () => (/* binding */ indexBlock)
+/* harmony export */   "mainIndexBlock": () => (/* binding */ mainIndexBlock)
 /* harmony export */ });
-/* harmony import */ var _i_is_as_i_does_valva_src_modules_aliases_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @i-is-as-i-does/valva/src/modules/aliases.js */ "./node_modules/@i-is-as-i-does/valva/src/modules/aliases.js");
-/* harmony import */ var _NxState_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../NxState.js */ "./src/NxState.js");
+/* harmony import */ var _i_is_as_i_does_valva_src_legacy_Valva_v1_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @i-is-as-i-does/valva/src/legacy/Valva-v1.js */ "./node_modules/@i-is-as-i-does/valva/src/legacy/Valva-v1.js");
+/* harmony import */ var _browser_NxState_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../browser/NxState.js */ "./src/browser/NxState.js");
 /* harmony import */ var _NxIdent_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./NxIdent.js */ "./src/viewer/NxIdent.js");
 /* harmony import */ var _NxCommons_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./NxCommons.js */ "./src/viewer/NxCommons.js");
 /*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
@@ -853,19 +896,19 @@ var indexList = null;
 function aboutElm(state) {
   var ab = (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_3__.getElm)("DIV", "nx-about-author");
 
-  ab.append(aboutParagraph(state));
- (0,_NxState_js__WEBPACK_IMPORTED_MODULE_1__.registerUpdateEvt)(function (newState) {
-    (0,_i_is_as_i_does_valva_src_modules_aliases_js__WEBPACK_IMPORTED_MODULE_0__.replaceDiversion)(ab.firstChild, aboutParagraph(newState));
+  ab.append(aboutLines(state));
+ (0,_browser_NxState_js__WEBPACK_IMPORTED_MODULE_1__.registerUpdateEvt)(function (newState) {
+    (0,_i_is_as_i_does_valva_src_legacy_Valva_v1_js__WEBPACK_IMPORTED_MODULE_0__.replaceDiversion)(ab.firstChild, aboutLines(newState));
   }, true);
   return ab;
 }
 
-function aboutParagraph(state) {
-  var p = (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_3__.getElm)("P");
-  if(state.srcData){
-  p.textContent = (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_3__.convertLineBreaks)(state.srcData.author.about);
+function aboutLines(state) {
+  var text = null
+if(state.srcData && state.srcData.author.about){
+text = state.srcData.author.about
 }
-  return p;
+  return (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_3__.lines)(text);
 }
 
 function setIndexList(state) {
@@ -879,7 +922,7 @@ function setIndexList(state) {
     }
   }
 }
- (0,_NxState_js__WEBPACK_IMPORTED_MODULE_1__.registerUpdateEvt)(function (newState) {
+ (0,_browser_NxState_js__WEBPACK_IMPORTED_MODULE_1__.registerUpdateEvt)(function (newState) {
 
     changeThreadsList(newState);
   }, true);
@@ -908,14 +951,14 @@ function changeThreadsList(state) {
   var count = 0;
   if (chlen) {
     var rmv = function (child) {
-      (0,_i_is_as_i_does_valva_src_modules_aliases_js__WEBPACK_IMPORTED_MODULE_0__.easeOut)(child, 200, function () {
+      (0,_i_is_as_i_does_valva_src_legacy_Valva_v1_js__WEBPACK_IMPORTED_MODULE_0__.easeOut)(child, 200, function () {
         child.remove();
       });
     };
     for (var x = 0; x < chlen; x++) {
       if (nwlen > x) {
         var nlink = indexLi(state, items[x], x);
-        (0,_i_is_as_i_does_valva_src_modules_aliases_js__WEBPACK_IMPORTED_MODULE_0__.replaceDiversion)(childr[x], nlink);
+        (0,_i_is_as_i_does_valva_src_legacy_Valva_v1_js__WEBPACK_IMPORTED_MODULE_0__.replaceDiversion)(childr[x], nlink);
         count++;
       } else {
         rmv(childr[x]);
@@ -924,16 +967,28 @@ function changeThreadsList(state) {
   }
   if (count < nwlen) {
     for (var y = count; y < nwlen; y++) {
-      (0,_i_is_as_i_does_valva_src_modules_aliases_js__WEBPACK_IMPORTED_MODULE_0__.insertDiversion)(indexList, indexLi(state, items[y], y), false, true, 200);
+      (0,_i_is_as_i_does_valva_src_legacy_Valva_v1_js__WEBPACK_IMPORTED_MODULE_0__.insertDiversion)(indexList, indexLi(state, items[y], y), false, true, 200);
     }
   }
 }
 
-function indexBlock(state) {
+function indexHeader(state){
+  var header = (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_3__.getElm)('DIV','nx-index-header')
+  header.append((0,_NxIdent_js__WEBPACK_IMPORTED_MODULE_2__.authorHandle)(state, true), (0,_NxIdent_js__WEBPACK_IMPORTED_MODULE_2__.authorUrl)(state, true), aboutElm(state))
+  return header
+}
+
+function indexBlock(state){
   setIndexList(state);
-  var headerElms = [(0,_NxIdent_js__WEBPACK_IMPORTED_MODULE_2__.authorHandle)(state, true), (0,_NxIdent_js__WEBPACK_IMPORTED_MODULE_2__.authorUrl)(state, true)];
-  var contentElms = [aboutElm(state), indexList];
-  return (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_3__.blockWrap)("index", headerElms, contentElms, (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_3__.landmarkElm)("index"));
+  return (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_3__.blockWrap)("threads-list", null, [indexList]);
+}
+
+function mainIndexBlock(state) {
+
+  var mainBlock = (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_3__.getElm)('DIV', 'nx-main-block nx-index')
+  var blocks = [indexHeader(state), indexBlock(state)];
+  mainBlock.append(...blocks)
+  return mainBlock
 }
 
 
@@ -949,40 +1004,43 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "mediaElm": () => (/* binding */ mediaElm)
 /* harmony export */ });
-/* harmony import */ var _i_is_as_i_does_valva_src_modules_aliases_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @i-is-as-i-does/valva/src/modules/aliases.js */ "./node_modules/@i-is-as-i-does/valva/src/modules/aliases.js");
-/* harmony import */ var _NxThread_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./NxThread.js */ "./src/viewer/NxThread.js");
-/* harmony import */ var _NxCommons_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./NxCommons.js */ "./src/viewer/NxCommons.js");
-/* harmony import */ var _i_is_as_i_does_nexus_core_src_data_NxMedia_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/data/NxMedia.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/data/NxMedia.js");
+/* harmony import */ var _NxThread_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./NxThread.js */ "./src/viewer/NxThread.js");
+/* harmony import */ var _NxCommons_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./NxCommons.js */ "./src/viewer/NxCommons.js");
+/* harmony import */ var _i_is_as_i_does_nexus_core_src_data_NxMedia_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/data/NxMedia.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/data/NxMedia.js");
 /*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
 
 
 
 
 
-function threadMediaCaption(threadData) {
-  return (0,_NxThread_js__WEBPACK_IMPORTED_MODULE_1__.threadTextElm)(threadData, ["content", "media", "caption"]);
-}
+function threadMediaElm(threadData, countReady) {
+  var  mediaContainer = (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)("DIV", 'nx-media');
 
-function setThreadMedia(mediaWrap, threadData) {
-  mediaWrap.style.display = 'none'
-  if (threadData && threadData.content.media.type) {   
-    mediaWrap.addEventListener('mediaReady', function(){
+  var mediaWrap = (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)("DIV");
+  mediaContainer.append(mediaWrap)
+
+  var captionElm = null
+  if(threadData.content.media.caption){
+    captionElm = (0,_NxThread_js__WEBPACK_IMPORTED_MODULE_0__.threadTextElm)(threadData, ["content", "media", "caption"])
+    mediaContainer.append(captionElm)
+  }
+
+  mediaWrap.addEventListener('mediaReady', function(){
       if(mediaWrap.firstChild.tagName === 'A' && threadData.content.media.type !== 'page'){
         threadData.content.media.type = 'page';
       }
       mediaWrap.className = "nx-" + threadData.content.media.type + "-media";
-      (0,_i_is_as_i_does_valva_src_modules_aliases_js__WEBPACK_IMPORTED_MODULE_0__.easeIn)(mediaWrap, 200)
+      if(countReady !== null){
+        countReady()
+      }
     })
-   ;(0,_i_is_as_i_does_nexus_core_src_data_NxMedia_js__WEBPACK_IMPORTED_MODULE_3__.resolveMedia)(threadData.content.media.url, threadData.content.media.type, mediaWrap)
-  }
+   ;(0,_i_is_as_i_does_nexus_core_src_data_NxMedia_js__WEBPACK_IMPORTED_MODULE_2__.resolveMedia)(threadData.content.media.url, threadData.content.media.type, mediaWrap)
+  return mediaContainer
 }
 
-function mediaElm(mediaWrap, threadData) {
-  var mediadiv = (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_2__.getElm)("DIV", "nx-content-media");
-  mediaWrap = (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_2__.getElm)("DIV");
-  setThreadMedia(threadData);
-  mediadiv.append(mediaWrap, threadMediaCaption(threadData));
-
+function mediaElm(threadData, countReady = null) {
+  var mediadiv = (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)("DIV", "nx-content-media");
+    mediadiv.append(threadMediaElm(threadData, countReady));
   return mediadiv;
 }
 
@@ -1000,12 +1058,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "sourceBlock": () => (/* binding */ sourceBlock)
 /* harmony export */ });
 /* harmony import */ var _i_is_as_i_does_jack_js_src_modules_Stock_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @i-is-as-i-does/jack-js/src/modules/Stock.js */ "./node_modules/@i-is-as-i-does/jack-js/src/modules/Stock.js");
-/* harmony import */ var _i_is_as_i_does_valva_src_modules_aliases_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @i-is-as-i-does/valva/src/modules/aliases.js */ "./node_modules/@i-is-as-i-does/valva/src/modules/aliases.js");
+/* harmony import */ var _i_is_as_i_does_valva_src_legacy_Valva_v1_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @i-is-as-i-does/valva/src/legacy/Valva-v1.js */ "./node_modules/@i-is-as-i-does/valva/src/legacy/Valva-v1.js");
 /* harmony import */ var _NxCommons_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./NxCommons.js */ "./src/viewer/NxCommons.js");
 /* harmony import */ var _i_is_as_i_does_nexus_core_src_transl_NxElmTranslate_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/transl/NxElmTranslate.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/transl/NxElmTranslate.js");
-/* harmony import */ var _NxState_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../NxState.js */ "./src/NxState.js");
+/* harmony import */ var _browser_NxState_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../browser/NxState.js */ "./src/browser/NxState.js");
 /* harmony import */ var _i_is_as_i_does_nexus_core_src_transl_NxCoreTranslate_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/transl/NxCoreTranslate.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/transl/NxCoreTranslate.js");
+/* harmony import */ var _i_is_as_i_does_nexus_core_src_data_NxSnippet_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/data/NxSnippet.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/data/NxSnippet.js");
+/* harmony import */ var _browser_NxAppDefaults_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../browser/NxAppDefaults.js */ "./src/browser/NxAppDefaults.js");
 /*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
+
+
 
 
 
@@ -1015,6 +1077,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var drawerElm = null;
 var editMode = false;
+var currentStyle = null
 
 function actionLink(action, text) {
   var lk = (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_2__.getElm)("A", "nx-source-" + action);
@@ -1022,6 +1085,22 @@ function actionLink(action, text) {
   return lk;
 }
 
+function resolveSrc(state){
+  var src
+  if(editMode){
+    src = "#temp";
+  } else  {
+    src = (0,_browser_NxState_js__WEBPACK_IMPORTED_MODULE_4__.concatSrc)(state)
+  }
+  return src;
+}
+
+function linkContent(state) {
+  if(state.dataUrl){
+  return resolveSrc(state)
+}
+return "";
+}
 
 function toolTip(className, text) {
   var tooltip = (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_2__.getElm)("SPAN", className);
@@ -1032,43 +1111,20 @@ function toolTip(className, text) {
   return tooltip;
 }
 
-function resolveSrc(state){
-  var src = state.dataUrl;
-  if(editMode){
-    src = "edit";
-  }
-  if(state.threadId !== "/"){
-    src += "#"+state.threadId;
-  }
-  
-  return src;
-}
-function instanceUrl(state){
-  var elm = (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_2__.getElm)("INPUT", "nx-instance-url");
-  elm.type="text";
-  elm.value = resolveSrc(state);
-
-(0,_NxState_js__WEBPACK_IMPORTED_MODULE_4__.registerUpdateEvt)(function (newState) {
-  elm.value = resolveSrc(newState);
-  });
-  return elm;
-}
-
-
 function toggleLink() {
   var text = "</>";
   var altText = "< />";
-  var lk = actionLink("drawer", text);
+  var lk = actionLink("snippets", text);
 
   lk.addEventListener("click", () => {
     if (lk.textContent == altText) {
       lk.textContent = text;
       lk.classList.remove("nx-active");
-      (0,_i_is_as_i_does_valva_src_modules_aliases_js__WEBPACK_IMPORTED_MODULE_1__.easeOut)(drawerElm, 200);
+      (0,_i_is_as_i_does_valva_src_legacy_Valva_v1_js__WEBPACK_IMPORTED_MODULE_1__.easeOut)(drawerElm, 200);
     } else {
       lk.textContent = altText;
       lk.classList.add("nx-active");
-      (0,_i_is_as_i_does_valva_src_modules_aliases_js__WEBPACK_IMPORTED_MODULE_1__.easeIn)(drawerElm, 100, function () {
+      (0,_i_is_as_i_does_valva_src_legacy_Valva_v1_js__WEBPACK_IMPORTED_MODULE_1__.easeIn)(drawerElm, 100, function () {
         drawerElm.scrollIntoView({
           block: "end",
           behavior: "smooth",
@@ -1080,14 +1136,13 @@ function toggleLink() {
   return lk;
 }
 
+function linkSource(state){
+  return codeElm("json", textAreaElm(state, linkContent));
+}
 
-
-function linkBundle(state) {
+function snippetsBundle(state) {
   drawerElm = (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_2__.getElm)("DIV", "nx-source-drawer");
-  var url = instanceUrl(state);
-  var copylk = copyLink(url);
-    drawerElm.append(url, copylk);
-
+  drawerElm.append(linkSource(state), embedSnippet(state));
   drawerElm.style.display = "none";
 
   var tgg = (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_2__.getElm)("DIV", "nx-source-toggle");
@@ -1097,26 +1152,56 @@ function linkBundle(state) {
   return [tgg, drawerElm];
 }
 
+function textAreaElm(state, callback) {
+  var snpInp = (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_2__.getElm)("TEXTAREA");
+  snpInp.spellcheck = false;
+  snpInp.textContent = callback(state);
 
-function copyLink(elm) {
+ (0,_browser_NxState_js__WEBPACK_IMPORTED_MODULE_4__.registerUpdateEvt)(function (newState) {
+    snpInp.textContent = callback(newState);
+  });
+  return snpInp;
+}
+
+function copyLink(snpElm) {
   var copyLk = actionLink("copy", "⧉");
-  var copyTooltip = toolTip("nx-source-copy-tooltip",(0,_i_is_as_i_does_nexus_core_src_transl_NxCoreTranslate_js__WEBPACK_IMPORTED_MODULE_5__.getTxt)("copied"));
+  var copyTooltip = toolTip("nx-source-copy-tooltip",'c/c');
   copyLk.append(copyTooltip);
 
   copyLk.addEventListener("click", () =>
-    (0,_i_is_as_i_does_jack_js_src_modules_Stock_js__WEBPACK_IMPORTED_MODULE_0__.copyToClipboard)(elm.textContent, () => {
-      (0,_i_is_as_i_does_valva_src_modules_aliases_js__WEBPACK_IMPORTED_MODULE_1__.timedFadeToggle)(copyTooltip, 1000);
+    (0,_i_is_as_i_does_jack_js_src_modules_Stock_js__WEBPACK_IMPORTED_MODULE_0__.copyToClipboard)(snpElm.textContent, () => {
+      (0,_i_is_as_i_does_valva_src_legacy_Valva_v1_js__WEBPACK_IMPORTED_MODULE_1__.timedFadeToggle)(copyTooltip, 1000);
     })
   );
   return copyLk;
 }
 
+function codeElm(name, elm) {
+  var snp = (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_2__.getElm)("DIV", "nx-" + name + "-snippet");
+  snp.append(elm, copyLink(elm));
+  return snp;
+}
 
-function sourceBlock(state, editionSource = false) {
+function embedSnippet(state) {
+  return codeElm("embed", textAreaElm(state, embedContent));
+}
+
+function embedContent(state) {
+
+  if(state.dataUrl){
+    return (0,_i_is_as_i_does_nexus_core_src_data_NxSnippet_js__WEBPACK_IMPORTED_MODULE_6__.getSnippet)(resolveSrc(state), currentStyle, _browser_NxAppDefaults_js__WEBPACK_IMPORTED_MODULE_7__.appIO, (0,_i_is_as_i_does_nexus_core_src_transl_NxCoreTranslate_js__WEBPACK_IMPORTED_MODULE_5__.getLang)())
+  }
+  return "";
+}
+
+function sourceBlock(state, currentStyleUrl, editionSource = false) {
   if(editionSource){
     editMode = true;
   }
-  return (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_2__.blockWrap)("source", null, linkBundle(state), false);
+  if(currentStyleUrl !== _browser_NxAppDefaults_js__WEBPACK_IMPORTED_MODULE_7__.appDefaultCss){
+    currentStyle = currentStyleUrl
+  }
+  return (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_2__.blockWrap)("source", null, snippetsBundle(state), false);
 }
 
 
@@ -1131,16 +1216,17 @@ function sourceBlock(state, editionSource = false) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "threadTextElm": () => (/* binding */ threadTextElm),
-/* harmony export */   "threadBlocks": () => (/* binding */ threadBlocks)
+/* harmony export */   "mainThreadBlock": () => (/* binding */ mainThreadBlock)
 /* harmony export */ });
 /* harmony import */ var _i_is_as_i_does_jack_js_src_modules_Check_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @i-is-as-i-does/jack-js/src/modules/Check.js */ "./node_modules/@i-is-as-i-does/jack-js/src/modules/Check.js");
-/* harmony import */ var _i_is_as_i_does_valva_src_modules_aliases_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @i-is-as-i-does/valva/src/modules/aliases.js */ "./node_modules/@i-is-as-i-does/valva/src/modules/aliases.js");
-/* harmony import */ var _NxState_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../NxState.js */ "./src/NxState.js");
+/* harmony import */ var _i_is_as_i_does_valva_src_legacy_Valva_v1_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @i-is-as-i-does/valva/src/legacy/Valva-v1.js */ "./node_modules/@i-is-as-i-does/valva/src/legacy/Valva-v1.js");
+/* harmony import */ var _browser_NxState_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../browser/NxState.js */ "./src/browser/NxState.js");
 /* harmony import */ var _NxIdent_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./NxIdent.js */ "./src/viewer/NxIdent.js");
 /* harmony import */ var _NxMedia_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./NxMedia.js */ "./src/viewer/NxMedia.js");
 /* harmony import */ var _NxCommons_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./NxCommons.js */ "./src/viewer/NxCommons.js");
 /* harmony import */ var _i_is_as_i_does_nexus_core_src_logs_NxLog_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/logs/NxLog.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/logs/NxLog.js");
 /* harmony import */ var _i_is_as_i_does_nexus_core_src_validt_NxStamper_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/validt/NxStamper.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/validt/NxStamper.js");
+/* harmony import */ var _i_is_as_i_does_nexus_core_src_data_NxSpin_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/data/NxSpin.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/data/NxSpin.js");
 /*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
 
 
@@ -1151,13 +1237,20 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+var threadBlocks
+
 var currentElm;
 var descrpElm;
 var contentElm;
+var distantNav;
 
 var slider;
-
 var linked = [];
+
+var spinElm;
+var spinner;
+var ready = 0
 
 var linkedCtrls = {
   "ctrls":{
@@ -1175,21 +1268,46 @@ var linkedCtrls = {
   distantLandmark.style.display ="none";
  }
 
+ function setSpinner(){
+ spinElm = (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_5__.spinContainer)()
+ spinner = new _i_is_as_i_does_nexus_core_src_data_NxSpin_js__WEBPACK_IMPORTED_MODULE_8__.Spinner(spinElm)
+ }
 
-function updateThreadBlocks(state) {
-  var newThreadData = resolveThreadData(state);
-
-  var newContent = threadContent(newThreadData);
-  var newDescrpTxt = threadTextElm(newThreadData, ["description"]);
-  (0,_i_is_as_i_does_valva_src_modules_aliases_js__WEBPACK_IMPORTED_MODULE_1__.replaceDiversion)(descrpElm.firstChild, newDescrpTxt);
-  (0,_i_is_as_i_does_valva_src_modules_aliases_js__WEBPACK_IMPORTED_MODULE_1__.replaceDiversion)(contentElm.firstChild, newContent);
-
-  resetDistantLinks(newThreadData);
+function countReady(){
+  ready++
+if(ready === 2){
+  spinner.endSpin()
+  spinElm.style.display = 'none'
+    if(linked.length){
+      linkedCtrls.count = linked.length;
+      (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_5__.toggleNavEnd)(linkedCtrls); 
+      setFirstDistantContent(linked.length > 1);
+    }
+    (0,_i_is_as_i_does_valva_src_legacy_Valva_v1_js__WEBPACK_IMPORTED_MODULE_1__.easeIn)(threadBlocks, 150)
+}
 }
 
-function setDescriptionElm(threadData) {
+function updateThreadBlocks(state) {
+  ready = 0
+  spinner.startSpin()
+
+  ;(0,_i_is_as_i_does_valva_src_legacy_Valva_v1_js__WEBPACK_IMPORTED_MODULE_1__.easeOut)(threadBlocks, 150, function(){
+    spinElm.style.display = 'block'
+
+    var newThreadData = resolveThreadData(state);
+    resetDistantLinks(newThreadData);
+  
+    var newContent = threadContent(newThreadData, false);
+    var newDescrpTxt = threadTextElm(newThreadData, ["description"]);
+    descrpElm.firstChild.replaceWith(newDescrpTxt)
+    contentElm.firstChild.replaceWith(newContent)
+  })
+}
+
+function descriptionElm(threadData) {
   descrpElm = (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_5__.getElm)("DIV", "nx-thread-description");
   descrpElm.append(threadTextElm(threadData, ["description"]));
+  return descrpElm
 }
 
 function resolveThreadData(state) {
@@ -1202,101 +1320,107 @@ function resolveThreadData(state) {
 function distantThreadBlock(threadData) {
   setDistantLandmark();
   setDistantSlider();
-  setLinkedItems(threadData);
+  resolveLinkedThreads(threadData)
   return (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_5__.blockWrap)("distant", null, [slider], distantLandmark);
 }
 
-function localThreadBlock(state, threadData) {
-  var headerElm = (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_5__.threadTitleElm)(state, true);
-  setDescriptionElm(threadData);
+function localThreadBlock(threadData) {
   setContentElm(threadData);
-
-  return (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_5__.blockWrap)("local", [headerElm], [descrpElm, contentElm], (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_5__.landmarkElm)("local"));
+  return (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_5__.blockWrap)("local", null, [contentElm], (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_5__.landmarkElm)("local"));
 }
 
 function setContentElm(threadData) {
   contentElm = (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_5__.getElm)("DIV", "nx-local-content");
-  contentElm.append(threadContent(threadData));
+  contentElm.append(threadContent(threadData, false));
 }
 
+function showDistantNav(){
+  distantNav.style.visibility = 'visible'
+}
+
+
 function hideDistantNav(){
-  (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_5__.toggleNavEnd)(linkedCtrls);
- 
-  linkedCtrls.ctrls["next"].elm.style.visibility = 'hidden';
-  linkedCtrls.ctrls["prev"].elm.style.visibility = 'hidden';
+  distantNav.style.visibility = 'hidden'
 }
 
 function resetDistantLinks(threadData){
 
-  linked = [];
+  hideDistantNav()
+  toggleDistantLandmark(false)
+  removeDistantContent(false);
+
+   linked = [];
    linkedCtrls.position = 0;
-  linkedCtrls.count = 0;
+   linkedCtrls.count = 0;
+  (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_5__.toggleNavEnd)(linkedCtrls);
 
-  hideDistantNav();
-  removeDistantContent();
-  toggleDistantLandmark(false);
-  setLinkedItems(threadData);
+  resolveLinkedThreads(threadData)
 }
 
-function setPrevCtrlVisb(){
-  if(linkedCtrls.position === 0){
-    linkedCtrls.ctrls["prev"].elm.style.visibility = 'hidden';
-  } else if(linkedCtrls.position === 1) {
-    linkedCtrls.ctrls["prev"].elm.style.visibility = 'visible';
-  }
-
+function resolveLinkedThreads(threadData){
+  if (threadData && threadData.linked.length) {  
+    setLinkedItems(threadData);
+    } else {
+      countReady()
+    }
 }
 
-function nextCtrlCallb(){
-  linkedCtrls.ctrls["next"].elm.style.visibility = 'hidden';
-    return restr;
-  
-}
-
-function restr(){
-  if((linkedCtrls.position + 1) !== linkedCtrls.count){
-  linkedCtrls.ctrls["next"].elm.style.visibility = 'visible';
-  }
-}
-
-function removeDistantContent(){
+function removeDistantContent(transition = false){
   var prevElm = currentElm.firstChild;
   if(prevElm){
-    (0,_i_is_as_i_does_valva_src_modules_aliases_js__WEBPACK_IMPORTED_MODULE_1__.easeOut)(prevElm,200,function(){
+    if(transition){
+      (0,_i_is_as_i_does_valva_src_legacy_Valva_v1_js__WEBPACK_IMPORTED_MODULE_1__.easeOut)(prevElm,150,function(){
+        prevElm.remove();
+      });
+    } else {
       prevElm.remove();
-    });
+    }
 
   }
 }
 
-function setFirstDistantContent(){
-  toggleDistantLandmark(true);
-  (0,_i_is_as_i_does_valva_src_modules_aliases_js__WEBPACK_IMPORTED_MODULE_1__.insertDiversion)(currentElm, linked[0], false, true, 200, restr);
+function setFirstDistantContent(showNav = false){
+  /*  var callb = function(){
+      toggleDistantLandmark(true)
+      if(showNav){
+        showDistantNav()
+      }      
+    }
+  insertDiversion(currentElm, linked[0], false, true, 200, callb);*/
+  toggleDistantLandmark(true)
+      if(showNav){
+        showDistantNav()
+      }      
+  currentElm.append(linked[0])
 }
 
 function setCurrentLink(){
-  setPrevCtrlVisb();
-  var restr = nextCtrlCallb();
-
   if(linked.length){
-   var  nw = linked[linkedCtrls.position];
+   var nw = linked[linkedCtrls.position];
 
   if(currentElm.firstChild){
-    (0,_i_is_as_i_does_valva_src_modules_aliases_js__WEBPACK_IMPORTED_MODULE_1__.replaceDiversion)(currentElm.firstChild, nw, restr);
+      (0,_i_is_as_i_does_valva_src_legacy_Valva_v1_js__WEBPACK_IMPORTED_MODULE_1__.replaceDiversion)(currentElm.firstChild, nw)
   } else {
-    (0,_i_is_as_i_does_valva_src_modules_aliases_js__WEBPACK_IMPORTED_MODULE_1__.insertDiversion)(currentElm, nw, false, true, 200, restr);
+    (0,_i_is_as_i_does_valva_src_legacy_Valva_v1_js__WEBPACK_IMPORTED_MODULE_1__.insertDiversion)(currentElm, nw, false, true, 150, callb);
   }
 } else {
-  removeDistantContent();
+  removeDistantContent(true);
 }
+}
+
+function distantNavElm(){
+  distantNav = (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_5__.getElm)('NAV', 'nx-distant-nav')
+  distantNav.append(linkedCtrls.ctrls["prev"].elm, currentElm, linkedCtrls.ctrls["next"].elm)
+  hideDistantNav()
+  return distantNav
 }
 
 function setDistantSlider(){
 slider = (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_5__.getElm)("DIV");
  currentElm = (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_5__.getElm)("DIV","nx-distant-link");
  (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_5__.setHistoryControls)(linkedCtrls, setCurrentLink);
- hideDistantNav();
- slider.append(linkedCtrls.ctrls["prev"].elm, currentElm, linkedCtrls.ctrls["next"].elm);
+ (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_5__.toggleNavEnd)(linkedCtrls);
+ slider.append(distantNavElm(), currentElm);
 
 }
 function linkedElm(distantState){
@@ -1312,25 +1436,22 @@ function linkedElm(distantState){
 }
 
 function toggleDistantLandmark(hasLinks){
-
-  var hidden = distantLandmark.style.display == "none";
+  var hidden = distantLandmark.style.display === "none";
   if(hasLinks && hidden){
-    (0,_i_is_as_i_does_valva_src_modules_aliases_js__WEBPACK_IMPORTED_MODULE_1__.fadeIn)(distantLandmark);
+    distantLandmark.style.display = 'block'
   }else if(!hasLinks && !hidden){
-    (0,_i_is_as_i_does_valva_src_modules_aliases_js__WEBPACK_IMPORTED_MODULE_1__.fadeOut)(distantLandmark);
+    distantLandmark.style.display = 'none'
   }
 }
 function setLinkedItems(threadData) {
 
-
-  if (threadData != null && threadData.linked.length) {
     var indexes = [];
     var done = [];
     var promises = [];
     threadData.linked.forEach((url) => {
       if(url){
         var extract = (0,_i_is_as_i_does_nexus_core_src_validt_NxStamper_js__WEBPACK_IMPORTED_MODULE_7__.splitUrlAndId)(url);
-         var prc = (0,_NxState_js__WEBPACK_IMPORTED_MODULE_2__.resolveState)(extract.url, extract.id).then((distantState) => {
+         var prc = (0,_browser_NxState_js__WEBPACK_IMPORTED_MODULE_2__.resolveState)(extract.url, extract.id).then((distantState) => {
             var key = distantState.dataUrl+"#"+distantState.threadId;
     
             if(!done.includes(key)){
@@ -1339,15 +1460,8 @@ function setLinkedItems(threadData) {
             if (distantState.threadId == "/") {                 
               indexes.push(elm);
             } else {
-              elm.append(threadContent(resolveThreadData(distantState)));
+              elm.append(threadContent(resolveThreadData(distantState), true));
               linked.push(elm);
-
-
-              if(linkedCtrls.count === 0){
-            setFirstDistantContent();
-              }
-              linkedCtrls.count++;
-              (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_5__.toggleNavEnd)(linkedCtrls); 
             }
           }
           }).catch(err => {
@@ -1357,25 +1471,28 @@ function setLinkedItems(threadData) {
     }
     });
    Promise.all(promises).then(()=>{
-     
       if(indexes.length){
         linked = linked.concat(indexes);
-        if(linkedCtrls.count === 0){
-          setFirstDistantContent();
-        }
-        linkedCtrls.count = linked.length;
-        (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_5__.toggleNavEnd)(linkedCtrls); 
-      } 
-     
+      }  
+      countReady()   
     });
-  
-  }
 }
 
-
-function threadContent(threadData) {
+function threadContent(threadData, isDistant = false) {
   var dv = (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_5__.getElm)("DIV", "nx-content");
-  dv.append(dateElm(threadData), contentBody(threadData), (0,_NxMedia_js__WEBPACK_IMPORTED_MODULE_4__.mediaElm)(threadData));
+  if (threadData) {
+  var elms = [dateElm(threadData), contentBody(threadData)]
+  if (threadData.content.media && threadData.content.media.url) {
+    var callb = null
+    if(!isDistant){
+      callb = countReady
+    }
+    elms.push((0,_NxMedia_js__WEBPACK_IMPORTED_MODULE_4__.mediaElm)(threadData, callb))
+  } else if(!isDistant) {
+    countReady()
+  }
+  dv.append(...elms);
+}
   return dv;
 }
 
@@ -1406,7 +1523,7 @@ function threadFieldText(threadData, ref = []) {
       if(ref.includes("timestamp") && data.includes('T')){
 data = data.replace('T'," ");
       }else if(["description", "main", "aside", "caption"].includes(ref[ref.length-1])){
-        data = (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_5__.convertLineBreaks)(data);
+        data = (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_5__.lines)(data)
       }
       return data;
     }
@@ -1414,24 +1531,47 @@ data = data.replace('T'," ");
   return "";
 }
 
-function threadTextElm(threadData, ref) {
-  var p = (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_5__.getElm)("P", "nx-" + ref.join("-"));
-  p.textContent = threadFieldText(threadData, ref);
-  return p;
+function threadHeader(state, threadData){
+  var header = (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_5__.getElm)('DIV', 'nx-thread-header')
+  header.append((0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_5__.threadTitleElm)(state, true), descriptionElm(threadData))
+  return header
 }
 
-function threadBlocks(state) {
+function localAndDistantBlocks(threadData){
+
+  threadBlocks = (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_5__.getElm)('DIV', 'nx-thread-blocks')
+  threadBlocks.style.display = 'none'
+  threadBlocks.append(localThreadBlock(threadData),  distantThreadBlock(threadData))
+
+  return threadBlocks
+}
+
+function threadTextElm(threadData, ref) {
+  var dv = (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_5__.getElm)("DIV", "nx-" + ref.join("-"));
+  dv.append(threadFieldText(threadData, ref));
+  return dv;
+}
+
+function mainThreadBlock(state) {
   var threadData = resolveThreadData(state);
+  var mainBlock = (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_5__.getElm)('DIV', 'nx-main-block nx-thread')
+ 
+  setSpinner()
+  spinner.startSpin()
+  
   var blocks = [
-    localThreadBlock(state, threadData),
-    distantThreadBlock(threadData),
+    threadHeader(state, threadData),
+    spinElm, 
+    localAndDistantBlocks(threadData)
   ];
 
-(0,_NxState_js__WEBPACK_IMPORTED_MODULE_2__.registerUpdateEvt)(function (newState) {
+  mainBlock.append(...blocks)
+
+;(0,_browser_NxState_js__WEBPACK_IMPORTED_MODULE_2__.registerUpdateEvt)(function (newState) {
     updateThreadBlocks(newState);
   });
 
-  return blocks;
+  return mainBlock;
 }
 
 
@@ -1461,21 +1601,16 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-function viewerElms(state){
+function viewerElms(seed){
 
-    var indexPart = (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_2__.getElm)("DIV");
-    indexPart.append((0,_NxIndex_js__WEBPACK_IMPORTED_MODULE_1__.indexBlock)(state));
-    var threadPart = (0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_2__.getElm)("DIV");
-    threadPart.append(...(0,_NxThread_js__WEBPACK_IMPORTED_MODULE_4__.threadBlocks)(state));
-    
     return [(0,_NxCommons_js__WEBPACK_IMPORTED_MODULE_2__.serviceWrap)
-([(0,_NxHistory_js__WEBPACK_IMPORTED_MODULE_0__.historyBlock)(state)], [
-     indexPart,
-     threadPart
-     ], [(0,_NxSource_js__WEBPACK_IMPORTED_MODULE_3__.sourceBlock)(state)])];
+   ([(0,_NxHistory_js__WEBPACK_IMPORTED_MODULE_0__.historyBlock)(seed.state)], [
+    (0,_NxIndex_js__WEBPACK_IMPORTED_MODULE_1__.mainIndexBlock)(seed.state),
+    (0,_NxThread_js__WEBPACK_IMPORTED_MODULE_4__.mainThreadBlock)(seed.state)
+     ], [(0,_NxSource_js__WEBPACK_IMPORTED_MODULE_3__.sourceBlock)(seed.state, seed.styleUrl, seed.editMode)])];
 }
 
 /***/ })
 
 }]);
-//# sourceMappingURL=NxViewer.js.map
+//# sourceMappingURL=NxBrowser.js.map

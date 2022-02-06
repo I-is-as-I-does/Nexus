@@ -3,7 +3,7 @@ import { conciseUrl, oembedIframe, oembedLink, oembedResponse } from "@i-is-as-i
 import {
   insertDiversion,
   replaceDiversion,
-} from "@i-is-as-i-does/valva/src/modules/aliases.js";
+} from "@i-is-as-i-does/valva/src/legacy/Valva-v1.js";
 import { threadTextElm } from "./NxThread.js";
 import { getElm } from "./NxCommons.js";
 import { logErr } from "../core/logs/NxLog.js";

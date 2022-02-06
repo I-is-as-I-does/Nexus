@@ -69,10 +69,15 @@ export function dataToState(dataUrl, threadId, data){
       threadIndex: data.index.indexOf(threadId)
     };
 
-    if (state.threadIndex === -1 && threadId !== "/") {
-      state.threadId = "/";
+    if (state.threadIndex === -1) {
+      setDefaultThread(state)
     }
     return state;
+}
+
+export function setDefaultThread(state){
+  state.threadIndex = 0
+  state.threadId = state.srcData.index[0]
 }
 
 export function resolveState(dataUrl, threadId) {
@@ -92,10 +97,13 @@ export function registerUpdateEvt(callback, onSrcChange = false) {
 export function triggerUpdate(state, skipHistoryUpdate = false, forceTrigger = false) {
   if (!updateRunning) {
     var srcChanged = state.dataUrl != currentState.dataUrl;
+    if(state.threadId === '/'){
+      setDefaultThread(state)
+    }
 
     if (forceTrigger || srcChanged || state.threadId != currentState.threadId) {
       updateRunning = true;
-      if (!skipHistoryUpdate && currentState.threadId !== '/') {
+      if (!skipHistoryUpdate) {
         registerThreadVisit(concatSrc(currentState), getTimestamp(currentState));
       }
     

@@ -1,5 +1,5 @@
 /*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
-import { easeIn, easeOut, insertDiversion } from "@i-is-as-i-does/valva/src/modules/aliases.js";
+import { easeIn, easeOut, insertDiversion } from "@i-is-as-i-does/valva/src/legacy/Valva-v1.js";
 import { blockWrap, getElm, setHistoryControls, toggleNavEnd,setToggleOnDisplay,
   baseViewLink } from "./NxCommons.js";
 import {
@@ -7,7 +7,7 @@ import {
   authorUrl
 } from "./NxIdent.js";
 import { autoScrollToBottom } from "@i-is-as-i-does/jack-js/src/modules/Style.js";
-import { registerUpdateEvt, triggerUpdate } from "../NxState.js";
+import { registerUpdateEvt, triggerUpdate } from "../browser/NxState.js";
 
 const historyMax = 100;
 var isHistoryEvent = false;

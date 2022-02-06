@@ -1,4 +1,3 @@
-/*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({});
 /************************************************************************/
@@ -238,7 +237,7 @@
 /******/ 				if(__webpack_require__.o(installedChunks, chunkId) && installedChunks[chunkId]) {
 /******/ 					installedChunks[chunkId][0]();
 /******/ 				}
-/******/ 				installedChunks[chunkIds[i]] = 0;
+/******/ 				installedChunks[chunkId] = 0;
 /******/ 			}
 /******/ 		
 /******/ 		}
@@ -254,7 +253,7 @@ var __webpack_exports__ = {};
   !*** ./src/NxIO.js ***!
   \*********************/
 (function () { 
-    Promise.all(/*! import() */[__webpack_require__.e("NxCore"), __webpack_require__.e("NxViewer"), __webpack_require__.e("SSITU")]).then(__webpack_require__.bind(__webpack_require__, /*! ./NxStart.js */ "./src/NxStart.js")).then(NxStart => {
+    Promise.all(/*! import() */[__webpack_require__.e("NxBrowserLibraries"), __webpack_require__.e("NxBrowser")]).then(__webpack_require__.bind(__webpack_require__, /*! ./browser/NxStart.js */ "./src/browser/NxStart.js")).then(NxStart => {
         NxStart.init()
     })
   })();
