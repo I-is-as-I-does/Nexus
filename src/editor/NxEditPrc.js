@@ -1,4 +1,4 @@
-/*! Nexus | (c) 2021-22 I-is-as-I-does | AGPLv3 license */
+
 import { replaceDiacritics } from "@i-is-as-i-does/jack-js/src/modules/Help.js";
 
 const providers = ["youtube", "vimeo", "soundcloud"];

@@ -43,15 +43,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "spinContainer": () => (/* binding */ spinContainer),
 /* harmony export */   "iconImage": () => (/* binding */ iconImage)
 /* harmony export */ });
-/* harmony import */ var _i_is_as_i_does_nexus_core_src_logs_NxLog_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/logs/NxLog.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/logs/NxLog.js");
-/* harmony import */ var _i_is_as_i_does_nexus_core_src_load_NxStyle_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/load/NxStyle.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/load/NxStyle.js");
-/* harmony import */ var _NxState_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./NxState.js */ "./src/browser/NxState.js");
-/* harmony import */ var _i_is_as_i_does_nexus_core_src_transl_NxElmTranslate_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/transl/NxElmTranslate.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/transl/NxElmTranslate.js");
-/* harmony import */ var _i_is_as_i_does_nexus_core_src_transl_NxCoreTranslate_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/transl/NxCoreTranslate.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/transl/NxCoreTranslate.js");
-/* harmony import */ var _i_is_as_i_does_nexus_core_src_validt_NxSpecs_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/validt/NxSpecs.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/validt/NxSpecs.js");
-/* harmony import */ var _i_is_as_i_does_jack_js_src_modules_Help_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @i-is-as-i-does/jack-js/src/modules/Help.js */ "./node_modules/@i-is-as-i-does/jack-js/src/modules/Help.js");
-/* harmony import */ var _i_is_as_i_does_valva_src_legacy_Valva_v1_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @i-is-as-i-does/valva/src/legacy/Valva-v1.js */ "./node_modules/@i-is-as-i-does/valva/src/legacy/Valva-v1.js");
-/*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
+/* harmony import */ var _i_is_as_i_does_nexus_core_src_load_NxStyle_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/load/NxStyle.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/load/NxStyle.js");
+/* harmony import */ var _NxState_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./NxState.js */ "./src/browser/NxState.js");
+/* harmony import */ var _i_is_as_i_does_nexus_core_src_transl_NxElmTranslate_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/transl/NxElmTranslate.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/transl/NxElmTranslate.js");
+/* harmony import */ var _i_is_as_i_does_nexus_core_src_transl_NxCoreTranslate_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/transl/NxCoreTranslate.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/transl/NxCoreTranslate.js");
+/* harmony import */ var _i_is_as_i_does_nexus_core_src_validt_NxSpecs_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/validt/NxSpecs.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/validt/NxSpecs.js");
+/* harmony import */ var _i_is_as_i_does_jack_js_src_modules_Help_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @i-is-as-i-does/jack-js/src/modules/Help.js */ "./node_modules/@i-is-as-i-does/jack-js/src/modules/Help.js");
+/* harmony import */ var _i_is_as_i_does_valva_src_legacy_Valva_v1_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @i-is-as-i-does/valva/src/legacy/Valva-v1.js */ "./node_modules/@i-is-as-i-does/valva/src/legacy/Valva-v1.js");
 
 
 
@@ -80,9 +78,9 @@ function toggleOnDisplay(viewlk, givenState, newState) {
 
 function langDropDown() {
   var toggle = getElm('P');
-  toggle.textContent = (0,_i_is_as_i_does_nexus_core_src_transl_NxCoreTranslate_js__WEBPACK_IMPORTED_MODULE_4__.getLang)()
-  return selectDropDown((0,_i_is_as_i_does_nexus_core_src_transl_NxCoreTranslate_js__WEBPACK_IMPORTED_MODULE_4__.getAvailableLangs)(), toggle, function(nlang){
-    ;(0,_i_is_as_i_does_nexus_core_src_transl_NxElmTranslate_js__WEBPACK_IMPORTED_MODULE_3__.triggerTranslate)(nlang);
+  toggle.textContent = (0,_i_is_as_i_does_nexus_core_src_transl_NxCoreTranslate_js__WEBPACK_IMPORTED_MODULE_3__.getLang)()
+  return selectDropDown((0,_i_is_as_i_does_nexus_core_src_transl_NxCoreTranslate_js__WEBPACK_IMPORTED_MODULE_3__.getAvailableLangs)(), toggle, function(nlang){
+    ;(0,_i_is_as_i_does_nexus_core_src_transl_NxElmTranslate_js__WEBPACK_IMPORTED_MODULE_2__.triggerTranslate)(nlang);
   }, "nx-lang-switch");
 }
 
@@ -90,7 +88,7 @@ function langDropDown() {
 function appLink() {
   var link = getElm("A", "nx-app-link nx-external-link");
   link.target = "_blank";
-  link.href = _i_is_as_i_does_nexus_core_src_validt_NxSpecs_js__WEBPACK_IMPORTED_MODULE_5__.appUrl;
+  link.href = _i_is_as_i_does_nexus_core_src_validt_NxSpecs_js__WEBPACK_IMPORTED_MODULE_4__.appUrl;
   link.title = "Nexus";
   link.textContent = "Nexus";
   return link;
@@ -165,15 +163,15 @@ function blockWrap(
 
 function landmarkElm(name) {
   var lndmrk = getElm("SPAN", "nx-landmark nx-landmark-"+name.replace(" ", "-"));
-  lndmrk.textContent = (0,_i_is_as_i_does_nexus_core_src_transl_NxCoreTranslate_js__WEBPACK_IMPORTED_MODULE_4__.getTxt)(name);
-(0,_i_is_as_i_does_nexus_core_src_transl_NxElmTranslate_js__WEBPACK_IMPORTED_MODULE_3__.registerTranslElm)(lndmrk, name);
+  lndmrk.textContent = (0,_i_is_as_i_does_nexus_core_src_transl_NxCoreTranslate_js__WEBPACK_IMPORTED_MODULE_3__.getTxt)(name);
+(0,_i_is_as_i_does_nexus_core_src_transl_NxElmTranslate_js__WEBPACK_IMPORTED_MODULE_2__.registerTranslElm)(lndmrk, name);
   return lndmrk;
 }
 
 function errorPrgr() {
 
   var p = getElm("P");
-  if ((0,_i_is_as_i_does_nexus_core_src_load_NxStyle_js__WEBPACK_IMPORTED_MODULE_1__.isCssLoaded)()) {
+  if ((0,_i_is_as_i_does_nexus_core_src_load_NxStyle_js__WEBPACK_IMPORTED_MODULE_0__.isCssLoaded)()) {
     p.className = "nx-error";
   } else {
     p.style.margin = "0 auto";
@@ -300,8 +298,8 @@ function selectDropDown(list, toggleElm, actionCallback = null, switchClass = nu
 
 function setToggleOnDisplay(viewlk, state) {
 
-  toggleOnDisplay(viewlk, state, (0,_NxState_js__WEBPACK_IMPORTED_MODULE_2__.getCurrentState)());
- (0,_NxState_js__WEBPACK_IMPORTED_MODULE_2__.registerUpdateEvt)(function (newState) {
+  toggleOnDisplay(viewlk, state, (0,_NxState_js__WEBPACK_IMPORTED_MODULE_1__.getCurrentState)());
+ (0,_NxState_js__WEBPACK_IMPORTED_MODULE_1__.registerUpdateEvt)(function (newState) {
     toggleOnDisplay(viewlk, state, newState);
   });
 }
@@ -316,8 +314,8 @@ function threadTitleElm(state, update = false) {
   var sp = getElm("SPAN", "nx-thread-title");
   sp.textContent = resolveThreadTitle(state);
   if (update) {
-    (0,_NxState_js__WEBPACK_IMPORTED_MODULE_2__.registerUpdateEvt)(function (newState) {
-      (0,_i_is_as_i_does_valva_src_legacy_Valva_v1_js__WEBPACK_IMPORTED_MODULE_7__.splitFlap)(sp, resolveThreadTitle(newState), 15)
+    (0,_NxState_js__WEBPACK_IMPORTED_MODULE_1__.registerUpdateEvt)(function (newState) {
+      (0,_i_is_as_i_does_valva_src_legacy_Valva_v1_js__WEBPACK_IMPORTED_MODULE_6__.splitFlap)(sp, resolveThreadTitle(newState), 15)
     });
   }
 
@@ -327,7 +325,7 @@ function threadTitleElm(state, update = false) {
 function lines(text) {
   var dv = getElm("DIV", "nx-lines");
   if(text){   
-    var sp = (0,_i_is_as_i_does_jack_js_src_modules_Help_js__WEBPACK_IMPORTED_MODULE_6__.splitOnLineBreaks)(text)
+    var sp = (0,_i_is_as_i_does_jack_js_src_modules_Help_js__WEBPACK_IMPORTED_MODULE_5__.splitOnLineBreaks)(text)
     var ln = []
     sp.forEach(l => {
       var p = getElm('P')
@@ -413,7 +411,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _viewer_NxViewer_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./../viewer/NxViewer.js */ "./src/viewer/NxViewer.js");
 /* harmony import */ var _NxCommons_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./NxCommons.js */ "./src/browser/NxCommons.js");
 /* harmony import */ var _NxCdn_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./NxCdn.js */ "./src/browser/NxCdn.js");
-/*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
+
 
 
 
@@ -478,7 +476,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _i_is_as_i_does_nexus_core_src_load_NxSrc_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/load/NxSrc.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/load/NxSrc.js");
 /* harmony import */ var _i_is_as_i_does_nexus_core_src_storg_NxMemory_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/storg/NxMemory.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/storg/NxMemory.js");
-/*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
+
 
 
 
@@ -632,7 +630,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _NxIdent_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./NxIdent.js */ "./src/viewer/NxIdent.js");
 /* harmony import */ var _i_is_as_i_does_jack_js_src_modules_Style_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @i-is-as-i-does/jack-js/src/modules/Style.js */ "./node_modules/@i-is-as-i-does/jack-js/src/modules/Style.js");
 /* harmony import */ var _browser_NxState_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../browser/NxState.js */ "./src/browser/NxState.js");
-/*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
+
 
 
 
@@ -788,7 +786,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../browser/NxCommons.js */ "./src/browser/NxCommons.js");
 /* harmony import */ var _i_is_as_i_does_nexus_core_src_storg_NxStorage_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/storg/NxStorage.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/storg/NxStorage.js");
 /* harmony import */ var _i_is_as_i_does_jack_js_src_modules_Web_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @i-is-as-i-does/jack-js/src/modules/Web.js */ "./node_modules/@i-is-as-i-does/jack-js/src/modules/Web.js");
-/*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
+
 
 
 
@@ -920,7 +918,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _browser_NxState_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../browser/NxState.js */ "./src/browser/NxState.js");
 /* harmony import */ var _NxIdent_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./NxIdent.js */ "./src/viewer/NxIdent.js");
 /* harmony import */ var _browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../browser/NxCommons.js */ "./src/browser/NxCommons.js");
-/*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
+
 
 
 
@@ -1042,7 +1040,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _NxThread_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./NxThread.js */ "./src/viewer/NxThread.js");
 /* harmony import */ var _browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../browser/NxCommons.js */ "./src/browser/NxCommons.js");
 /* harmony import */ var _i_is_as_i_does_nexus_core_src_data_NxMedia_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/data/NxMedia.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/data/NxMedia.js");
-/*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
+
 
 
 
@@ -1101,7 +1099,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _i_is_as_i_does_nexus_core_src_data_NxSnippet_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/data/NxSnippet.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/data/NxSnippet.js");
 /* harmony import */ var _browser_NxCdn_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../browser/NxCdn.js */ "./src/browser/NxCdn.js");
 /* harmony import */ var _browser_NxIcons_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../browser/NxIcons.js */ "./src/browser/NxIcons.js");
-/*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
+
 
 
 
@@ -1268,7 +1266,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _i_is_as_i_does_nexus_core_src_logs_NxLog_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/logs/NxLog.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/logs/NxLog.js");
 /* harmony import */ var _i_is_as_i_does_nexus_core_src_validt_NxStamper_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/validt/NxStamper.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/validt/NxStamper.js");
 /* harmony import */ var _i_is_as_i_does_nexus_core_src_data_NxSpin_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/data/NxSpin.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/data/NxSpin.js");
-/*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
+
 
 
 
@@ -1636,7 +1634,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../browser/NxCommons.js */ "./src/browser/NxCommons.js");
 /* harmony import */ var _NxSource_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./NxSource.js */ "./src/viewer/NxSource.js");
 /* harmony import */ var _NxThread_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./NxThread.js */ "./src/viewer/NxThread.js");
-/*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
 
 
 

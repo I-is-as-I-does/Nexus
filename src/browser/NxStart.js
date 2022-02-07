@@ -1,4 +1,4 @@
-/*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
+
 import { initAll, retrieveNxElm } from "@i-is-as-i-does/nexus-core/src/load/NxInit.js";
 import { getQuery } from "@i-is-as-i-does/nexus-core/src/base/NxHost.js";
 import { setOriginLang } from "@i-is-as-i-does/nexus-core/src/transl/NxCoreTranslate.js";

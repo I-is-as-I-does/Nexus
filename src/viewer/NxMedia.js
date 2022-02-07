@@ -1,4 +1,4 @@
-/*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
+
 import { threadTextElm } from "./NxThread.js";
 import { getElm } from "../browser/NxCommons.js";
 import { resolveMedia } from "@i-is-as-i-does/nexus-core/src/data/NxMedia.js";

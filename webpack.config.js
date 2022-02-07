@@ -13,14 +13,14 @@ const dirs = {
 const splitChunks = {
     chunks: "all",
     cacheGroups: {
-      NxBrowserLibraries: {
+      NxBrowserLib: {
         test: /[\\/]valva|jack-js|nexus-core[\\/]/,
-        name: "NxBrowserLibraries",
+        name: "NxBrowser-LibChunk",
         chunks: "all",
       },
-      NxBrowserEditor: {
+      NxBrowserEdit: {
         test: /[\\/]editor[\\/]/,
-        name: "NxBrowserEditor",
+        name: "NxBrowser-EditChunk",
         chunks: "all",
       },
       NxBrowser: {

@@ -1,4 +1,4 @@
-/*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
+
 
 import { getSrcData, getThreadsList } from "@i-is-as-i-does/nexus-core/src/load/NxSrc.js";
 import { isThreadContentUnseen, registerThreadVisit } from "@i-is-as-i-does/nexus-core/src/storg/NxMemory.js";

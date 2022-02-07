@@ -1,4 +1,4 @@
-/*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
+
 import { copyToClipboard } from "@i-is-as-i-does/jack-js/src/modules/Stock.js";
 import { timedFadeToggle, easeOut, easeIn } from "@i-is-as-i-does/valva/src/legacy/Valva-v1.js";
 import { blockWrap, getElm, iconImage } from "../browser/NxCommons.js";

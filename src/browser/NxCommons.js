@@ -1,5 +1,4 @@
-/*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
-import { getErr } from "@i-is-as-i-does/nexus-core/src/logs/NxLog.js";
+
 import { isCssLoaded } from "@i-is-as-i-does/nexus-core/src/load/NxStyle.js";
 import { getCurrentState, registerUpdateEvt } from "./NxState.js";
 import { registerTranslElm, triggerTranslate } from "@i-is-as-i-does/nexus-core/src/transl/NxElmTranslate.js";

@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunknexus"] = self["webpackChunknexus"] || []).push([["NxBrowserLibraries"],{
+(self["webpackChunknexus"] = self["webpackChunknexus"] || []).push([["NxBrowser-LibChunk"],{
 
 /***/ "./node_modules/@i-is-as-i-does/nexus-core/src/base/NxDefaults.js":
 /*!************************************************************************!*\
@@ -3127,4 +3127,4 @@ function addFinalSlash (string) {
 /***/ })
 
 }]);
-//# sourceMappingURL=NxBrowserLibraries.js.map
+//# sourceMappingURL=NxBrowser-LibChunk.js.map
