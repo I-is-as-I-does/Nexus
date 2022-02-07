@@ -47,14 +47,14 @@ export function concatSrc(state){
 }
 
 export function getTimestamp(state){
-  if (state.threadIndex !== -1) {
+  if (state.threadIndex !== -1 && state.threadIndex < state.srcData.threads.length) {
 return state.srcData.threads[state.threadIndex].content.timestamp
   }
   return null
 }
 
 export function isStateUnseen(state){
-  if (state.threadId !== '/') {
+  if (state.threadIndex !== -1 && state.srcData.index.indexOf(state.threadIndex) !== -1) {
     return isThreadContentUnseen(concatSrc(state), getTimestamp(state))
   }
   return false

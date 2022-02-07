@@ -6,8 +6,8 @@ import { logErr } from "@i-is-as-i-does/nexus-core/src/logs/NxLog.js";
 import { dataToState, setOriginState } from './NxState.js'
 import { editorElms } from "./../editor/NxEditor.js";
 import { viewerElms } from "./../viewer/NxViewer.js";
-import { errorPrgr } from "./../viewer/NxCommons.js";
-import { appDefaultCss } from "./NxAppDefaults.js";
+import { errorPrgr } from "./NxCommons.js";
+import { appDefaultCss } from "./NxCdn.js";
 
 
 function mountApp(nxElm, appElm){
@@ -34,7 +34,6 @@ export function init(){
       mountApp(seed.nxelm, elm)
 
     }).catch((err)=> {
-      console.log(err)
         logErr(err.message);
         mountApp(retrieveNxElm(), errorPrgr())
       })

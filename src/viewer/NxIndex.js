@@ -6,7 +6,7 @@ import {
 } from "@i-is-as-i-does/valva/src/legacy/Valva-v1.js";
 import { registerUpdateEvt } from "../browser/NxState.js";
 import { authorHandle, authorUrl, viewLink } from "./NxIdent.js";
-import { blockWrap, getElm, lines } from "./NxCommons.js";
+import { blockWrap, getElm, lines } from "../browser/NxCommons.js";
 
 var indexList = null;
 
@@ -97,7 +97,7 @@ function indexHeader(state){
 
 function indexBlock(state){
   setIndexList(state);
-  return blockWrap("threads-list", null, [indexList]);
+  return blockWrap("threads-list", [indexList]);
 }
 
 export function mainIndexBlock(state) {

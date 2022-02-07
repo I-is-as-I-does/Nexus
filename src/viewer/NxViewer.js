@@ -3,7 +3,7 @@
 import { historyBlock } from "./NxHistory.js";
 import { mainIndexBlock } from "./NxIndex.js";
 import { appHeader, instanceWrap, serviceWrap
- } from "./NxCommons.js";
+ } from "../browser/NxCommons.js";
 import { sourceBlock } from "./NxSource.js";
 import { mainThreadBlock } from "./NxThread.js";
 

@@ -88,12 +88,12 @@ function distantThreadBlock(threadData) {
   setDistantLandmark();
   resolveLinkedThreads(threadData)
   distantThreadsElm = getElm('DIV', 'nx-distant-threads')
-  return blockWrap("distant", null, [distantThreadsElm], distantLandmark);
+  return blockWrap("distant", [distantThreadsElm], distantLandmark);
 }
 
 function localThreadBlock(threadData) {
   setContentElm(threadData);
-  return blockWrap("local", null, [contentElm], landmarkElm("local"));
+  return blockWrap("local", [contentElm], landmarkElm("local"));
 }
 
 function setContentElm(threadData) {

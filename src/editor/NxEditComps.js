@@ -1,7 +1,8 @@
 /*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
 import { getTxt } from "@i-is-as-i-does/nexus-core/src/transl/NxCoreTranslate.js";
 import { registerTranslElm } from "@i-is-as-i-does/nexus-core/src/transl/NxElmTranslate.js";
-import { getElm } from "../viewer/NxCommons.js";
+import { getElm, iconImage } from "../browser/NxCommons.js";
+import { invalidB64 } from "../browser/NxIcons.js";
 
   export function textInput(val) {
     var inp = getElm("INPUT", "nx-edit-text");
@@ -49,6 +50,7 @@ export function addBtn() {
 
 export function invalidSp() {
   var sp = getElm("SPAN", "nx-edit-feedback");
+  sp.append(iconImage(invalidB64))
   return sp;
 }
 

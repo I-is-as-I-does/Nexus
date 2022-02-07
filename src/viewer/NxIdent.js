@@ -1,7 +1,7 @@
 /*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
 import { vSplitFlap } from "@i-is-as-i-does/valva/src/modules/transitions";
 import { registerUpdateEvt, triggerUpdate, isStateUnseen } from "../browser/NxState.js";
-import { baseViewLink, getElm, setToggleOnDisplay } from "./NxCommons.js";
+import { baseViewLink, getElm, setToggleOnDisplay } from "../browser/NxCommons.js";
 import { getStoredItem, storeItem } from '@i-is-as-i-does/nexus-core/src/storg/NxStorage.js'
 import { miniUrl } from "@i-is-as-i-does/jack-js/src/modules/Web.js";
 

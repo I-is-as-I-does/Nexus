@@ -75,10 +75,16 @@
     text-decoration: underline dotted #444 1px;
 }
 
-.nx .nx-author-url a:not([href=""]):after {
-    content: "↗";
-    text-decoration: none;
-    font-size: 0.8rem;
+
+.nx .nx-icon {
+    opacity: 0.8;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.nx .nx-source-link .nx-icon  {
+    width: 16px;
+    height: 16px;
 }
 
 .nx footer {
@@ -135,6 +141,7 @@
     position: absolute;
     max-height: 150px;
     overflow-y: scroll;
+    z-index: +1;
 }
 
 .nx .nx-select-list li:hover {
@@ -446,6 +453,39 @@ height: 20px;
     object-fit: cover;
 }
 
+
+.nx .nx-source textarea {
+    margin-top: 5px;
+    outline: none;
+}
+
+.nx footer a.nx-source-snippets {
+    font-size: 1rem;
+}
+.nx .nx-json-snippet textarea {
+    height: 50px;
+}
+
+.nx .nx-embed-snippet textarea {
+    height: 120px;
+}
+
+.nx .nx-embed-snippet,
+.nx .nx-json-snippet {
+    margin-top: 2px;
+}
+
+.nx .nx-source textarea {
+    border: 1px solid #dedede;
+    color: #444;
+    padding: 0.8em;
+    font-size: 0.85em;
+    resize: vertical;
+    font-family: "Inconsolata", "Courier New", Courier, monospace;
+    width: 100%;
+    max-width: 100%;
+}
+
 /* Nexus Editor CSS addon */
 
 .nx form label {
@@ -530,13 +570,11 @@ height: 20px;
     max-height: 90px;
 }
 
-.nx .nx-edit-media-type,
-.nx .nx-edit-linked-id {
+.nx .nx-edit-media-type {
     position: relative;
 }
 
-.nx .nx-edit-media-type ul,
-.nx .nx-edit-linked-id ul {
+.nx .nx-edit-media-type ul {
     background-color: white;
     width: 100%;
     border-bottom: 1px solid #dedede;
@@ -545,8 +583,7 @@ height: 20px;
     box-shadow: 0px 2px 4px 2px #ebebeb;
 }
 
-.nx .nx-edit-media-type li:not(:first-child),
-.nx .nx-edit-linked-id li:not(:first-child) {
+.nx .nx-edit-media-type li:not(:first-child){
     border-top: 1px solid #dedede
 }
 
@@ -554,14 +591,12 @@ height: 20px;
     margin-bottom: 12px;
 }
 
-.nx .nx-edit-move button {
-    border: 1px solid white;
-    width: 16px;
-    margin-right: 4px;
-    font-size: 20px;
+.nx .nx-edit-move .nx-icon {
+   margin:7px 0;
+   width: 16px;
+   height: 16px;
 }
 
-.nx .nx-edit-move button,
 .nx .nx-add-link,
 .nx .nx-delete-link,
 .nx .nx-delete-thread {
@@ -574,13 +609,6 @@ height: 20px;
     cursor: pointer;
 }
 
-.nx .nx-edit-move-up:not(:disabled):hover {
-    border-top: 1px solid #444
-}
-
-.nx .nx-edit-move-down:not(:disabled):hover {
-    border-bottom: 1px solid #444
-}
 
 .nx .nx-add-link,
 .nx .nx-delete-link,
@@ -617,11 +645,6 @@ height: 20px;
     position: relative;
 }
 
-.nx .nx-edit-move button:disabled {
-    cursor: default;
-    color: #c0c0c0;
-}
-
 .nx .nx-edit-index li {
     margin-bottom: 1em;
 }
@@ -639,7 +662,15 @@ height: 20px;
     position: absolute;
     right: 0;
 }
-
+.nx .nx-edit-menu .nx-icon  {
+    width: 20px;
+    height: 20px;
+    margin: 0 5px;
+}
+.nx .nx-edit-feedback .nx-icon {
+    width: 16px;
+    height: 16px;
+}
 .nx-edit-switch {
     width: 50px;
     height: 50px;
@@ -653,25 +684,21 @@ height: 20px;
     bottom: 5vh;
     cursor: pointer;
 }
-
+.nx-edit-switch .nx-icon {
+    width: 25px;
+    height: 25px;
+    vertical-align: middle;
+    text-align: center;
+    margin:12px
+}
 .nx-edit-switch:hover {
     border-color: #444;
 }
 
-.nx-edit-nav button {
-    display: inline-block;
-    width: 35px;
-    height: 35px;
-    font-weight: bold;
-    font-size: 19px;
-    border: none;
-    background-color: white;
-    margin-right: 4px;
-    line-height: 19px;
-    color: #222;
-    cursor: pointer;
-}
 
+.nx .nx-edit-actions {
+    margin-top: 10px;
+}
 .nx .nx-edit-actions a {
     font-size: 20px;
     margin: 2px
@@ -679,17 +706,19 @@ height: 20px;
 
 .nx .nx-edit-nav {
     text-align: center;
-
 }
 
-.nx .nx-save:disabled, .nx .nx-reset:disabled {
+.nx .nx-disabled .nx-icon {
     cursor: default;
-    color: #b3b3b3
+    opacity: 0.4;
 }
-
+.nx .nx-edit .nx-nav-end {
+    opacity: 0.4;
+}
 .nx .nx-action-feedback {
     height: 1.2em;
     display: block;
+    margin-bottom: 0.5em;
 }
 .nx form .nx-select-toggle {
     border-bottom: 1px solid #dedede;
@@ -698,38 +727,4 @@ height: 20px;
 
 .nx .nx-edit .nx-landmark {
     margin:1rem 0
-}
-/* @todo elm now in editor only */
-
-
-.nx .nx-source textarea {
-    margin-top: 5px;
-    outline: none;
-}
-
-.nx footer a.nx-source-snippets {
-    font-size: 1rem;
-}
-.nx .nx-json-snippet textarea {
-    height: 50px;
-}
-
-.nx .nx-embed-snippet textarea {
-    height: 120px;
-}
-
-.nx .nx-embed-snippet,
-.nx .nx-json-snippet {
-    margin-top: 2px;
-}
-
-.nx .nx-source textarea {
-    border: 1px solid #dedede;
-    color: #444;
-    padding: 0.8em;
-    font-size: 0.85em;
-    resize: vertical;
-    font-family: "Inconsolata", "Courier New", Courier, monospace;
-    width: 100%;
-    max-width: 100%;
 }

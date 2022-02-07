@@ -1,7 +1,7 @@
 /*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
 import { getErr } from "@i-is-as-i-does/nexus-core/src/logs/NxLog.js";
 import { isCssLoaded } from "@i-is-as-i-does/nexus-core/src/load/NxStyle.js";
-import { getCurrentState, registerUpdateEvt } from "../browser/NxState.js";
+import { getCurrentState, registerUpdateEvt } from "./NxState.js";
 import { registerTranslElm, triggerTranslate } from "@i-is-as-i-does/nexus-core/src/transl/NxElmTranslate.js";
 import { getAvailableLangs, getLang, getTxt } from "@i-is-as-i-does/nexus-core/src/transl/NxCoreTranslate.js";
 import { appUrl } from "@i-is-as-i-does/nexus-core/src/validt/NxSpecs.js";
@@ -10,7 +10,7 @@ import { splitFlap } from "@i-is-as-i-does/valva/src/legacy/Valva-v1.js";
 
 function resolveThreadTitle(state) {
   var threadTitle = "/";
-  if (state.threadId && state.threadId != "/") {
+  if (state && Object.prototype.hasOwnProperty.call(state, 'threadIndex') && state.threadIndex !== -1) {
     threadTitle = state.srcData.threads[state.threadIndex].title;
   }
   return threadTitle;
@@ -18,7 +18,7 @@ function resolveThreadTitle(state) {
 
 
 function toggleOnDisplay(viewlk, givenState, newState) {
-  if (newState.dataUrl && givenState.dataUrl == newState.dataUrl && givenState.threadId == newState.threadId) {
+  if (newState.dataUrl && givenState.dataUrl === newState.dataUrl && givenState.threadId == newState.threadId) {
     viewlk.classList.add("nx-on-display");
   } else {
     viewlk.classList.remove("nx-on-display");
@@ -95,21 +95,14 @@ export function serviceWrap
   return wrap;
 }
 
-// @todo update, no use of headers nor landmark ?
 export function blockWrap(
   blockName,
-  headerElms = null,
   contentElms = null,
   landmark = false
 ) {
   var dv = getElm("DIV", "nx-" + blockName + " nx-block");
   if (landmark) {
     dv.append(landmark);
-  }
-  if (headerElms) {
-    var header = getElm("DIV","nx-thread-header");
-    header.append(...headerElms);
-    dv.append(header);
   }
   if (contentElms) {
     dv.append(...contentElms);
@@ -126,10 +119,6 @@ registerTranslElm(lndmrk, name);
 
 export function errorPrgr() {
 
-    var errMsgs = getErr();
-    if(!errMsgs.length){
-      errMsgs = ["Init failed"];
-    }
   var p = getElm("P");
   if (isCssLoaded()) {
     p.className = "nx-error";
@@ -139,17 +128,7 @@ export function errorPrgr() {
     p.style.fontSize = "13px";
   }
 
-    var br = getElm('BR');
-    var sp1 = getElm("SPAN");
-    sp1.textContent = "—/ — ";
-    p.append(sp1, br);
-    errMsgs.forEach((msg) => {
-      var spx = getElm("SPAN");
-      spx.textContent = getTxt(msg);
-    registerTranslElm(spx, msg);
-      p.append(spx, br.cloneNode());
-    });
-  
+    p.textContent = "—/ — ";
   return p;
 }
 
@@ -169,10 +148,14 @@ export function toggleNavEnd(map) {
 }
 
 
-export function setHistoryControls(map, triggerCallback){
+export function setHistoryControls(map, triggerCallback, imgAsSymbol = false){
   Object.keys(map.ctrls).forEach((ctrl) => {
     map.ctrls[ctrl].elm = getElm("A", "nx-nav-ctrl nx-nav-end");
-    map.ctrls[ctrl].elm.textContent = map.ctrls[ctrl].symbol;
+    if(imgAsSymbol){
+      map.ctrls[ctrl].elm.append(iconImage(map.ctrls[ctrl].symbol))
+    } else {
+      map.ctrls[ctrl].elm.textContent = map.ctrls[ctrl].symbol;
+    }  
     map.ctrls[ctrl].elm.addEventListener("click", function () {
       if (!map.ctrls[ctrl].elm.classList.contains("nx-nav-end")) {
         if (ctrl == "next") {
@@ -305,4 +288,12 @@ export function lines(text) {
 export function spinContainer() {
   var container = getElm("DIV", "nx-loading");
   return container
+}
+
+export function iconImage(b64, size = 20){
+  
+  var ic = new Image(size, size)
+  ic.className = 'nx-icon'
+  ic.src = b64
+  return ic
 }

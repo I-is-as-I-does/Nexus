@@ -1,12 +1,13 @@
 /*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
 import { copyToClipboard } from "@i-is-as-i-does/jack-js/src/modules/Stock.js";
 import { timedFadeToggle, easeOut, easeIn } from "@i-is-as-i-does/valva/src/legacy/Valva-v1.js";
-import { blockWrap, getElm } from "./NxCommons.js";
+import { blockWrap, getElm, iconImage } from "../browser/NxCommons.js";
 import { registerTranslElm } from "@i-is-as-i-does/nexus-core/src/transl/NxElmTranslate.js";
 import { concatSrc, registerUpdateEvt } from "../browser/NxState.js";
 import { getLang } from "@i-is-as-i-does/nexus-core/src/transl/NxCoreTranslate.js";
 import { getSnippet } from "@i-is-as-i-does/nexus-core/src/data/NxSnippet.js";
-import { appDefaultCss, appIO } from "../browser/NxAppDefaults.js";
+import { appDefaultCss, appIO } from "../browser/NxCdn.js";
+import { copyB64 } from "../browser/NxIcons.js";
 
 var drawerElm = null;
 var editMode = false;
@@ -97,7 +98,11 @@ function textAreaElm(state, callback) {
 }
 
 function copyLink(snpElm) {
-  var copyLk = actionLink("copy", "⧉");
+  
+  var copyLk = getElm("A", "nx-source-link");
+  var copyIc = iconImage(copyB64, 16)
+
+  copyLk.append(copyIc)
   var copyTooltip = toolTip("nx-source-copy-tooltip",'c/c');
   copyLk.append(copyTooltip);
 
@@ -134,5 +139,5 @@ export function sourceBlock(state, currentStyleUrl, editionSource = false) {
   if(currentStyleUrl !== appDefaultCss){
     currentStyle = currentStyleUrl
   }
-  return blockWrap("source", null, snippetsBundle(state), false);
+  return blockWrap("source", snippetsBundle(state), false);
 }

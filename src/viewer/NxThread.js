@@ -8,7 +8,7 @@ import {
   viewLink,
 } from "./NxIdent.js";
 import { mediaElm } from "./NxMedia.js";
-import { blockWrap, getElm,  landmarkElm,  lines,  setHistoryControls,  threadTitleElm, toggleNavEnd, spinContainer } from "./NxCommons.js";
+import { blockWrap, getElm,  landmarkElm,  lines,  setHistoryControls,  threadTitleElm, toggleNavEnd, spinContainer } from "../browser/NxCommons.js";
 import { logErr } from "@i-is-as-i-does/nexus-core/src/logs/NxLog.js";
 import { splitUrlAndId } from "@i-is-as-i-does/nexus-core/src/validt/NxStamper.js";
 import { Spinner } from "@i-is-as-i-does/nexus-core/src/data/NxSpin.js";
@@ -96,12 +96,12 @@ function distantThreadBlock(threadData) {
   setDistantLandmark();
   setDistantSlider();
   resolveLinkedThreads(threadData)
-  return blockWrap("distant", null, [slider], distantLandmark);
+  return blockWrap("distant", [slider], distantLandmark);
 }
 
 function localThreadBlock(threadData) {
   setContentElm(threadData);
-  return blockWrap("local", null, [contentElm], landmarkElm("local"));
+  return blockWrap("local", [contentElm], landmarkElm("local"));
 }
 
 function setContentElm(threadData) {
@@ -255,18 +255,21 @@ function setLinkedItems(threadData) {
 
 function threadContent(threadData, isDistant = false) {
   var dv = getElm("DIV", "nx-content");
+  var callb = null
+  if(!isDistant){
+    callb = countReady
+  }
+  var callbsent = false
   if (threadData) {
   var elms = [dateElm(threadData), contentBody(threadData)]
   if (threadData.content.media && threadData.content.media.url) {
-    var callb = null
-    if(!isDistant){
-      callb = countReady
-    }
+    callbsent = true
     elms.push(mediaElm(threadData, callb))
-  } else if(!isDistant) {
-    countReady()
   }
   dv.append(...elms);
+} 
+if(!callbsent && callb !== null){
+  callb()
 }
   return dv;
 }

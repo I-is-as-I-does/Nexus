@@ -1,5 +1,5 @@
 /*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
-import { appHeaderWithLang, getElm, instanceWrap, serviceWrap } from "../viewer/NxCommons.js";
+import { appHeaderWithLang, getElm, instanceWrap, serviceWrap } from "../browser/NxCommons.js";
 import { viewerElms } from "../viewer/NxViewer.js";
 import { editDistantBlock, editIndexBlock, editLocalBlock, getEditMenu, setEditState, instanceSwitch } from "./NxEdit.js";
 

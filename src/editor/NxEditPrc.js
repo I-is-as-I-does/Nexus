@@ -1,8 +1,5 @@
 /*! Nexus | (c) 2021-22 I-is-as-I-does | AGPLv3 license */
-import { escapeRegExp, replaceDiacritics } from "@i-is-as-i-does/jack-js/src/modules/Help.js";
-import { getSrcData, getThreadsList } from "@i-is-as-i-does/nexus-core/src/load/NxSrc.js";
-import { selectDropDown } from "../viewer/NxCommons.js";
-import { urlPattern } from "@i-is-as-i-does/nexus-core/src/validt/NxSpecs.js";
+import { replaceDiacritics } from "@i-is-as-i-does/jack-js/src/modules/Help.js";
 
 const providers = ["youtube", "vimeo", "soundcloud"];
 const guessMap = {

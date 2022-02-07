@@ -17,7 +17,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "editDistantBlock": () => (/* binding */ editDistantBlock)
 /* harmony export */ });
 /* harmony import */ var _i_is_as_i_does_nexus_core_src_validt_NxSpecs_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/validt/NxSpecs.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/validt/NxSpecs.js");
-/* harmony import */ var _viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../viewer/NxCommons.js */ "./src/viewer/NxCommons.js");
+/* harmony import */ var _browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../browser/NxCommons.js */ "./src/browser/NxCommons.js");
 /* harmony import */ var _i_is_as_i_does_valva_src_legacy_Valva_v1_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @i-is-as-i-does/valva/src/legacy/Valva-v1.js */ "./node_modules/@i-is-as-i-does/valva/src/legacy/Valva-v1.js");
 /* harmony import */ var _i_is_as_i_does_jack_js_src_modules_Help_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @i-is-as-i-does/jack-js/src/modules/Help.js */ "./node_modules/@i-is-as-i-does/jack-js/src/modules/Help.js");
 /* harmony import */ var _browser_NxState_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../browser/NxState.js */ "./src/browser/NxState.js");
@@ -30,6 +30,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _NxEditPrc_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./NxEditPrc.js */ "./src/editor/NxEditPrc.js");
 /* harmony import */ var _i_is_as_i_does_nexus_core_src_base_NxHost_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/base/NxHost.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/base/NxHost.js");
 /* harmony import */ var _i_is_as_i_does_nexus_core_src_logs_NxLog__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/logs/NxLog */ "./node_modules/@i-is-as-i-does/nexus-core/src/logs/NxLog.js");
+/* harmony import */ var _browser_NxIcons_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../browser/NxIcons.js */ "./src/browser/NxIcons.js");
 /*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
 
 
@@ -47,9 +48,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var hostElm
+
+
 const editBuffer = (0,_browser_NxState_js__WEBPACK_IMPORTED_MODULE_4__.getBuffertime)();
 const editHistoryMax = 10;
+var hostElm
 var editMenu
 var editState = {
   dataUrl: "nexus-tmp",
@@ -58,14 +61,13 @@ var editState = {
   threadIndex: -1,
 };
 var originData = null;
-
-
+var previewOn = false
 var upDownEvent = new CustomEvent("IndexChange");
 var prcRunning = false;
 var actCtrls = {
   ctrls: {
-    prev: { symbol: "↶", elm: null },
-    next: { symbol: "↷", elm: null },
+    prev: { symbol: _browser_NxIcons_js__WEBPACK_IMPORTED_MODULE_14__.undoB64, elm: null },
+    next: { symbol: _browser_NxIcons_js__WEBPACK_IMPORTED_MODULE_14__.redoB64, elm: null },
   },
   position: 0,
   count: 1,
@@ -75,9 +77,9 @@ var editIndex = null;
 var editLocal = null;
 var editDistant = null;
 var authorForm;
-var btnSymbols = {
-  up: "↑",
-  down: "↓",
+var btnSrc = {
+  up: _browser_NxIcons_js__WEBPACK_IMPORTED_MODULE_14__.upB64,
+  down: _browser_NxIcons_js__WEBPACK_IMPORTED_MODULE_14__.downB64,
 };
 var saveBtn, resetBtn;
 var actionFdbck;
@@ -88,7 +90,6 @@ var authorInputs = {
 };
 var feedbackrun = null;
 var instanceBtn;
-
 
 function moveItem(from, to) {
   editState.srcData.index.splice(
@@ -107,15 +108,15 @@ function moveItem(from, to) {
 function toggleActiveBtn(id, btn) {
   var idx = editState.srcData.index.indexOf(id);
 
-  if (idx == 0) {
-    btn["up"].disabled = true;
+  if (idx === 0) {
+    toggleBtn(btn["up"], true)
   } else {
-    btn["up"].disabled = false;
+    toggleBtn(btn["up"], false)
   }
-  if (idx + 1 == editState.srcData.index.length) {
-    btn["down"].disabled = true;
+  if ((idx + 1) === editState.srcData.index.length) {
+    toggleBtn(btn["down"], true)
   } else {
-    btn["down"].disabled = false;
+    toggleBtn(btn["down"], false)
   }
 }
 function permuteThread(goingUp, goingDown) {
@@ -146,7 +147,7 @@ function moveItemHandler(li, it, id) {
   act(true);
 }
 function setMoveBtns(li, id) {
-  var dv = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)("DIV", "nx-edit-move");
+  var dv = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)("DIV", "nx-edit-move");
   var btn = {
     up: null,
     down: null,
@@ -155,9 +156,8 @@ function setMoveBtns(li, id) {
     toggleActiveBtn(id, btn);
   });
   Object.keys(btn).forEach((it) => {
-    btn[it] = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)("BUTTON", "nx-edit-move-" + it);
-    btn[it].type = "button";
-    btn[it].textContent = btnSymbols[it];
+    btn[it] = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)("A", "nx-edit-move-" + it);
+    btn[it].append((0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.iconImage)(btnSrc[it], 16));
     dv.append(btn[it]);
 
     btn[it].addEventListener("click", function () {
@@ -170,28 +170,28 @@ function setMoveBtns(li, id) {
 
 
 function threadLocalForm(idx, titleCallback) {
-  var form = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)("FORM", "nx-thread-local-form");
+  var form = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)("FORM", "nx-thread-local-form");
 
-  var fieldset1 = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)('FIELDSET');
+  var fieldset1 = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)('FIELDSET');
 
   fieldset1.append(inputElm(["threads", idx, "title"], titleCallback));
   fieldset1.append(inputElm(["threads", idx, "description"]));
 
 
-  var fieldset2 = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)('FIELDSET');
+  var fieldset2 = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)('FIELDSET');
 
   ["timestamp", "main", "aside"].forEach((field) => {
     fieldset2.append(inputElm(["threads", idx, "content", field]));
   });
 
-  var fieldset3 = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)('FIELDSET');
+  var fieldset3 = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)('FIELDSET');
  
 
 var typeInp = inputElm(["threads", idx, "content", "media", "type"]);
-  var tcallback = function (val, valid) {
+  var tcallback = function (input, valid) {
     if (valid) {
       var item = typeInp.querySelector(
-        "[data-item=" + (0,_NxEditPrc_js__WEBPACK_IMPORTED_MODULE_11__.resolveMediaType)(val) + "]"
+        "[data-item=" + (0,_NxEditPrc_js__WEBPACK_IMPORTED_MODULE_11__.resolveMediaType)(input.value) + "]"
       );
       if (item) {
         item.click();
@@ -202,7 +202,7 @@ var typeInp = inputElm(["threads", idx, "content", "media", "type"]);
   fieldset3.append(typeInp);
   fieldset3.append(inputElm(["threads", idx, "content", "media", "caption"]));
 
-  form.append((0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.landmarkElm)("local thread"), fieldset1 , (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.landmarkElm)("content"), fieldset2, (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.landmarkElm)("media",2), fieldset3);
+  form.append((0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.landmarkElm)("local thread"), fieldset1 , (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.landmarkElm)("content"), fieldset2, (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.landmarkElm)("media",2), fieldset3);
   return form;
 }
 
@@ -228,24 +228,37 @@ function addThreadBtn() {
       };
     }
     (0,_i_is_as_i_does_valva_src_legacy_Valva_v1_js__WEBPACK_IMPORTED_MODULE_2__.insertDiversion)(map.index.parent, map.index.child, false, true, 200, callb);
-    saveBtn.disabled = false;
-
+    toggleBtn(saveBtn,false)
   });
 
   return btn;
 }
 
 
-function appendLinkInputs(form, idx, i) {
-  var linkwrap = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)("DIV", "nx-edit-distant-link");
-  var elm = inputElm(["threads", idx, "linked", i]);
+function toggleBtn(btn, disabled = false){
+  var hasDisbClass = btn.classList.contains('nx-disabled')
+  if(!disabled && hasDisbClass){
+    btn.classList.remove('nx-disabled')
+  } else if (disabled && !hasDisbClass){
+    btn.classList.add('nx-disabled')
+  }
+}
 
-  (0,_i_is_as_i_does_valva_src_legacy_Valva_v1_js__WEBPACK_IMPORTED_MODULE_2__.insertDiversion)(linkwrap,elm,false,true,200);
+function linkInput(form, idx, i) {
+  var linkwrap = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)("DIV", "nx-edit-distant-link");
+  var elm = inputElm(["threads", idx, "linked", i], function(input, valid, fdbck){
+    if(valid && input.value){
+      (0,_i_is_as_i_does_nexus_core_src_load_NxSrc_js__WEBPACK_IMPORTED_MODULE_9__.getSrcData)(input.value).catch(()=> {
+       fdbck.firstChild.src = _browser_NxIcons_js__WEBPACK_IMPORTED_MODULE_14__.invalidB64
+      })
+    }
+     
+  });
 
   var dltBtn = (0,_NxEditComps_js__WEBPACK_IMPORTED_MODULE_10__.deleteLinkBtn)();
-  var delwrap = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)('DIV', 'nx-distant-link-action');
+  var delwrap = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)('DIV', 'nx-distant-link-action');
   delwrap.append(dltBtn);
-  linkwrap.append(delwrap);
+
   dltBtn.addEventListener("click", () => {
     var act = function (redo) {
       if (redo) {
@@ -253,7 +266,7 @@ function appendLinkInputs(form, idx, i) {
           linkwrap.remove();
         });
       } else {
-        if (i === editState.srcData.threads[idx].linked.length - 1) {
+        if (idx=== editState.threadIndex && i === (editState.srcData.threads[idx].linked.length - 1)) {
           (0,_i_is_as_i_does_valva_src_legacy_Valva_v1_js__WEBPACK_IMPORTED_MODULE_2__.insertDiversion)(form, linkwrap, false, true, 200);
         } else {
           var nextSibling = form.childNodes[i];
@@ -265,34 +278,39 @@ function appendLinkInputs(form, idx, i) {
     setLastAction(act);
     act(true);
   });
-  form.append(linkwrap);
+  linkwrap.append(elm, delwrap);
+  return linkwrap
 }
 
 function threadDistantForm(idx, id) {
-  var form = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)("FORM", "nx-thread-distant-form");
+  var form = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)("FORM", "nx-thread-distant-form");
 
   var linked = editState.srcData.threads[idx].linked;
 
-if (linked.length) {
-  for (var i = 0; i < linked.length; i++) {
-  //  appendLinkInputs(form, idx, i);
+  var elms = []
+  var len = linked.length
+if (len) {
+  for (var i = 0; i < len; i++) {
+   var elm = linkInput(form, idx, i)
+    elms.push(elm);
   }
 }
-var formCnt = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)("DIV");
+form.append(...elms)
+var formCnt = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)("DIV");
 var addBtnElm = (0,_NxEditComps_js__WEBPACK_IMPORTED_MODULE_10__.addBtn)();
 addBtnElm.addEventListener("click", () => {
   var idx = editState.srcData.index.indexOf(id);
   var i = editState.srcData.threads[idx].linked.length;
-  editState.srcData.threads[idx].linked.push("https://");
-  appendLinkInputs(form, idx, i);
+  editState.srcData.threads[idx].linked.push("");
+  (0,_i_is_as_i_does_valva_src_legacy_Valva_v1_js__WEBPACK_IMPORTED_MODULE_2__.insertDiversion)(form,linkInput(form, idx, i),false,true,200);
 });
 
-  formCnt.append((0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.landmarkElm)("linked threads"),form, addBtnElm);
+  formCnt.append((0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.landmarkElm)("linked threads"),form, addBtnElm);
   return formCnt;
 }
 
 function threadLi(id, form) {
-  var li = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)("LI");
+  var li = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)("LI");
 
   li.append(form);
 
@@ -327,12 +345,11 @@ function stateUpdate(idx, id) {
 function indexLink(idx, id) {
 
   var itemState = stateUpdate(idx, id);
-  var indLk = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.baseViewLink)(itemState, false);
-  (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.setToggleOnDisplay)(indLk, itemState);
+  var indLk = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.baseViewLink)(itemState, false);
+  (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.setToggleOnDisplay)(indLk, itemState);
 
   indLk.addEventListener("click", () => {
     var nidx = editState.srcData.index.indexOf(id);
-
     (0,_browser_NxState_js__WEBPACK_IMPORTED_MODULE_4__.triggerUpdate)(stateUpdate(nidx, id), true);
   });
 
@@ -347,14 +364,14 @@ function threadElms(idx, id) {
     'distant': { "parent": editDistant, "child": null }
   };
 
-  map.index.child = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)("LI");
+  map.index.child = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)("LI");
   map.index.link = indexLink(idx, id);
   map.index.child.append(map.index.link);
   setMoveBtns(map.index.child, id);
 
-  var titleCallback = function (val, valid) {
+  var titleCallback = function (input, valid) {
     if (valid) {
-      var newId = (0,_NxEditPrc_js__WEBPACK_IMPORTED_MODULE_11__.convertToId)(val);
+      var newId = (0,_NxEditPrc_js__WEBPACK_IMPORTED_MODULE_11__.convertToId)(input.value);
       map.index.link.firstChild.textContent = newId;
       setNewValue(["threads", idx, "id"], newId);
     }
@@ -384,8 +401,8 @@ function setLastAction(callback) {
   lastAction.push(callback);
   actCtrls.position = actCtrls.count - 1;
 
-  (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.toggleNavEnd)(actCtrls);
-  saveBtn.disabled = false;
+  (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.toggleNavEnd)(actCtrls);
+  toggleBtn(saveBtn,false)
 }
 
 
@@ -406,15 +423,16 @@ function deleteEvent(localLi, distantLi, id) {
         editState.srcData[field].splice(idx, 1);
       });
 
-      editState.threadId = '/';
-      editState.threadIndex = -1;
+      editState.threadIndex = idx - 1;
+      editState.threadId = editState.srcData.index[idx - 1];
+      
 
       [distantLi, localLi, indexNode].forEach((elm) => {
         (0,_i_is_as_i_does_valva_src_legacy_Valva_v1_js__WEBPACK_IMPORTED_MODULE_2__.easeOut)(elm, 200, function () {
           elm.remove();
         });
       });
-      if (len > 1) {
+      if(len > 1) {
         if (idx === 0) {
           indexNode.nextSibling.dispatchEvent(upDownEvent);
         } else if (idx === len - 1) {
@@ -450,12 +468,12 @@ function deleteEvent(localLi, distantLi, id) {
 }
 
 function deleteThreadElm(localLi, distantLi, id) {
-  var btn = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)("BUTTON", "nx-delete-thread");
+  var btn = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)("BUTTON", "nx-delete-thread");
   btn.type = "button";
   btn.textContent = "-";
 
   btn.addEventListener("click", function () {
-    deleteEvent(localLi, distantLi, id);
+      deleteEvent(localLi, distantLi, id);
   });
   return btn;
 }
@@ -484,7 +502,7 @@ function setContentValue(ref, value) {
   if (!editState.srcData.threads[ref[1]].content) {
     editState.srcData.threads[ref[1]].content = {};
   }
-  if (ref[3] != "media") {
+  if (ref[3] !== "media") {
     editState.srcData.threads[ref[1]].content[ref[3]] = value;
     return;
   }
@@ -496,10 +514,11 @@ function setContentValue(ref, value) {
 }
 
 function setLinkedValue(ref, value) {
-  if (!editState.srcData.threads[ref[1]].linked) {
+
+  if (!editState.srcData.threads[ref[1]].linked.length) {
     editState.srcData.threads[ref[1]].linked = [];
   } else if (
-    editState.srcData.threads[ref[1]].linked.indexOf(ref[3]) === -1
+    editState.srcData.threads[ref[1]].linked.indexOf(ref[2]) === -1
   ) {
     editState.srcData.threads[ref[1]].linked.push(value)
   } else {
@@ -513,7 +532,7 @@ function setNewValue(ref, value) {
   if (editState.srcData === null) {
     editState.srcData = {};
   }
-  if (ref[0] == "author") {
+  if (ref[0] === "author") {
     return setAuthorValue(ref, value);
   }
   setThreadIndex(ref);
@@ -522,13 +541,15 @@ function setNewValue(ref, value) {
     return setThreadInfo(ref, value);
   }
 
-  if (ref[2] == "content") {
-    setContentValue(ref, value);
+  if (ref[2] === "content") {
+    return setContentValue(ref, value);
+    
   }
   setLinkedValue(ref, value);
 }
 
 function fieldValue(ref) {
+
   if (editState.srcData) {
     if (ref[0] == "author") {
       return editState.srcData[ref[0]][ref[1]];
@@ -537,8 +558,8 @@ function fieldValue(ref) {
     if (!["linked", "content"].includes(ref[2])) {
       return editState.srcData.threads[ref[1]][ref[2]];
     }
-    if (ref[2] == "content") {
-      if (ref[3] != "media") {
+    if (ref[2] === "content") {
+      if (ref[3] !== "media") {
         return editState.srcData.threads[ref[1]].content[ref[3]];
       }
       return editState.srcData.threads[ref[1]].content.media[ref[4]];
@@ -558,6 +579,11 @@ function inputElm(ref, callback = null, store = null) {
     pos--
   }
   var field = ref[pos];
+  pos--
+  if (Number.isInteger(ref[pos])) {
+    pos--
+  }
+  var parent = ref[pos];
 
   var inp;
   if (["about", "description", "main", "aside", "caption"].includes(field)) {
@@ -582,7 +608,7 @@ function inputElm(ref, callback = null, store = null) {
   }
 
   var lb = (0,_NxEditComps_js__WEBPACK_IMPORTED_MODULE_10__.baseLabel)(ident);
-  var indc = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)("SPAN", "nx-edit-indication");
+  var indc = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)("SPAN", "nx-edit-indication");
   var fdbck = (0,_NxEditComps_js__WEBPACK_IMPORTED_MODULE_10__.invalidSp)();
   lb.append(indc, fdbck);
 
@@ -611,13 +637,13 @@ function inputElm(ref, callback = null, store = null) {
     store[field] = inp;
   }
 
-  var wrap = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)("DIV", "nx-edit-input nx-edit-select-" + field);
+  var wrap = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)("DIV", "nx-edit-input nx-edit-" + parent + '-' + field);
   wrap.append(lb);
   if (field === "type") {
-// || field === "linked"
+
     var items = _i_is_as_i_does_nexus_core_src_validt_NxSpecs_js__WEBPACK_IMPORTED_MODULE_0__.supportedMediaTypes;
     wrap.append(
-      (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.selectDropDown)(items, inp, null, "nx-edit-" + ref[2] + "-" + field)
+      (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.selectDropDown)(items, inp, null, "nx-edit-" + ref[2] + "-" + field)
     );
   } else {
     wrap.append(inp);
@@ -631,16 +657,17 @@ function inputElm(ref, callback = null, store = null) {
 
 function inputEvtHandler(ref, inp, fdbck, callback) {
   var valid = false;
-
+  var icsrc
   if (inp.checkValidity()) {
     valid = true;
     setNewValue(ref, inp.value);
-    fdbck.textContent = "✓";
+    icsrc = _browser_NxIcons_js__WEBPACK_IMPORTED_MODULE_14__.validB64
   } else {
-    fdbck.textContent = "✗";
+    icsrc = _browser_NxIcons_js__WEBPACK_IMPORTED_MODULE_14__.invalidB64
   }
+  fdbck.firstChild.src = icsrc;
   if (typeof callback === "function") {
-    callback(inp.value, valid);
+    callback(inp, valid, fdbck);
   }
 }
 
@@ -681,28 +708,27 @@ function triggerUndoRedo(ctrl) {
       }.bind(this),
       editBuffer
     );
-    saveBtn.disabled = false;
+    toggleBtn(saveBtn,false)
   }
 }
 
 function setAuthorForm() {
-  authorForm = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)("FORM", "nx-edit-author");
+  authorForm = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)("FORM", "nx-edit-author");
   ["handle", "url", "about"].forEach((field) => {
     authorForm.append(inputElm(["author", field], null, authorInputs));
   });
 }
 
 function setSaveBtn() {
-  saveBtn = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)('BUTTON', 'nx-save');
-  saveBtn.type = "button";
-  saveBtn.textContent = "🖫";
-  saveBtn.disabled = true;
+  saveBtn = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)('A', 'nx-save');
+  saveBtn.append((0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.iconImage)(_browser_NxIcons_js__WEBPACK_IMPORTED_MODULE_14__.saveB64, 20))
+  toggleBtn(saveBtn, true)
   saveBtn.addEventListener('click', function () {
-    if (!saveBtn.disabled) {
+    if (!saveBtn.classList.contains('nx-disabled')) {
       
       (0,_i_is_as_i_does_nexus_core_src_storg_NxMemory_js__WEBPACK_IMPORTED_MODULE_6__.registerEditData)(editState.dataUrl, editState.srcData);    
       displayFeedback("saved");
-      saveBtn.disabled = true;
+      toggleBtn(saveBtn, true)
       setResetStatus();
     }
   });
@@ -710,29 +736,26 @@ function setSaveBtn() {
 }
 
 function setResetStatus(){
-  var disb = true;
 
-  if(originData != JSON.stringify(editState.srcData)){
-    disb = false;
-  } 
-  if(resetBtn.disabled !== disb){
-    resetBtn.disabled = disb;
+  if(originData !== JSON.stringify(editState.srcData)){
+    toggleBtn(resetBtn,false)
+  } else {
+    toggleBtn(resetBtn,true)
   }
 
 }
 
 function setResetBtn(){
-resetBtn = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)('BUTTON', 'nx-reset');
-  resetBtn.type = "button";
-  resetBtn.textContent = "⭯";
+resetBtn = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)('A', 'nx-reset');
+resetBtn.append((0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.iconImage)(_browser_NxIcons_js__WEBPACK_IMPORTED_MODULE_14__.resetB64, 20))
 
   setResetStatus();
   resetBtn.addEventListener('click', function () {
 
-    if(!resetBtn.disabled){
+    if(!resetBtn.classList.contains('nx-disabled')){
 
       resetData(JSON.parse(originData));
-      resetBtn.disabled = true;
+      toggleBtn(resetBtn,true)
 
     }
    
@@ -741,9 +764,8 @@ resetBtn = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)('BUTTON'
 }
 
 function downloadBtn() {
-  var dlBtn = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)('BUTTON', 'nx-download');
-  dlBtn.type = "button";
-  dlBtn.textContent = "⇣";
+  var dlBtn = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)('A', 'nx-download');
+ dlBtn.append((0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.iconImage)(_browser_NxIcons_js__WEBPACK_IMPORTED_MODULE_14__.downloadB64, 20))
   dlBtn.addEventListener('click', function (e) {
     var data = Object.assign({}, editState.srcData);
     delete data.index;
@@ -753,7 +775,7 @@ function downloadBtn() {
     }
     data = JSON.stringify(data, undefined, 2);
     var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(data);
-    var anchor = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)('A');
+    var anchor = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)('A');
     anchor.setAttribute("href", dataStr);
     anchor.setAttribute("download", "nexus.json");
     hostElm.appendChild(anchor);
@@ -795,8 +817,9 @@ function resetData(nData) {
     }
     
     editState.threadIndex = 0;
-    editState.threadId =editState.srcData.threads[0].id;
+    editState.threadId = editState.srcData.threads[0].id;
 
+    (0,_browser_NxState_js__WEBPACK_IMPORTED_MODULE_4__.triggerUpdate)(editState, true);
     resetAuthorForm();
     setThreads(true);
 
@@ -808,9 +831,8 @@ function resetData(nData) {
 }
 
 function newDocumenBtn() {
-  var newBtn = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)('BUTTON', 'nx-new');
-  newBtn.type = "button";
-  newBtn.textContent = "🗋";
+  var newBtn = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)('A', 'nx-new');
+  newBtn.append((0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.iconImage)(_browser_NxIcons_js__WEBPACK_IMPORTED_MODULE_14__.newB64, 20))
   newBtn.addEventListener('click', function () {
     resetData((0,_NxStarters_js__WEBPACK_IMPORTED_MODULE_8__.newData)());
   });
@@ -819,20 +841,19 @@ function newDocumenBtn() {
 
 function openBtn() {
   var inp = fileInput();
-  var btn = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)('BUTTON', 'nx-open-file');
-  btn.type = 'button';
-  btn.textContent = "🗁";
+  var btn = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)('A', 'nx-open-file');
+  btn.append((0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.iconImage)(_browser_NxIcons_js__WEBPACK_IMPORTED_MODULE_14__.openB64, 20))
   btn.addEventListener('click', function () {
     inp.click();
   });
-  var wrap = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)('SPAN');
+  var wrap = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)('SPAN');
   wrap.append(inp, btn);
   return wrap;
 }
 
 
 function fileInput(){
-  var inp = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)('INPUT');
+  var inp = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)('INPUT');
   inp.type = "file";
   inp.accept = "application/json";
   inp.addEventListener('change', function (evt) {
@@ -861,26 +882,25 @@ if(feedbackrun){
 }
 
 function setActionFeedback() {
-  actionFdbck = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)('SPAN', 'nx-action-feedback');
+  actionFdbck = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)('SPAN', 'nx-action-feedback');
 }
 
+
 function editNav() {
-  var wrp = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)("DIV", "nx-edit-nav");
+  var wrp = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)("DIV", "nx-edit-nav");
   setActionFeedback();
   setResetBtn();
   setSaveBtn();
 
-
-  var links = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)('DIV');
-
+  var links = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)('DIV');
 
   links.append(resetBtn, newDocumenBtn(), openBtn(),saveBtn, downloadBtn());
   wrp.append(actionFdbck, links);
   return wrp;
 }
 function editActions() {
-  var wrp = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)("DIV", "nx-edit-actions nx-history-nav");
-  (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.setHistoryControls)(actCtrls, triggerUndoRedo);
+  var wrp = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)("DIV", "nx-edit-actions nx-history-nav");
+  (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.setHistoryControls)(actCtrls, triggerUndoRedo, true);
   wrp.append(actCtrls.ctrls["prev"].elm, actCtrls.ctrls["next"].elm);
   return wrp;
 }
@@ -911,26 +931,26 @@ function setThread(idx, id,ease = false) {
 
 function authorPart(){
   setAuthorForm();
-  var dv = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)('DIV', "nx-edit-author-form");
-  dv.append((0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.landmarkElm)("author"), authorForm);
+  var dv = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)('DIV', "nx-edit-author-form");
+  dv.append((0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.landmarkElm)("author"), authorForm);
   return dv;
 }
 function indexPart(){
-  var dv = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)('DIV', "nx-edit-list");
-  dv.append((0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.landmarkElm)("threads"), editIndex, addThreadBtn());
+  var dv = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)('DIV', "nx-edit-list");
+  dv.append((0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.landmarkElm)("threads"), editIndex, addThreadBtn());
   return dv;
 }
 
 function setThreadsForms() {
   
-  editIndex = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)("UL", "nx-edit-index");
-  editLocal = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)("UL", "nx-edit-local");
-  editDistant = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)("UL", "nx-edit-distant");
+  editIndex = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)("UL", "nx-edit-index");
+  editLocal = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)("UL", "nx-edit-local");
+  editDistant = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)("UL", "nx-edit-distant");
   setThreads();
 
 }
 function setEditMenu() {
-  editMenu= (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)("DIV", "nx-edit-menu");
+  editMenu= (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)("DIV", "nx-edit-menu");
 
   editMenu.append(editNav(), editActions());
   
@@ -941,20 +961,20 @@ function getEditMenu(){
 }
 
 function instanceSwitch(viewerInst, editInst) {
-  instanceBtn = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)("BUTTON", "nx-edit-switch");
-  instanceBtn.textContent = "👁";
+  instanceBtn = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.getElm)("A", "nx-edit-switch");
+  instanceBtn.append((0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.iconImage)(_browser_NxIcons_js__WEBPACK_IMPORTED_MODULE_14__.previewB64, 25))
 
   instanceBtn.addEventListener('click', function () {
-    if (instanceBtn.textContent == "✎") {
-      instanceBtn.textContent = "👁";
-      (0,_i_is_as_i_does_valva_src_legacy_Valva_v1_js__WEBPACK_IMPORTED_MODULE_2__.replaceDiversion)(viewerInst, editInst);
+    previewOn = !previewOn
+    ;(0,_browser_NxState_js__WEBPACK_IMPORTED_MODULE_4__.triggerUpdate)(editState, true, true);
+    if (previewOn) {   
+      instanceBtn.firstChild.src = _browser_NxIcons_js__WEBPACK_IMPORTED_MODULE_14__.editB64
+      ;(0,_i_is_as_i_does_valva_src_legacy_Valva_v1_js__WEBPACK_IMPORTED_MODULE_2__.replaceDiversion)(editInst, viewerInst);    
     } else {
-      (0,_browser_NxState_js__WEBPACK_IMPORTED_MODULE_4__.triggerUpdate)(editState, true, true);
-
-      instanceBtn.textContent = "✎";
-      (0,_i_is_as_i_does_valva_src_legacy_Valva_v1_js__WEBPACK_IMPORTED_MODULE_2__.replaceDiversion)(editInst, viewerInst);
+      
+      instanceBtn.firstChild.src = _browser_NxIcons_js__WEBPACK_IMPORTED_MODULE_14__.previewB64
+      ;(0,_i_is_as_i_does_valva_src_legacy_Valva_v1_js__WEBPACK_IMPORTED_MODULE_2__.replaceDiversion)(viewerInst, editInst);
     }
-
   });
 
   return instanceBtn;
@@ -1006,6 +1026,7 @@ function setEditState(state, nxelm){
   }
 
  editState = (0,_NxEditPrc_js__WEBPACK_IMPORTED_MODULE_11__.newState)(data, url, id, idx);
+ (0,_browser_NxState_js__WEBPACK_IMPORTED_MODULE_4__.triggerUpdate)(editState, true);
  setEditMenu()
  setThreadsForms();
 
@@ -1013,13 +1034,13 @@ function setEditState(state, nxelm){
 
 function editIndexBlock() {
  
-  return (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.blockWrap)("index", null, [authorPart(),  indexPart()], false);
+  return (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.blockWrap)("index", [authorPart(),  indexPart()], false);
 }
 function editLocalBlock() {
-  return (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.blockWrap)("local", null, [editLocal], false);
+  return (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.blockWrap)("local", [editLocal], false);
 }
 function editDistantBlock() {
-  return (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.blockWrap)("distant", null, [editDistant], false);
+  return (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_1__.blockWrap)("distant", [editDistant], false);
 }
 
 
@@ -1044,35 +1065,37 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _i_is_as_i_does_nexus_core_src_transl_NxCoreTranslate_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/transl/NxCoreTranslate.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/transl/NxCoreTranslate.js");
 /* harmony import */ var _i_is_as_i_does_nexus_core_src_transl_NxElmTranslate_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/transl/NxElmTranslate.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/transl/NxElmTranslate.js");
-/* harmony import */ var _viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../viewer/NxCommons.js */ "./src/viewer/NxCommons.js");
+/* harmony import */ var _browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../browser/NxCommons.js */ "./src/browser/NxCommons.js");
+/* harmony import */ var _browser_NxIcons_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../browser/NxIcons.js */ "./src/browser/NxIcons.js");
 /*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
 
 
 
 
+
   function textInput(val) {
-    var inp = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_2__.getElm)("INPUT", "nx-edit-text");
+    var inp = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_2__.getElm)("INPUT", "nx-edit-text");
     inp.type = "text";
     inp.value = val;
     return inp;
   }
   
   function textareaInput(val) {
-    var inp = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_2__.getElm)("TEXTAREA", "nx-edit-textarea");
+    var inp = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_2__.getElm)("TEXTAREA", "nx-edit-textarea");
     inp.textContent = val;
     return inp;
   }
   function dateInput(val) {
-    var inp = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_2__.getElm)("INPUT");
+    var inp = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_2__.getElm)("INPUT");
     inp.type = "datetime-local";
     inp.value = val;
     return inp;
   }
   
   function baseLabel(field) {
-    var lb = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_2__.getElm)("LABEL", "nx-edit-label");
+    var lb = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_2__.getElm)("LABEL", "nx-edit-label");
     lb.for = field;
-    var title = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_2__.getElm)("SPAN", "nx-edit-title");
+    var title = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_2__.getElm)("SPAN", "nx-edit-title");
     title.textContent = (0,_i_is_as_i_does_nexus_core_src_transl_NxCoreTranslate_js__WEBPACK_IMPORTED_MODULE_0__.getTxt)(field);
   (0,_i_is_as_i_does_nexus_core_src_transl_NxElmTranslate_js__WEBPACK_IMPORTED_MODULE_1__.registerTranslElm)(title, field);
     lb.append(title);
@@ -1081,21 +1104,22 @@ __webpack_require__.r(__webpack_exports__);
 
   
 function deleteLinkBtn() {
-  var btn = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_2__.getElm)("BUTTON", "nx-delete-link");
+  var btn = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_2__.getElm)("BUTTON", "nx-delete-link");
   btn.type = "button";
   btn.textContent = "-";
   return btn;
 }
 
 function addBtn() {
-  var btn = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_2__.getElm)("BUTTON", "nx-add-link");
+  var btn = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_2__.getElm)("BUTTON", "nx-add-link");
   btn.type = "button";
   btn.textContent = "+";
   return btn;
 }
 
 function invalidSp() {
-  var sp = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_2__.getElm)("SPAN", "nx-edit-feedback");
+  var sp = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_2__.getElm)("SPAN", "nx-edit-feedback");
+  sp.append((0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_2__.iconImage)(_browser_NxIcons_js__WEBPACK_IMPORTED_MODULE_3__.invalidB64))
   return sp;
 }
 
@@ -1116,13 +1140,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "newState": () => (/* binding */ newState)
 /* harmony export */ });
 /* harmony import */ var _i_is_as_i_does_jack_js_src_modules_Help_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @i-is-as-i-does/jack-js/src/modules/Help.js */ "./node_modules/@i-is-as-i-does/jack-js/src/modules/Help.js");
-/* harmony import */ var _i_is_as_i_does_nexus_core_src_load_NxSrc_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/load/NxSrc.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/load/NxSrc.js");
-/* harmony import */ var _viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../viewer/NxCommons.js */ "./src/viewer/NxCommons.js");
-/* harmony import */ var _i_is_as_i_does_nexus_core_src_validt_NxSpecs_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @i-is-as-i-does/nexus-core/src/validt/NxSpecs.js */ "./node_modules/@i-is-as-i-does/nexus-core/src/validt/NxSpecs.js");
 /*! Nexus | (c) 2021-22 I-is-as-I-does | AGPLv3 license */
-
-
-
 
 
 const providers = ["youtube", "vimeo", "soundcloud"];
@@ -1196,7 +1214,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "editorElms": () => (/* binding */ editorElms)
 /* harmony export */ });
-/* harmony import */ var _viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../viewer/NxCommons.js */ "./src/viewer/NxCommons.js");
+/* harmony import */ var _browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../browser/NxCommons.js */ "./src/browser/NxCommons.js");
 /* harmony import */ var _viewer_NxViewer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../viewer/NxViewer.js */ "./src/viewer/NxViewer.js");
 /* harmony import */ var _NxEdit_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./NxEdit.js */ "./src/editor/NxEdit.js");
 /*! Nexus | (c) 2021 I-is-as-I-does | AGPLv3 license */
@@ -1210,18 +1228,18 @@ function editorElms(seed){
 
     var viewerInst = (0,_viewer_NxViewer_js__WEBPACK_IMPORTED_MODULE_1__.viewerElms)(seed);
   
-   var indexPart = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_0__.getElm)("DIV");
+   var indexPart = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_0__.getElm)("DIV");
    indexPart.append((0,_NxEdit_js__WEBPACK_IMPORTED_MODULE_2__.editIndexBlock)());
-   var threadPart = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_0__.getElm)("DIV");
+   var threadPart = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_0__.getElm)("DIV");
    threadPart.append((0,_NxEdit_js__WEBPACK_IMPORTED_MODULE_2__.editLocalBlock)(),(0,_NxEdit_js__WEBPACK_IMPORTED_MODULE_2__.editDistantBlock)());
    
-   var editInst = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_0__.instanceWrap)((0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_0__.appHeaderWithLang)(),[(0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_0__.serviceWrap)
+   var editInst = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_0__.instanceWrap)((0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_0__.appHeaderWithLang)(),[(0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_0__.serviceWrap)
   ([(0,_NxEdit_js__WEBPACK_IMPORTED_MODULE_2__.getEditMenu)()], [
     indexPart,
     threadPart
     ], [], "edit")]);
 
-    var editor = (0,_viewer_NxCommons_js__WEBPACK_IMPORTED_MODULE_0__.getElm)('DIV','nx-editor')
+    var editor = (0,_browser_NxCommons_js__WEBPACK_IMPORTED_MODULE_0__.getElm)('DIV','nx-editor')
     editor.append(editInst, (0,_NxEdit_js__WEBPACK_IMPORTED_MODULE_2__.instanceSwitch)(viewerInst, editInst))
     
     return editor
