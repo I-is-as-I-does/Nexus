@@ -1,48 +1,53 @@
 # Nexus
 
 Nexus is a peer-to-peer Micro Social Network.  
-This is the code repository of the project.  
-  
-Documentation: [nexus-dock.github.io](https://nexus-dock.github.io/)  
-Documentation repository: [nexus-dock/nexus-dock.github.io](https://github.com/nexus-dock/nexus-dock.github.io)  
-Demo: [nexus-dock.github.io/instance](https://nexus-dock.github.io/instance)  
+This is a hub repository for the project, with distilled apps for CDNs.  
+
+## Apps
+
+### Nexus IO
+
+Nexus IO is a Nexus reader and editor app in vanilla JS, and currently the default Nexus app.  
+
+Dedicated repository: [I-is-as-I-does/Nexus-IO](https://github.com/I-is-as-I-does/Nexus-IO)  
+
+Demo:  
+Reader: [nexus-dock.github.io/instance](https://nexus-dock.github.io/instance)  
 Editor: [nexus-dock.github.io/instance/?new](https://nexus-dock.github.io/instance/?new)  
-  
+ 
+### Nexus Folio
+
+Nexus Folio is a Nexus reader app, made with Vue 3.  
+It can also serve as a Nexus Vue app starter kit / components library.  
+
+Dedicated repository: [I-is-as-I-does/Nexus-Folio](https://github.com/I-is-as-I-does/Nexus-Folio)  
+
+## Documentation
+
+Website: [nexus-dock.github.io](https://nexus-dock.github.io/)  
+Repository: [nexus-dock/nexus-dock.github.io](https://github.com/nexus-dock/nexus-dock.github.io)  
+
+## Starter Kits
+ 
 Apache starter kit: [I-is-as-I-does/Nexus-Apache-starter](https://github.com/I-is-as-I-does/Nexus-Apache-starter)  
 GitHub Pages starter kit: [I-is-as-I-does/Nexus-Github-starter](https://github.com/I-is-as-I-does/Nexus-Github-starter)
 
-New!  
-Toolkit repository for Nexus related apps: [I-is-as-I-does/Nexus Core](https://github.com/I-is-as-I-does/Nexus-Core)  
-Nexus Folio, reader-only Vue app: [I-is-as-I-does/Nexus-Folio](https://github.com/I-is-as-I-does/Nexus-Folio)  
+## Dev Toolkit
 
-## App Status
+Nexus Core, toolkit for Nexus related apps: [I-is-as-I-does/Nexus Core](https://github.com/I-is-as-I-does/Nexus-Core)  
 
-Stamper / Viewer / Editor prototype 1.0.1  
-all 47.9ko dist.  
-viewer only 34.6ko dist. + 9.4ko css  
-No dep.  
-
-/!\ Needs update
-
-### Get your hands dirty
-
-Fork, clone, `npm install`
-
-### Main Wishes
+## Main Wishes
 
 [Contribute](./CONTRIBUTING.md)!
 
-- [ ] Additional **translations** (Es, It, De)
-- [ ] Additional **themes**
+- [ ] Additional **translations** (Es, It, De); cf. [Nexus Core](https://github.com/I-is-as-I-does/Nexus-Core)  
+- [ ] Additional **themes**; cf. [Nexus-Folio](https://github.com/I-is-as-I-does/Nexus-Folio) or [Nexus-IO](https://github.com/I-is-as-I-does/Nexus-IO)
 - [ ] Additional **starter kits**
-- [ ] **Server-side app** for easy admin (PHP and/or Node)
+- [ ] **Server-side app** for easy admin (PHP and/or Node and/or ?)
 - [ ] **Nexus Registry website** or Nexus of Nexuses
 
 ### To do
 
-- [ ] Repo: move default App to its own repo
-- [ ] Src: update default App with new NxCore (**lots** of fixes + some breaking changes)
-- [ ] Doc: update with recent changes
 - [ ] Doc: visual schema
 
 <a href='https://ko-fi.com/I2I17EOYP' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi2.png?v=3' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>

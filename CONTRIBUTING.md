@@ -3,10 +3,10 @@
 Thank you for your interest in Nexus! 
 
 All kinds of contributions are very much welcomed: 
-- additionnal [translations](./src/core/transl/NxTranslations.js), 
-- new [themes](./src/themes), 
-- [app](./src/) additionnal features, fixes or bug reports, 
-- docs improvements,
+- additionnal [translations](https://github.com/I-is-as-I-does/Nexus-Core/blob/main/src/transl/NxTranslations.js), 
+- new themes for [Nexus IO](https://github.com/I-is-as-I-does/Nexus-IO/tree/main/src/themes) or [Nexus Folio](https://github.com/I-is-as-I-does/Nexus-Folio/tree/main/src/themes), 
+- [core](https://github.com/I-is-as-I-does/Nexus-Core) additionnal features, fixes or bug reports, 
+- [docs](https://github.com/nexus-dock/nexus-dock.github.io) improvements,
 - brand new apps or starter kits,
 - etc.!
 
