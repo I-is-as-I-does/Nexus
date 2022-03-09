@@ -22,10 +22,12 @@ It can also serve as a Nexus Vue app starter kit / components library.
 
 Dedicated repository: [I-is-as-I-does/Nexus-Folio](https://github.com/I-is-as-I-does/Nexus-Folio)  
 
-## Documentation
+### Nexus CMS
 
-Website: [nexus-dock.github.io](https://nexus-dock.github.io/)  
-Repository: [nexus-dock/nexus-dock.github.io](https://github.com/nexus-dock/nexus-dock.github.io)  
+A one-click solution to create and auto-deploy Nexus instances... and markdown pages!
+Nexus CMS makes use of 11ty to generate files, and Netlify CMS for a user-friendly backend.  
+
+Repository: [I-is-as-I-does/Nexus-CMS](https://github.com/I-is-as-I-does/Nexus-CMS)  
 
 ## Starter Kits
  
@@ -36,14 +38,17 @@ GitHub Pages starter kit: [I-is-as-I-does/Nexus-Github-starter](https://github.c
 
 Nexus Core, toolkit for Nexus related apps: [I-is-as-I-does/Nexus Core](https://github.com/I-is-as-I-does/Nexus-Core)  
 
+## Documentation
+
+Website: [nexus-dock.github.io](https://nexus-dock.github.io/)  
+Repository: [nexus-dock/nexus-dock.github.io](https://github.com/nexus-dock/nexus-dock.github.io)  
+
 ## Main Wishes
 
 [Contribute](./CONTRIBUTING.md)!
 
 - [ ] Additional **translations** (Es, It, De); cf. [Nexus Core](https://github.com/I-is-as-I-does/Nexus-Core)  
 - [ ] Additional **themes**; cf. [Nexus-Folio](https://github.com/I-is-as-I-does/Nexus-Folio) or [Nexus-IO](https://github.com/I-is-as-I-does/Nexus-IO)
-- [ ] Additional **starter kits**
-- [ ] **Server-side app** for easy admin (PHP and/or Node and/or ?)
 - [ ] **Nexus Registry website** or Nexus of Nexuses
 
 ### To do
