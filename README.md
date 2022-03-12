@@ -24,8 +24,8 @@ Dedicated repository: [I-is-as-I-does/Nexus-Folio](https://github.com/I-is-as-I-
 
 ### Nexus CMS
 
-A one-click solution to create and auto-deploy Nexus instances... and markdown pages!
-Nexus CMS makes use of 11ty to generate files, and Netlify CMS for a user-friendly backend.  
+A free, 1 minute setup solution to create and auto-deploy Nexus instances... and static pages!  
+Under the hood, Nexus CMS makes use of 11ty to generate files, and Netlify CMS for a user-friendly backend.    
 
 Repository: [I-is-as-I-does/Nexus-CMS](https://github.com/I-is-as-I-does/Nexus-CMS)  
 
