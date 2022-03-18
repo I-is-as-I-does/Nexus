@@ -11,7 +11,7 @@ This is a hub repository for the project, with distilled apps for CDNs.
 
 Setup a Nexus powered website under 1 minute.  
 
-- Documentation: [cms](https://nexus-dock.github.io/docs/cms/)  
+- Documentation: <a href="https://nexus-dock.github.io/docs/cms/" target="_blank">nexus-dock.github.io/docs/cms/</a>
 - Repository: <a href="https://github.com/I-is-as-I-does/Nexus-CMS" target="_blank">I-is-as-I-does/Nexus-CMS</a>
 
 #### Nexus Apache starter
