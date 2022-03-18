@@ -1,47 +1,72 @@
-# Nexus
+# Nexus Hub
 
 Nexus is a peer-to-peer Micro Social Network.  
 This is a hub repository for the project, with distilled apps for CDNs.  
 
-## Apps
+## Ecosystem
 
-### Nexus IO
+### Content Management
 
-Nexus IO is a Nexus reader and editor app in vanilla JS, and currently the default Nexus app.  
+#### Nexus CMS
 
-Dedicated repository: [I-is-as-I-does/Nexus-IO](https://github.com/I-is-as-I-does/Nexus-IO)  
+Setup a Nexus powered website under 1 minute.  
 
-Demo:  
-Reader: [nexus-dock.github.io/instance](https://nexus-dock.github.io/instance)  
-Editor: [nexus-dock.github.io/instance/?new](https://nexus-dock.github.io/instance/?new)  
+- Documentation: [cms](https://nexus-dock.github.io/docs/cms/)  
+- Repository: <a href="https://github.com/I-is-as-I-does/Nexus-CMS" target="_blank">I-is-as-I-does/Nexus-CMS</a>
+
+#### Nexus Apache starter
+
+If you plan to host your Nexus files alongside an existing website, most chances are you are on a shared Apache server. 
+
+- Repository: <a href="https://github.com/I-is-as-I-does/Nexus-Apache-starter" target="_blank">I-is-as-I-does/Nexus-Apache-starter</a>  
+
+#### Nexus Github starter
+
+Host and publish your Nexus instances with Github Pages. 
+
+- Repository: <a href="https://github.com/I-is-as-I-does/Nexus-Github-starter" target="_blank">I-is-as-I-does/Nexus-Github-starter</a>
+
+### Browser Apps
+
+#### Nexus IO
+
+A Nexus reader and editor app in vanilla JS, and currently the default Nexus app.  
  
-### Nexus Folio
+- Repository: <a href="https://github.com/I-is-as-I-does/Nexus-IO" target="_blank">I-is-as-I-does/Nexus-IO</a>
+- Demo: <a href="https://nexus-dock.github.io/demo/nx-io/" target="_blank">Reader</a> – <a href="https://nexus-dock.github.io/demo/nx-io/?new" target="_blank">Editor</a>  
+- CDN: <a href="https://cdn.jsdelivr.net/gh/I-is-as-I-does/Nexus@latest/dist/js/NxIO.js" target="_blank">https://cdn.jsdelivr.net/gh/I-is-as-I-does/Nexus@latest/dist/js/NxIO.js</a> 
+ 
+#### Nexus Folio
 
-Nexus Folio is a Nexus reader app, made with Vue 3.  
+A Nexus reader app, made with Vue 3.  
+It does not come with a built-in editor, but is the default app for Nexus CMS.  
+
 It can also serve as a Nexus Vue app starter kit / components library.  
 
-Dedicated repository: [I-is-as-I-does/Nexus-Folio](https://github.com/I-is-as-I-does/Nexus-Folio)  
+- Repository: <a href="https://github.com/I-is-as-I-does/Nexus-Folio" target="_blank">I-is-as-I-does/Nexus-Folio</a>
+- Demo: <a href="https://nexus-dock.github.io/demo/nx-folio" target="_blank">Reader</a> 
+- CDN: <a href="https://cdn.jsdelivr.net/gh/I-is-as-I-does/Nexus@latest/dist/js/NxFolio.js" target="_blank">https://cdn.jsdelivr.net/gh/I-is-as-I-does/Nexus@latest/dist/js/NxFolio.js</a> 
 
-### Nexus CMS
+### Backstage
 
-A free, 1 minute setup solution to create and auto-deploy Nexus instances... and static pages!  
-Under the hood, Nexus CMS makes use of 11ty to generate files, and Netlify CMS for a user-friendly backend.    
+#### Nexus Core
 
-Repository: [I-is-as-I-does/Nexus-CMS](https://github.com/I-is-as-I-does/Nexus-CMS)  
+Dev toolkit for Nexus related apps.  
 
-## Starter Kits
- 
-Apache starter kit: [I-is-as-I-does/Nexus-Apache-starter](https://github.com/I-is-as-I-does/Nexus-Apache-starter)  
-GitHub Pages starter kit: [I-is-as-I-does/Nexus-Github-starter](https://github.com/I-is-as-I-does/Nexus-Github-starter)
+- Repository: <a href="https://github.com/I-is-as-I-does/Nexus-Core" target="_blank">I-is-as-I-does/Nexus-Core</a> 
 
-## Dev Toolkit
+#### Nexus Hub
 
-Nexus Core, toolkit for Nexus related apps: [I-is-as-I-does/Nexus Core](https://github.com/I-is-as-I-does/Nexus-Core)  
+Distilled apps for CDNs.
 
-## Documentation
+- Repository: [you are here]
 
-Website: [nexus-dock.github.io](https://nexus-dock.github.io/)  
-Repository: [nexus-dock/nexus-dock.github.io](https://github.com/nexus-dock/nexus-dock.github.io)  
+#### Nexus Dock
+
+Project documentation.
+
+- Website: <a href="https://nexus-dock.github.io" target="_blank">nexus-dock.github.io</a>
+- Repository: <a href="https://github.com/nexus-dock/nexus-dock.github.io" target="_blank">nexus-dock</a>
 
 ## Main Wishes
 
